@@ -1,0 +1,28 @@
+body
+{
+	overflow: 			hidden;
+}
+
+.area
+{
+	padding:			1.25%;
+}
+.nav
+{
+	position:			fixed;
+	bottom:				0;
+	display:			flex;
+}
+
+.nav_item
+{
+	font-size: 			2em;
+	text-align: 		center;
+	padding:			6%;
+}
+
+.nav_item:hover
+{
+	cursor:				pointer;
+	color:				#AD503F;
+}
