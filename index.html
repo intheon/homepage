@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-	<head>
-		<title>Welcome home</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<link rel="stylesheet" type="text/css" href="css/semantic.css" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-	</head>
+<head>
+	<title>Welcome home</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
+	<link rel="stylesheet" type="text/css" href="css/semantic.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
 
-	<body>
-		
-		<div class="area" id="home">
-			<div id="border" class="ui stacked segment" >
-				<h1>Welcome home!</h1>
-			</div>
-		</div>
+<body>
 
-		<div class="area" id="gmail">
-			<div id="border" class="ui stacked segment" >
-				<h1>Your emails</h1>
-			</div>
-		</div>
+	<!-- PANEL ONE -->
+	<div class="area" id="home"><div id="border" class="ui stacked segment">
+		<h2>Welcome home!</h2>
+		<p>Not a lot going on</p>
+	</div></div>
+	<!-- END PANEL -->
 
-		<div class="nav">
-			<div class="nav_item" id="home_link">Home</div>
-			<div class="nav_item" id="gmail_link">Gmail</div>
-		</div>
+	<!-- PANEL TWO -->
+	<div class="area" id="gmail"><div id="border" class="ui stacked segment">
+		<h2>Your emails</h2>
+		<div id="login_container" class="pre_auth">Please <a href="#" id="login_link">authorise</a> Gmail to use this app.</div>
+	</div></div>
+	<!-- END PANEL -->
 
+	<!-- FIXED NAVIGATION -->
+	<div class="nav">
+		<div class="nav_item" id="home_link">Home</div>
+		<div class="nav_item" id="gmail_link">Gmail</div>
+	</div>
+	<!-- END NAVIGATION -->
 
-	
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/engine.js"></script>
-	</body>
+<!-- DEPENDENCIES -->
+<script type="text/javascript" src="js/libraries/jquery.js"></script>
+<script type="text/javascript" src="js/libraries/google.js"></script>
+<script type="text/javascript" src="js/libraries/encoding.js"></script>
+<script type="text/javascript" src="js/modules/interaction.js"></script>
+<script type="text/javascript" src="js/modules/gmail.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
+</body>
 </html>
