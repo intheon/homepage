@@ -1,9 +1,9 @@
 // event listener to fire the authorisation needed to load the google api
-
 $("#login_link").click(function(){
 	authoriseGoogle();
 });
 
+// configuration
 function authoriseGoogle()
 {
 	var configuration = {
@@ -22,8 +22,7 @@ function authoriseGoogle()
 function loadGmailApi()
 {
 	// make a REST request to googles servers
-	// this will give a huge json block of all the messages in my inbox
-	// each email has it's own id, which is handy because we need 
+	// this will give a huge json block of all the messages in my inbox (identfied with their own id)
 	var request = gapi.client.request({
 		"path": "/gmail/v1/users/allobon@gmail.com/messages",
 		"params": {"q": "in:inbox"}
@@ -34,25 +33,17 @@ function loadGmailApi()
 
 		function onSuccess(response)
 		{
-			// an array of all our messages currently in my inbox
-			var inboxMessagesIds = response.result.messages;
-
 			// a blank holding array that will take all the messages when they are gathered.
 			var inboxMessagesContents = [];
 
-			// loop through all, and grab the headers/content for that specific email id
+			// an array of all our messages currently in my inbox
+			var inboxMessagesIds = response.result.messages;
+
+			// loop through all, and assign only the interesting stuff to an object
 			for (i = 0; i < inboxMessagesIds.length; i++)
 			{
 				var pointer = i;
 
-				var emailMetadata = {
-					id: "",
-					subject: "",
-					snippet: "",
-					plaintext: "",
-					fullHTML: ""
-				};
-				
 				var requestMessage = gapi.client.request({
 					"path": "/gmail/v1/users/allobon@gmail.com/messages/" + inboxMessagesIds[pointer].id,
 					"params": {"format": "full"}
@@ -61,9 +52,14 @@ function loadGmailApi()
 				// a promise is returned when the request is completed
 				requestMessage.then(function(response){
 
+					var inboxMessagesContents.push(response);
+			console.log(inboxMessagesContents);
+
+
 					// the actual amount of headers changes every time, which is annoying
 					// so now i have to search through every header to find one with a name of "Subject"
 
+					/*
 					emailMetadata.id 		= response.result.id;
 					emailMetadata.snippet	= response.result.snippet;
 					emailMetadata.plaintext	= response.result.payload.parts[0].body.data;
@@ -77,18 +73,22 @@ function loadGmailApi()
 						}
 					}
 
+					inboxMessagesContents.push("test");
 
+					console.log(inboxMessagesContents);
 
 					// if you want to decode the base64url encoding use 'base64_decode(string)'
 
-					console.log(emailMetadata);
+					*/
 
 				// failure - cant actually get this to fire, but good to know it's there
 				}, function(reason){
 					console.log("error: " + reason.result.error.message);
 				});
 
-			}
+			} // end for loop
+
+			console.log(inboxMessagesContents);
 
 		}
 

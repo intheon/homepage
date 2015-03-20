@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<script type="text/javascript">
+	
+
+function onSuccess(response)
+{
+	var inboxMessagesIds = "message";
+	// holding id
+
+	// a blank holding array that will take all the messages when they are gathered.
+	var inboxMessagesContents = [];
+
+	for (i = 0; i < 5; i++)
+	{
+		var emailMetadata = {
+			id: i + inboxMessagesIds
+		};
+
+		//console.log(emailMetadata);
+				
+		function completed()
+		{
+			inboxMessagesContents.push(emailMetadata);
+		}
+
+		completed();
+
+		console.log(inboxMessagesContents);
+
+	}
+
+}
+
+onSuccess();
+
+</script>
+</body>
+</html>
