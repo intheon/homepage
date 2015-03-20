@@ -12,6 +12,9 @@ function authoriseGoogle()
 	};
 
 	gapi.auth.authorize(configuration, function(){
+		$("#login_container").fadeOut(function(){
+			$(this).hide();
+		});
 		loadGmailApi();
 	});
 }
@@ -38,29 +41,58 @@ function loadGmailApi()
 			var inboxMessagesContents = [];
 
 			// loop through all, and grab the headers/content for that specific email id
-			for (i = 0; i <= inboxMessagesIds.length; i++)
+			for (i = 0; i < inboxMessagesIds.length; i++)
 			{
+				var pointer = i;
+
+				var emailMetadata = {
+					id: "",
+					subject: "",
+					snippet: "",
+					plaintext: "",
+					fullHTML: ""
+				};
+				
 				var requestMessage = gapi.client.request({
-					"path": "/gmail/v1/users/allobon@gmail.com/messages/" + inboxMessagesIds[1].id,
+					"path": "/gmail/v1/users/allobon@gmail.com/messages/" + inboxMessagesIds[pointer].id,
 					"params": {"format": "full"}
 				});
 
 				// a promise is returned when the request is completed
 				requestMessage.then(function(response){
-			var base64 = response.result.payload.parts[1].body.data;
 
-			//console.log(base64);
-			console.log("base64: " + base64.substr(0,14) + "...");
-			console.log("decoded: " + base64_decode(base64));
-		}, function(reason){
-			console.log("error: " + reason.result.error.message);
-		});
+					// the actual amount of headers changes every time, which is annoying
+					// so now i have to search through every header to find one with a name of "Subject"
+
+					emailMetadata.id 		= response.result.id;
+					emailMetadata.snippet	= response.result.snippet;
+					emailMetadata.plaintext	= response.result.payload.parts[0].body.data;
+					emailMetadata.fullHTML	= response.result.payload.parts[1].body.data;
+
+					for (length = 0; length < response.result.payload.headers.length; length++)
+					{
+						if (response.result.payload.headers[length].name == "Subject")
+						{
+							emailMetadata.subject = response.result.payload.headers[length].value;
+						}
+					}
+
+
+
+					// if you want to decode the base64url encoding use 'base64_decode(string)'
+
+					console.log(emailMetadata);
+
+				// failure - cant actually get this to fire, but good to know it's there
+				}, function(reason){
+					console.log("error: " + reason.result.error.message);
+				});
+
 			}
 
-			//console.log("i believe this has been completed...?");
-			//console.log(inboxMessagesContents);
 		}
 
+		// fired when I cant get a response at all - seems rare
 		function onFailure(response)
 		{
 			console.log(response);
