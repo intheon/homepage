@@ -1,20 +1,32 @@
 // event listener to fire the authorisation needed to load the google api
-$("#login_link").click(function(){
+$("#login_link").click(function()
+{
 	authoriseGoogle();
 });
+
+var arr = [];
+
+/*
+var emailMetadata = {};
+Object.observe(emailMetadata, function(changes){
+	console.log(changes);
+});
+
+*/
 
 // configuration
 function authoriseGoogle()
 {
 	var configuration = {
-		"client_id": "535339840289-c48nuh2v603viqsga9fmhbl91koak691.apps.googleusercontent.com",
-		"scope": "https://www.googleapis.com/auth/gmail.readonly"
+		"client_id"			: "535339840289-c48nuh2v603viqsga9fmhbl91koak691.apps.googleusercontent.com",
+		"scope"				: "https://www.googleapis.com/auth/gmail.readonly"
 	};
 
 	gapi.auth.authorize(configuration, function(){
 		$("#login_container").fadeOut(function(){
 			$(this).hide();
 		});
+
 		loadGmailApi();
 	});
 }
@@ -22,49 +34,66 @@ function authoriseGoogle()
 function loadGmailApi()
 {
 	// make a REST request to googles servers
-	// this will give a huge json block of all the messages in my inbox (identfied with their own id)
-	var request = gapi.client.request({
-		"path": "/gmail/v1/users/allobon@gmail.com/messages",
-		"params": {"q": "in:inbox"}
-	});
+	// this will give a huge json block of all the messages in my inbox (identified with their own id)
+	var request = gapi.client.request({"path": "/gmail/v1/users/allobon@gmail.com/messages","params": {"q": "in:inbox"}});
 
-		// a promise is returned, and either a success or failure handler is executed
-		request.then(function(response){onSuccess(response)}, function(response){onFailure(response)});
+	// a promise is returned, and either a success or failure handler is executed
+	request.then(function(response){onSuccess(response)}, function(response){onFailure(response)});
+}
 
-		function onSuccess(response)
+function onSuccess(response)
+{
+	// an array of all our messages currently in my inbox
+	var inboxMessagesIds = response.result.messages;
+
+	// loop through all, and assign only the interesting stuff to an object
+	for (i = 0; i < inboxMessagesIds.length; i++)
+	{
+		var requestMessage = gapi.client.request({
+			"path": "/gmail/v1/users/allobon@gmail.com/messages/" + inboxMessagesIds[i].id,
+			"params": {"format": "full"}
+		});
+		requestMessage.then(function(response){parseMessage(response)}, function(reason){console.log("error: " + reason.result.error.message)});
+	}
+
+	// a promise is returned when the request is completed
+}
+
+function onFailure(response)
+{
+	console.log(response);
+}
+
+function parseMessage(response)
+{
+	var message = {};
+
+	// pretty standard
+	message.id 					= response.result.id;
+	message.snippet				= response.result.snippet;
+
+	for (properties = 0; properties < response.result.payload.length; properties++)
+	{
+		if (response.result.payload[property] == "parts")
 		{
-			// a blank holding array that will take all the messages when they are gathered.
-			var inboxMessagesContents = [];
+			// not always included
+			message.contents	= response.result.payload.parts[0].body.data;
+		}
+		else
+		{
+			// this seems to be the alternate
+			message.contents	= response.result.payload.body.data;
+		}
+	}
 
-			// an array of all our messages currently in my inbox
-			var inboxMessagesIds = response.result.messages;
-
-			// loop through all, and assign only the interesting stuff to an object
-			for (i = 0; i < inboxMessagesIds.length; i++)
-			{
-				var pointer = i;
-
-				var requestMessage = gapi.client.request({
-					"path": "/gmail/v1/users/allobon@gmail.com/messages/" + inboxMessagesIds[pointer].id,
-					"params": {"format": "full"}
-				});
-
-				// a promise is returned when the request is completed
-				requestMessage.then(function(response){
-
-					var inboxMessagesContents.push(response);
-			console.log(inboxMessagesContents);
+	console.log(message);
+}
 
 
-					// the actual amount of headers changes every time, which is annoying
-					// so now i have to search through every header to find one with a name of "Subject"
-
-					/*
-					emailMetadata.id 		= response.result.id;
-					emailMetadata.snippet	= response.result.snippet;
-					emailMetadata.plaintext	= response.result.payload.parts[0].body.data;
-					emailMetadata.fullHTML	= response.result.payload.parts[1].body.data;
-
+					//emailMetadata.emailNum4 = arrayWrapper;
+/*
+					//console.log(emailMetadata);
+					
 					for (length = 0; length < response.result.payload.headers.length; length++)
 					{
 						if (response.result.payload.headers[length].name == "Subject")
@@ -82,19 +111,7 @@ function loadGmailApi()
 					*/
 
 				// failure - cant actually get this to fire, but good to know it's there
-				}, function(reason){
-					console.log("error: " + reason.result.error.message);
-				});
 
-			} // end for loop
 
-			console.log(inboxMessagesContents);
 
-		}
-
-		// fired when I cant get a response at all - seems rare
-		function onFailure(response)
-		{
-			console.log(response);
-		}
-}
+// fired when I cant get a response at all - seems rare
