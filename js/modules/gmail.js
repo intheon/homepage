@@ -4,7 +4,7 @@ $("#login_link").click(function()
 	authoriseGoogle();
 });
 
-var arr = [];
+var arrayOfMessages = [];
 
 /*
 var emailMetadata = {};
@@ -29,6 +29,8 @@ function authoriseGoogle()
 
 		loadGmailApi();
 	});
+
+	delayLoad();
 }
 
 function loadGmailApi()
@@ -66,52 +68,62 @@ function onFailure(response)
 
 function parseMessage(response)
 {
+	// parse means extract the bits i want and put in an object, and ignore the rest
 	var message = {};
 
 	// pretty standard
 	message.id 					= response.result.id;
 	message.snippet				= response.result.snippet;
 
-	for (properties = 0; properties < response.result.payload.length; properties++)
+	// the following extracts the actual message
+	// not all email messages have a "parts" sub object
+	// therefor loop through and identify if they have one. if not, its a level up
+	// remember these are base64urlencoded
+	for (keys in response.result.payload)
 	{
-		if (response.result.payload[property] == "parts")
+		if (keys == "parts")
 		{
-			// not always included
-			message.contents	= response.result.payload.parts[0].body.data;
+			message.contents = response.result.payload.parts[0].body.data;
 		}
 		else
 		{
-			// this seems to be the alternate
-			message.contents	= response.result.payload.body.data;
+			message.contents = response.result.payload.body.data;
 		}
 	}
 
-	console.log(message);
+	// now the subject line...
+	// thankfully headers is pretty standard
+	for (length = 0; length < response.result.payload.headers.length; length++)
+	{
+		if (response.result.payload.headers[length].name == "Subject")
+		{
+			message.subject = response.result.payload.headers[length].value;
+		}
+	}
+
+	arrayOfMessages.push(message);
+
 }
 
-
-					//emailMetadata.emailNum4 = arrayWrapper;
-/*
-					//console.log(emailMetadata);
-					
-					for (length = 0; length < response.result.payload.headers.length; length++)
-					{
-						if (response.result.payload.headers[length].name == "Subject")
-						{
-							emailMetadata.subject = response.result.payload.headers[length].value;
-						}
-					}
-
-					inboxMessagesContents.push("test");
-
-					console.log(inboxMessagesContents);
-
-					// if you want to decode the base64url encoding use 'base64_decode(string)'
-
-					*/
-
-				// failure - cant actually get this to fire, but good to know it's there
+function delayLoad()
+{
+	// because im too stupid to find out how async js, lets us a timeout!
+	// my "message" object takes a second or two before it's actually populated... soooo....
 
 
 
-// fired when I cant get a response at all - seems rare
+	setTimeout(function(){
+		$(".integer_count").html("(" + arrayOfMessages.length + ")");
+		$("#gmailContent").append("<div class='ui divided very relaxed list' id='emailOutput'></div>");
+
+		for (messagePointer = 0; messagePointer < arrayOfMessages.length; messagePointer++)
+		{
+			var msg = arrayOfMessages[messagePointer];
+			var snippet = msg.snippet;
+				snippet = snippet.substr(24,103);
+
+			$("#emailOutput").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+msg.subject+"</div>..."+snippet+"...</div></div>");
+		}
+
+	},2000);
+}
