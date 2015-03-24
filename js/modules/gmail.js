@@ -107,10 +107,10 @@ function parseMessage(response)
 
 function delayLoad()
 {
-	// because im too stupid to find out how async js, lets us a timeout!
+	// because im too stupid to find out how async js, lets use a timeout!
 	// my "message" object takes a second or two before it's actually populated... soooo....
 
-	$("#gmailContent").append("<div id='gmailLoading'><div class='ui active inverted dimmer'><div class='ui large text loader'>Retreiving...</div></div>");
+	$("#gmailContent").append("<div id='gmailLoading'><div class='ui active inverted dimmer'><div class='ui text loader'>Retreiving...</div></div>");
 
 
 	setTimeout(function(){

@@ -3,7 +3,9 @@ $(document).ready(function(){
 	$("#home").show();
 });
 
-$(".nav div").click(function(event){
+$(".menu .item").click(function(event){
+	$(".menu .item").removeClass("active");
+	$(this).addClass("active");
 	$(".area").hide();
 	
 	var id = $(this)[0].id;
