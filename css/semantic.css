@@ -1237,7 +1237,7 @@ to {
     color: #2ecc40!important;
 }
 .ui.orange.button, .ui.orange.buttons .button {
-    background-color: #e07b53;
+    background-color: #E9B34F;
     color: #fff;
     text-shadow: none;
     background-image: none;
@@ -2849,7 +2849,7 @@ a.ui.green.header:hover {
     color: #66c17b!important;
 }
 .ui.orange.header {
-    color: #e07b53!important;
+    color: #E9B34F!important;
 }
 a.ui.orange.header:hover {
     color: #e28560!important;
@@ -2894,7 +2894,7 @@ a.ui.yellow.header:hover {
     border-bottom: 2px solid #5bbd72;
 }
 .ui.orange.dividing.header {
-    border-bottom: 2px solid #e07b53;
+    border-bottom: 2px solid #E9B34F;
 }
 .ui.pink.dividing.header {
     border-bottom: 2px solid #d9499a;
@@ -3215,7 +3215,7 @@ i.green.icon {
     color: #5bbd72!important;
 }
 i.orange.icon {
-    color: #e07b53!important;
+    color: #E9B34F!important;
 }
 i.pink.icon {
     color: #d9499a!important;
@@ -3279,7 +3279,7 @@ i.inverted.bordered.green.icon, i.inverted.circular.green.icon {
     color: #FFF!important;
 }
 i.inverted.bordered.orange.icon, i.inverted.circular.orange.icon {
-    background-color: #e07b53!important;
+    background-color: #E9B34F!important;
     color: #FFF!important;
 }
 i.inverted.bordered.pink.icon, i.inverted.circular.pink.icon {
@@ -5178,12 +5178,12 @@ a.ui.green.label:hover, a.ui.green.labels .label:hover {
     border-color: #42a359!important;
 }
 .ui.orange.label, .ui.orange.labels .label {
-    background-color: #e07b53!important;
-    border-color: #e07b53!important;
+    background-color: #E9B34F!important;
+    border-color: #E9B34F!important;
     color: #fff!important;
 }
 .ui.labels .orange.label:before, .ui.orange.label:before, .ui.orange.labels .label:before {
-    background-color: #e07b53!important;
+    background-color: #E9B34F!important;
 }
 .ui.orange.labels a.label:hover, a.ui.orange.label:hover, a.ui.orange.labels .label:hover {
     background-color: #e28560!important;
@@ -6628,7 +6628,7 @@ to {
     border-top: 2px solid #5bbd72;
 }
 .ui.orange.segment:not(.inverted) {
-    border-top: 2px solid #e07b53;
+    border-top: 2px solid #E9B34F;
 }
 .ui.pink.segment:not(.inverted) {
     border-top: 2px solid #d9499a;
@@ -6662,7 +6662,7 @@ to {
     color: #fff!important;
 }
 .ui.inverted.orange.segment {
-    background-color: #e07b53!important;
+    background-color: #E9B34F!important;
     color: #fff!important;
 }
 .ui.inverted.pink.segment {
@@ -7847,7 +7847,7 @@ to {
     padding-bottom: 1rem;
 }
 .ui.grid .orange.column, .ui.grid>.orange.row {
-    background-color: #e07b53!important;
+    background-color: #E9B34F!important;
     color: #fff;
 }
 .ui.grid>.row>.orange.column {
@@ -8773,8 +8773,8 @@ to {
     color: #5bbd72!important;
 }
 .ui.menu .orange.active.item, .ui.orange.menu .active.item {
-    border-color: #e07b53!important;
-    color: #e07b53!important;
+    border-color: #E9B34F!important;
+    color: #E9B34F!important;
 }
 .ui.menu .pink.active.item, .ui.pink.menu .active.item {
     border-color: #d9499a!important;
@@ -8892,7 +8892,7 @@ to {
     background-color: #5bbd72;
 }
 .ui.inverted.orange.menu, .ui.inverted.orange.pointing.menu .active.item:after {
-    background-color: #e07b53;
+    background-color: #E9B34F;
 }
 .ui.inverted.pink.menu, .ui.inverted.pink.pointing.menu .active.item:after {
     background-color: #d9499a;
@@ -9318,7 +9318,7 @@ to {
 }
 .ui.orange.message {
     background-color: #ffedde;
-    color: #e07b53;
+    color: #E9B34F;
 }
 .ui.orange.message .header {
     color: #dc6a3d;
@@ -10847,7 +10847,7 @@ to {
     color: #5bbd72;
 }
 .ui.orange.statistic>.value, .ui.orange.statistics .statistic>.value, .ui.statistics .orange.statistic>.value {
-    color: #e07b53;
+    color: #E9B34F;
 }
 .ui.pink.statistic>.value, .ui.pink.statistics .statistic>.value, .ui.statistics .pink.statistic>.value {
     color: #d9499a;
@@ -12832,7 +12832,7 @@ a.ui.nag {
     background-color: #5bbd72;
 }
 .ui.orange.progress .bar {
-    background-color: #e07b53;
+    background-color: #E9B34F;
 }
 .ui.pink.progress .bar {
     background-color: #d9499a;
@@ -14032,7 +14032,7 @@ html.ios {
     border-top: .2em solid #5bbd72;
 }
 .ui.orange.table {
-    border-top: .2em solid #e07b53;
+    border-top: .2em solid #E9B34F;
 }
 .ui.pink.table {
     border-top: .2em solid #d9499a;
@@ -14062,7 +14062,7 @@ html.ios {
     color: #fff!important;
 }
 .ui.inverted.orange.table {
-    background-color: #e07b53!important;
+    background-color: #E9B34F!important;
     color: #fff!important;
 }
 .ui.inverted.pink.table {
