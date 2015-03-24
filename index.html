@@ -5,6 +5,7 @@
 	<title>Welcome home</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
+
 	<link rel="stylesheet" type="text/css" href="css/semantic.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
@@ -15,6 +16,7 @@
 	<div class="area" id="home"><div id="border" class="ui stacked segment">
 		<h2>Welcome home!</h2>
 		<p>Not a lot going on</p>
+		<div class="quote" id="bash"><h3>Random Bash Quote</h3></div>
 	</div></div>
 	<!-- END PANEL -->
 
@@ -22,7 +24,13 @@
 	<div class="area" id="gmail"><div id="gmailContent" class="ui stacked segment">
 		<h2>Your emails <span class="integer_count"></span></h2>
 		<div id="login_container" class="pre_auth">Please <a href="#" id="login_link">authorise</a> Gmail to use this app.</div>
+	</div></div>
+	<!-- END PANEL -->
 
+	<!-- PANEL THREE -->
+	<div class="area" id="news"><div id="border" class="ui stacked segment">
+		<h2>News and shit</h2>
+		<p>Not a lot going on</p>
 	</div></div>
 	<!-- END PANEL -->
 
@@ -30,15 +38,19 @@
 	<div class="nav">
 		<div class="nav_item" id="home_link">Home</div>
 		<div class="nav_item" id="gmail_link">Gmail</div>
+		<div class="nav_item" id="news_link">News</div>
 	</div>
 	<!-- END NAVIGATION -->
 
 <!-- DEPENDENCIES -->
-<script type="text/javascript" src="js/libraries/jquery.js"></script>
+<script type="text/javascript" src="js/libraries/jquery.js"></script>	
+<script type="text/javascript" src="js/libraries/semantic.js"></script>
 <script type="text/javascript" src="js/libraries/google.js"></script>
 <script type="text/javascript" src="js/libraries/encoding.js"></script>
+<script type="text/javascript" src="js/modules/core.js"></script>
 <script type="text/javascript" src="js/modules/interaction.js"></script>
 <script type="text/javascript" src="js/modules/gmail.js"></script>
+<script type="text/javascript" src="js/modules/feeds.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 </body>
 </html>

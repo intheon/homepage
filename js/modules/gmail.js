@@ -110,20 +110,28 @@ function delayLoad()
 	// because im too stupid to find out how async js, lets us a timeout!
 	// my "message" object takes a second or two before it's actually populated... soooo....
 
+	$("#gmailContent").append("<div id='gmailLoading'><div class='ui active inverted dimmer'><div class='ui large text loader'>Retreiving...</div></div>");
 
 
 	setTimeout(function(){
 		$(".integer_count").html("(" + arrayOfMessages.length + ")");
-		$("#gmailContent").append("<div class='ui divided very relaxed list' id='emailOutput'></div>");
 
-		for (messagePointer = 0; messagePointer < arrayOfMessages.length; messagePointer++)
-		{
-			var msg = arrayOfMessages[messagePointer];
-			var snippet = msg.snippet;
-				snippet = snippet.substr(24,103);
+		$("#gmailLoading").fadeOut(function(){
 
-			$("#emailOutput").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+msg.subject+"</div>..."+snippet+"...</div></div>");
-		}
+			$(this).hide();
+
+			$("#gmailContent").append("<div class='ui divided very relaxed list' id='emailOutput'></div>");
+
+			for (messagePointer = 0; messagePointer < arrayOfMessages.length; messagePointer++)
+			{
+				var msg = arrayOfMessages[messagePointer];
+				var snippet = msg.snippet;
+					snippet = snippet.substr(24,103);
+
+				$("#emailOutput").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+msg.subject+"</div>..."+snippet+"...</div></div>");
+			}
+		})
+
 
 	},2000);
 }
