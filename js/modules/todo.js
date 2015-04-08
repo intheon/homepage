@@ -18,6 +18,7 @@ function loadTodoList()
 				<div class='ui labeled button' id='todoSubmit'>Submit</div>\
 			</div>\
 		</div>\
+		<div id='outstandingTodos'></div>\
 	</div>");
 
 	$("#todoSubmit").click(function(){
@@ -28,7 +29,6 @@ function loadTodoList()
 
 // function jsonify - takes a string of characters and converts it to json
 // also adds a timestamp
-
 function jsonify(item)
 {
 	var jsonItem = {};
@@ -42,7 +42,6 @@ function jsonify(item)
 // ajax this to php
 function sendToInterwebs(jsonItem)
 {
-
 	$.ajax({
 		type				: "POST",
 		url                 : rootDir + "php/module_manage_todo.php",
@@ -50,11 +49,44 @@ function sendToInterwebs(jsonItem)
 		{
 			json   			: jsonItem
 		},
-		success				: function(outcome)
+		success				: function(jsonString)
 		{
-			console.log(outcome)
+			//console.log(jsonString);
+			retrieveFromInterwebs();
 		}
 	});
-
 }
 
+// grab the entire string back from the json file
+function retrieveFromInterwebs()
+{
+	$.ajax({
+		type				: "GET",
+		url                 : rootDir + "php/module_manage_todo.php",
+		data 				: 
+		{
+			get   			: true
+		},
+		success				: function(jsonString)
+		{
+			writeToPage(jsonString);
+		}
+	});
+}
+
+// plonk on the page
+function writeToPage(jsonString)
+{
+	var jsonString = JSON.parse(jsonString);
+	$("#outstandingTodos").html("");
+	for (property in jsonString)
+	{
+		for (items in jsonString[property])
+		{
+			var name = jsonString[property][items].itemName;
+			var date = jsonString[property][items].date;
+
+			$("#outstandingTodos").append("<h2>"+name+"</h2><p>"+date+"</p>");
+		}
+	}
+}
