@@ -3,6 +3,7 @@
 // simple. initialisation.
 $(document).ready(function(){
 	loadTodoList();
+	retrieveFromInterwebs()
 });
 
 // registers an event listener
@@ -15,7 +16,7 @@ function loadTodoList()
 				<input placeholder='wat?' type='text' id='todoInput'>\
 			</div>\
 			<div class='field'>\
-				<div class='ui labeled button' id='todoSubmit'>Submit</div>\
+				<div class='ui positive button' id='todoSubmit'>Submit</div>\
 			</div>\
 		</div>\
 		<div id='outstandingTodos'></div>\
@@ -23,20 +24,39 @@ function loadTodoList()
 
 	$("#todoSubmit").click(function(){
 		var itemToStore = $("#todoInput").val();
+			$("#todoInput").val("");
 		jsonify(itemToStore);
 	});
+
+	$("#todoInput").keyup(function(event){
+		if (event.keyCode == 13)
+		{
+			var itemToStore = $("#todoInput").val();
+				$("#todoInput").val("");
+			jsonify(itemToStore);
+		}
+	});
+
 }
 
 // function jsonify - takes a string of characters and converts it to json
 // also adds a timestamp
 function jsonify(item)
 {
-	var jsonItem = {};
+	if (item == "")
+	{
+		return
+	}
+	else
+	{
+		var jsonItem = {};
 
-	jsonItem.itemName = item;
-	jsonItem.date = new Date();
+		jsonItem.itemName = item;
+		jsonItem.date = new Date();
 
-	sendToInterwebs(jsonItem);
+		sendToInterwebs(jsonItem);
+	}
+
 }
 
 // ajax this to php
@@ -79,14 +99,17 @@ function writeToPage(jsonString)
 {
 	var jsonString = JSON.parse(jsonString);
 	$("#outstandingTodos").html("");
+	$("#outstandingTodos").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'></div>");
 	for (property in jsonString)
 	{
 		for (items in jsonString[property])
 		{
 			var name = jsonString[property][items].itemName;
 			var date = jsonString[property][items].date;
+				date = date.substr(0,date.length-29);
 
-			$("#outstandingTodos").append("<h2>"+name+"</h2><p>"+date+"</p>");
+			$("#outstandingTodosContent").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
+
 		}
 	}
 }

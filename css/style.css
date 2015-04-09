@@ -52,3 +52,21 @@ body
 	font-family:     		"Lucida Console", "Lucida Sans Typewriter", Monaco, "Bitstream Vera Sans Mono", monospace ;
 	font-size:				1em;
 }
+.smallText
+{
+	font-size:				0.8em;
+}
+#welcome
+{
+
+
+	background: #9ed5e8; /* Old browsers */
+background: -moz-linear-gradient(top,  #9ed5e8 0%, #67afd4 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#9ed5e8), color-stop(100%,#67afd4)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #9ed5e8 0%,#67afd4 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #9ed5e8 0%,#67afd4 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #9ed5e8 0%,#67afd4 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #9ed5e8 0%,#67afd4 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ed5e8', endColorstr='#67afd4',GradientType=0 ); /* IE6-9 */
+
+}
