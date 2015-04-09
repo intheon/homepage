@@ -5,7 +5,10 @@
 // - id of element to be inserted into
 // - quantity of results
 getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
-
+getFeed("http://feeds.bbci.co.uk/news/technology/rss.xml","bbc",7);
+getFeed("http://www.reddit.com/r/skateboarding/.rss","reddit",5);
+getFeed("http://clientsfromhell.tumblr.com/rss","clients",5);
+getFeed("http://www.gamespot.com/feeds/reviews/","gamespot",6);
 
 // this accepts urls of valid feeds and sends them to php (module_get_feed)
 function getFeed(websiteUrl,tag,limit)
