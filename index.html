@@ -43,11 +43,21 @@
 
 	<!-- PANEL THREE -->
 	<div class="area" id="news"><div id="border" class="ui stacked segment">
-		<h2>News and shit</h2>	
+
+ 		<div class="resizable-grid">
+      			<div class="news-item" id="bbc">BBC News</div>
+      			<div class="news-item" id="gamespot">Slashdot</div>
+      			<div class="news-item" id="clients">Clients from Hell</div>
+      			<div class="news-item" id="reddit">Reddit</div>
+  		</div>
+
+
+		<!--
 		<div class="news-item" id="bbc"><h3>BBC News</h3></div>
 		<div class="news-item" id="reddit"><h3>Reddit</h3></div>
 		<div class="news-item" id="clients"><h3>Clients From Hell</h3></div>
 		<div class="news-item" id="gamespot"><h3>Gamespot</h3></div>
+		-->
 	</div></div>
 	<!-- END PANEL -->
 
@@ -61,7 +71,9 @@
 
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
-<script type="text/javascript" src="js/libraries/angular.js"></script>	
+<script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
+<script type="text/javascript" src="js/libraries/touch-punch.js"></script>
+<script type="text/javascript" src="js/libraries/shapeshift.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/google.js"></script>
@@ -73,5 +85,6 @@
 <script type="text/javascript" src="js/modules/todo.js"></script>
 <script type="text/javascript" src="js/modules/display.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
+
 </body>
 </html>

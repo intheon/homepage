@@ -82,3 +82,23 @@ body
 {
 	flex: 					14 14 55em
 }
+
+.resizable-grid 
+{
+    border:                 1px dashed #CCC;
+    position:               relative;
+}
+
+.resizable-grid > div 
+{
+    background:             #AAA;
+    position:               absolute;
+    height:                 300px;
+    width:                  500px;
+}
+
+.resizable-grid > .ss-placeholder-child 
+{
+    background:             transparent;
+    border:                 1px dashed blue;
+}
