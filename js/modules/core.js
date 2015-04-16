@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
       $(".resizable-grid").shapeshift();
+      $("body").smoothWheel();
  });
 
 var rootDir = "http://localhost/homepage/";
