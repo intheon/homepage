@@ -17,19 +17,52 @@
 	<div class="area" id="home">
 		<div class="ui raised segment" id="welcome">
 			<div class="flex-item one-third">
-				<img src="img/sun.png" width="100%">
+				<!--<img src="img/sun.png" width="100%">-->
 			</div>
+
 			<div class="flex-item two-thirds"><div class="padding">
-				<h5 class="ui horizontal header divider"><i class="child icon"></i>Welcome Home</h5>
-  				<a href="http://draugr.stumbleupon.com"><div class="ui animated fade button stumble"><div class="visible content">Stumble!</div><div class="hidden content">Interwebs!</div></div></a>
-  				<!--<div class="ui animated vertical button"><div class="visible content">Torrent</div><div class="hidden content">TPB</div></div>-->
-			</div></div>
+            	<div class="jcarousel-wrapper">
+                	<div class="jcarousel">
+                    	<ul>
+                        	<li>
+                        		<h5 class="ui horizontal header divider"><i class="child icon"></i>Welcome Home</h5>
+                        		<h2>It's beer time!</h2>
+                        	</li>
+                        	<li>
+                        	    <h5 class="ui horizontal header divider"><i class="gamepad icon"></i>Interwebs</h5>
+                        		<a href="http://draugr.stumbleupon.com"><div class="ui animated fade button stumble"><div class="visible content">Stumble!</div><div class="hidden content">Interwebs!</div></div></a>
+                        	</li>
+                        	<li>
+                        	    <h5 class="ui horizontal header divider"><i class="play icon"></i>Entertainment</h5>
+                        		<a href="http://netflix.com"><div class="ui animated fade button netflix"><div class="visible content">Netflix!</div><div class="hidden content">Watch!</div></div></a>
+                        		<a href="http://last.fm"><div class="ui animated fade button lastfm"><div class="visible content">Last.fm!</div><div class="hidden content">Listen!</div></div></a>
+                        	</li>
+                        	<li>
+                        		<h5 class="ui horizontal header divider"><i class="steam square icon"></i>Gaming</h5>
+                        		<a href="http://store.steampowered.com/"><div class="ui animated fade button steamButton"><div class="visible content">Steam!</div><div class="hidden content">Play!</div></div></a>
+                        	</li>
+                        	<li>
+                        		<h5 class="ui horizontal header divider"><i class="steam square icon"></i>Development</h5>
+                        		<a href="http://store.steampowered.com/"><div class="ui animated fade button "><div class="visible content">StackOverflow!</div><div class="hidden content">Learn!</div></div></a>
+                        	</li>
+                    	</ul>
+                	</div>
+                	<!--
+					<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+                	<a href="#" class="jcarousel-control-next">&rsaquo;</a>
+                	-->
+					<p class="jcarousel-pagination"></p>
+            	</div>
+            </div></div>
 			<div class="flex-item two-thirds">
-				<h5 class="ui horizontal header divider"><i class="bar chart icon"></i>Ongoing</h5>
-				<div class="ui statistic"><div class="value">4:05</div><div class="label">Emails</div></div>
-  				<div class="ui statistic"><div class="value">22</div><div class="label">Tasks</div></div>
-			</div>
+                <h5 class="ui horizontal header divider"><i class="bar chart icon"></i>Ongoing</h5>
+				<div class="ui statistic"><div class="value" id="emailCount">???</div><div class="label">Emails</div></div>
+  				<div class="ui statistic"><div class="value" id="taskCount">???</div><div class="label">Tasks</div></div>
+  			</div>
+
+
 		</div>
+
 		<div id="border" class="ui stacked segment">
 			<div id="todo"><h2>Tasks</h2></div>
 		</div>
@@ -74,6 +107,7 @@
 <script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
 <script type="text/javascript" src="js/libraries/shapeshift.js"></script>
 <script type="text/javascript" src="js/libraries/smoothwheel.js"></script>
+<script type="text/javascript" src="js/libraries/jcarousel.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/google.js"></script>

@@ -115,6 +115,7 @@ function delayLoad()
 
 	setTimeout(function(){
 		$(".integer_count").html("(" + arrayOfMessages.length + ")");
+		$("#emailCount").html(arrayOfMessages.length);
 
 		$("#gmailLoading").fadeOut(function(){
 

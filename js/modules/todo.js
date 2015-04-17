@@ -98,6 +98,7 @@ function retrieveFromInterwebs()
 function writeToPage(jsonString)
 {
 	var jsonString = JSON.parse(jsonString);
+
 	$("#outstandingTodos").html("");
 	$("#outstandingTodos").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'></div>");
 	for (property in jsonString)
@@ -109,7 +110,7 @@ function writeToPage(jsonString)
 				date = date.substr(0,date.length-29);
 
 			$("#outstandingTodosContent").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
-
+			$("#taskCount").html(parseInt(items) + 1);
 		}
 	}
 }

@@ -5,4 +5,5 @@ $(document).ready(function() {
       $("body").smoothWheel();
  });
 
+
 var rootDir = "http://localhost/homepage/";
