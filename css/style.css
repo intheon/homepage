@@ -295,3 +295,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     color:              red;
     cursor:             help;
 }
+
+.greeting
+{
+    padding-top:        6%;
+    text-align:         center;
+    font-size:          1.25em;
+}
