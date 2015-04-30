@@ -55,20 +55,21 @@ function jsonify(item)
 		jsonItem.itemName = item;
 		jsonItem.date = new Date();
 
-		sendToInterwebs(jsonItem);
+		sendToInterwebs(jsonItem,"new");
 	}
 
 }
 
 // ajax this to php
-function sendToInterwebs(jsonItem)
+function sendToInterwebs(jsonItem,flag)
 {
 	$.ajax({
 		type				: "POST",
 		url                 : rootDir + "php/module_manage_todo.php",
 		data 				: 
 		{
-			json   			: jsonItem
+			json   			: jsonItem,
+			flag			: flag
 		},
 		success				: function(jsonString)
 		{
@@ -90,6 +91,7 @@ function retrieveFromInterwebs()
 		},
 		success				: function(jsonString)
 		{
+			//console.log(jsonString);
 			writeToPage(jsonString);
 		}
 	});
@@ -114,7 +116,7 @@ function writeToPage(jsonString)
 		}
 	}
 
-	$(".icon").click(function(e){
+	$(".item .icon").click(function(e){
 
 		handleDelete(e,jsonString);
 
@@ -123,11 +125,22 @@ function writeToPage(jsonString)
 
 function handleDelete(e,jsonString)
 {
-
 		var clickedIdentifier = e.currentTarget.parentElement.dataset.number;
 
 		jsonString.items.splice(clickedIdentifier,1);
 
-		jsonify(jsonString.items);
+		if ($("#outstandingTodosContent > div").length - 1 == 0)
+		{
+			jsonString.items = '';
+			$("#outstandingTodos").html("");
+			$("#taskCount").html("0");
+
+			sendToInterwebs(jsonString.items,"deleteFile");
+		}
+		else
+		{
+			sendToInterwebs(jsonString.items,"deleteItem");
+		}
+
 
 }

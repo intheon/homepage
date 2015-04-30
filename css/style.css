@@ -290,7 +290,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     box-shadow: 0 0 2px #F0EFE7;
 }
 
-.icon:hover
+.item .icon:hover
 {
     color:              red;
     cursor:             help;
