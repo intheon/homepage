@@ -45,6 +45,7 @@ function jsonify(item)
 {
 	if (item == "")
 	{
+		console.log("this function has been called");
 		return
 	}
 	else
@@ -108,9 +109,25 @@ function writeToPage(jsonString)
 			var name = jsonString[property][items].itemName;
 			var date = jsonString[property][items].date;
 				date = date.substr(0,date.length-29);
-
-			$("#outstandingTodosContent").append("<div class='item'><i class='star icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
+			$("#outstandingTodosContent").append("<div class='item' data-number='"+items+"'><i class='star icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
 			$("#taskCount").html(parseInt(items) + 1);
 		}
 	}
+
+	$(".icon").click(function(e){
+
+		handleDelete(e,jsonString);
+
+	});
+}
+
+function handleDelete(e,jsonString)
+{
+
+		var clickedIdentifier = e.currentTarget.parentElement.dataset.number;
+
+		jsonString.items.splice(clickedIdentifier,1);
+
+		jsonify(jsonString.items);
+
 }

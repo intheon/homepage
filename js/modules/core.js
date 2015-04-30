@@ -6,4 +6,3 @@ $(document).ready(function() {
  });
 
 
-var rootDir = "http://localhost/homepage/";
