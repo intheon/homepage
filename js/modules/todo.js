@@ -10,7 +10,8 @@ $(document).ready(function(){
 function loadTodoList()
 {
 	$("#todo").append("<div class='ui form'>\
-		<div class='inline fields'>\
+		<div class='inline fields pp'>\
+		<div id='outstandingTodos'></div>\
 			<div class='field'>\
 				<label>New todo?</label>\
 				<input placeholder='wat?' type='text' id='todoInput'>\
@@ -19,7 +20,6 @@ function loadTodoList()
 				<div class='ui positive button' id='todoSubmit'>Submit</div>\
 			</div>\
 		</div>\
-		<div id='outstandingTodos'></div>\
 	</div>");
 
 	$("#todoSubmit").click(function(){

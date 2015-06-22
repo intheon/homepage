@@ -10740,7 +10740,6 @@ to {
 }
 .ui.statistic {
     display: inline-block;
-    margin: 1em 0;
     max-width: 175px;
 }
 .ui.statistic+.ui.statistic {
@@ -10927,7 +10926,7 @@ to {
     font-size: 1.5rem;
 }
 .ui.statistic>.value, .ui.statistics .statistic>.value {
-    font-size: 4rem;
+    font-size: 3.3rem;
 }
 .ui.horizontal.statistic>.value, .ui.horizontal.statistics .statistic>.value {
     font-size: 3rem;

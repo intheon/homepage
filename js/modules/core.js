@@ -6,5 +6,5 @@ $(document).ready(function() {
  });
 
 
-//var rootDir = "http://localhost/homepage/";
-var rootDir = "http://intheon.xyz/liv/";
+var rootDir = "http://localhost/homepage/";
+//var rootDir = "http://intheon.xyz/liv/";

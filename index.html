@@ -16,14 +16,11 @@
 	<!-- PANEL ONE -->
 	<div class="area" id="home">
 		<div class="ui raised segment" id="welcome">
-			<div class="flex-item one-third">
-				<!--<img src="img/sun.png" width="100%">-->
-			</div>
 
-			<div class="flex-item two-thirds"><div class="padding">
+			<div class="flex-item one-half"><div class="padding">
             	<div class="jcarousel-wrapper">
                 	<div class="jcarousel">
-                    	<ul>
+                    	<ul class="pp">
                         	<li>
                         		<h5 class="ui horizontal header divider"><i class="child icon"></i>Welcome Home</h5>
                         		<div class="greeting">Time for a beer!</div>
@@ -54,18 +51,23 @@
 					<p class="jcarousel-pagination"></p>
             	</div>
             </div></div>
-			<div class="flex-item two-thirds">
+			<div class="flex-item one-half"><div class="padding">
                 <h5 class="ui horizontal header divider"><i class="bar chart icon"></i>Ongoing</h5>
 				<div class="ui statistic"><div class="value" id="emailCount">?</div><div class="label">Emails</div></div>
   				<div class="ui statistic"><div class="value" id="taskCount">?</div><div class="label">Tasks</div></div>
   				<div class="ui statistic"><div class="value" id="taskCount">?</div><div class="label">Money</div></div>
-  			</div>
+  			</div></div>
 
 
 		</div>
 
-		<div id="border" class="ui stacked segment">
-			<div id="todo"><h2>Tasks</h2></div>
+		<div id="tasks" class="ui stacked segment">
+			<div id="todo" class="flex-item one-half"><div class="padding">
+			    <h5 class="ui horizontal header divider"><i class="checkmark box icon"></i>Tasks</h5>
+			</div></div>
+			<div id="calendar" class="flex-item one-half"><div class="padding">
+			    <h5 class="ui horizontal header divider"><i class="calendar icon"></i>Calendar</h5>
+			</div></div>
 		</div>
 		<div id="border" class="ui stacked segment">
 			<div class="quote" id="bash"><h3>Random Bash Quote</h3></div>

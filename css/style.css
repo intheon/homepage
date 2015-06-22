@@ -94,11 +94,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	font-size:				0.8em;
 }
-#welcome
+#welcome, #tasks
 {
-
 	display:				flex;
-
 }
 
 .flex-item
@@ -114,6 +112,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .two-thirds
 {
 	flex: 					14 14 55em
+}
+
+.column-wrapper
+{
+}
+
+.one-half
+{
+    flex:                   2 2 10em
 }
 
 .resizable-grid 
@@ -165,6 +172,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	margin-right:			10px;
 	margin-left:			10px;
 }
+.pp
+{
+    padding:                20px;
+}
 .stumble
 {
 	background-color:		#EB4924 !important;
@@ -187,118 +198,130 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 
-.jcarousel-wrapper {
-	width: auto;
+.jcarousel-wrapper 
+{
+	width:                 auto;
 }
 
 /** Carousel **/
 
-.jcarousel {
-    position: relative;
-    overflow: hidden;
-    width: 97%;
+.jcarousel 
+{
+    position:               relative;
+    overflow:               hidden;
+    width:                  97%;
 }
 
-.jcarousel ul {
+.jcarousel ul 
+{
     width: 20000em;
-    position: relative;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    position:               relative;
+    list-style:             none;
+    margin:                 0;
+    padding:                0;
 }
 
-.jcarousel li {
-    width: auto;
-    float: left;
+.jcarousel li 
+{
+    width:                  auto;
+    float:                  left;
 }
 
-.jcarousel img {
-    display: block;
-    max-width: 100%;
-    height: auto !important;
+.jcarousel img 
+{
+    display:                block;
+    max-width:              100%;
+    height:                 auto !important;
 }
 
 /** Carousel Controls **/
 
 .jcarousel-control-prev,
-.jcarousel-control-next {
-    position: absolute;
-    top: 83%;
-    width: 20px;
-    height: 20px;
-    text-align: center;
+.jcarousel-control-next 
+{
+    position:               absolute;
+    top:                    83%;
+    width:                  20px;
+    height:                 20px;
+    text-align:             center;
 
-    color: #fff;
-    text-decoration: none;
-    text-shadow: 0 0 1px #000;
-    font: 19px/19px Arial, sans-serif;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    border-radius: 30px;
-    -webkit-box-shadow: 0 0 4px #F0EFE7;
-    -moz-box-shadow: 0 0 4px #F0EFE7;
-    box-shadow: 0 0 4px #F0EFE7;
+    color:                  #fff;
+    text-decoration:        none;
+    text-shadow:            0 0 1px #000;
+    font:                   19px/19px Arial, sans-serif;
+    -webkit-border-radius:  30px;
+    -moz-border-radius:     30px;
+    border-radius:          30px;
+    -webkit-box-shadow:     0 0 4px #F0EFE7;
+    -moz-box-shadow:        0 0 4px #F0EFE7;
+    box-shadow:             0 0 4px #F0EFE7;
 }
 
-.jcarousel-control-prev {
-    left: 161px;
+.jcarousel-control-prev 
+{
+    left:                   161px;
 }
 
-.jcarousel-control-next {
-    right: 420px;
+.jcarousel-control-next 
+{
+    right:                  420px;
 }
 
 /** Carousel Pagination **/
 
-.jcarousel-pagination {
-    position: absolute;
-    bottom: 10px;
-    left:37%;
-    -webkit-transform: translate(-50%, 0);
-    -ms-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
-    margin: 0;
+.jcarousel-pagination 
+{
+    position:               absolute;
+    bottom:                 10px;
+    left:                   25.4%;
+    -webkit-transform:      translate(-50%, 0);
+    -ms-transform:          translate(-50%, 0);
+    transform:              translate(-50%, 0);
+    margin:                 0;
+    opacity:                0.4;
 }
 
-.jcarousel-pagination a {
-    text-decoration: none;
-    display: inline-block;
+.jcarousel-pagination a 
+{
+    text-decoration:        none;
+    display:                inline-block;
 
-    font-size: 11px;
-    height: 10px;
-    width: 10px;
-    line-height: 10px;
-    color: #4E443C;
-    border-radius: 10px;
-    text-indent: -9999px;
+    font-size:              11px;
+    height:                 10px;
+    width:                  10px;
+    line-height:            10px;
+    color:                  #4E443C;
+    border-radius:          10px;
+    text-indent:            -9999px;
 
-    margin-right: 7px;
+    margin-right:           7px;
 
 
-    -webkit-box-shadow: 0 0 2px #4E443C;
-    -moz-box-shadow: 0 0 2px #4E443C;
-    box-shadow: 0 0 2px #4E443C;
+    -webkit-box-shadow:     0 0 2px #4E443C;
+    -moz-box-shadow:        0 0 2px #4E443C;
+    box-shadow:             0 0 2px #4E443C;
 }
 
-.jcarousel-pagination a.active {
-    background: #4E443C;
-    color: #fff;
-    opacity: 1;
+.jcarousel-pagination a.active 
+{
+    background:             #4E443C;
+    color:                  #fff;
+    opacity:                1;
 
-    -webkit-box-shadow: 0 0 2px #F0EFE7;
-    -moz-box-shadow: 0 0 2px #F0EFE7;
-    box-shadow: 0 0 2px #F0EFE7;
+    -webkit-box-shadow:     0 0 2px #F0EFE7;
+    -moz-box-shadow:        0 0 2px #F0EFE7;
+    box-shadow:             0 0 2px #F0EFE7;
 }
 
 .item .icon:hover
 {
-    color:              red;
-    cursor:             help;
+    color:                  red;
+    cursor:                 help;
 }
 
 .greeting
 {
-    padding-top:        6%;
-    text-align:         center;
-    font-size:          1.25em;
+    padding-top:            1%;
+    text-align:             center;
+    font-size:              1.45em;
 }
