@@ -11,16 +11,35 @@ function loadTodoList()
 {
 	$("#todo").append("<div class='ui form'>\
 		<div class='inline fields pp'>\
-		<div id='outstandingTodos'></div>\
+			<div id='outstandingTodos'></div>\
 			<div class='field'>\
-				<label>New todo?</label>\
-				<input placeholder='wat?' type='text' id='todoInput'>\
+				<input placeholder='Add new' type='text' id='todoInput' class='big-form'>\
 			</div>\
 			<div class='field'>\
 				<div class='ui positive button' id='todoSubmit'>Submit</div>\
 			</div>\
 		</div>\
 	</div>");
+
+		if ($("#todoInput").val() == "")
+		{
+			$("#todoSubmit").hide();
+		}
+		else
+		{
+			$("#todoSubmit").fadeIn();
+		}
+
+	$("#todoInput").keyup(function(){
+		if ($("#todoInput").val() == "")
+		{
+			$("#todoSubmit").fadeOut();
+		}
+		else
+		{
+			$("#todoSubmit").fadeIn();
+		}
+	});
 
 	$("#todoSubmit").click(function(){
 		var itemToStore = $("#todoInput").val();

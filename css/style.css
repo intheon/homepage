@@ -98,12 +98,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	display:				flex;
 }
-
-.flex-item
-{
-
-}
-
 .one-third
 {
 	flex: 					1 1 10em
@@ -118,10 +112,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 }
 
+.big-form
+{
+    flex:   1;
+}
+.todoSubmit
+{
+    float:left !important;
+}
 .one-half
 {
-    flex:                   2 2 10em
+    width:50% !important;
 }
+
 
 .resizable-grid 
 {
@@ -467,6 +470,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     right:              0;
     bottom:             0;
 }
+.calendar-label
+{
+    position:           absolute;
+    left:               0;
+    bottom:             0;
+    font-size:          0.8em;
+    padding:            2%;
+}
 
 input[type="button"]
 {
@@ -717,16 +728,8 @@ textarea:focus, input:focus
 
 .information-row
 {
-    padding:            2%;
-    margin:             3.3%;
-    flex-direction:     column;
-    border-bottom:      2px solid;
-}
-
-.information-row
-{
-    padding:            2%;
-    margin:             3.3%;
+    padding:            1.4%;
+    margin:             2.3%;
     flex-direction:     column;
     border-bottom:      2px solid;
 }
