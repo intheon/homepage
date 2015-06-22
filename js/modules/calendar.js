@@ -95,6 +95,7 @@ function loadCalendar(time,money)
 		$("#calendar-item-" + counter)
 			.mouseover(function(event){
 				var un = event.currentTarget.id;
+
 				$("#" + un + " .cell-menu").show();
 			})
 			.mouseout(function(event){
@@ -241,7 +242,7 @@ function drawModal(whoRang,type,money)
 	}
 	else if (type == "button-spend")
 	{
-		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
+		$("#" + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
 	}
 
 	$("#" + whoRang).keyup(function(event){
