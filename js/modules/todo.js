@@ -111,7 +111,7 @@ function writeToPage(jsonString)
 			var name = jsonString[property][items].itemName;
 			var date = jsonString[property][items].date;
 				date = date.substr(0,date.length-29);
-			$("#outstandingTodosContent").append("<div class='item' data-number='"+items+"'><i class='star icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
+			$("#outstandingTodosContent").append("<div class='item' data-number='"+items+"'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
 			$("#taskCount").html(parseInt(items) + 1);
 		}
 	}
@@ -119,8 +119,19 @@ function writeToPage(jsonString)
 	$(".item .icon").click(function(e){
 
 		handleDelete(e,jsonString);
-
 	});
+
+
+	$(".item .icon")
+		.mouseover(function(event){
+			$(this).removeClass("thumb tack icon");
+			$(this).addClass("remove link icon");
+		})
+		.mouseout(function(event){
+			$(this).removeClass("remove link icon");
+			$(this).addClass("thumb tack icon");
+		});
+
 }
 
 function handleDelete(e,jsonString)

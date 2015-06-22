@@ -810,7 +810,7 @@
 ---------------------*/
 
 .ui.form .inline.fields {
-  margin: 0em 0em 1em;
+  /*margin: 0em 0em 1em;*/
 }
 .ui.form .inline.fields .field {
   display: inline-block;
