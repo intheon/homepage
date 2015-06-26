@@ -83,13 +83,13 @@ function loadCalendar(time,money)
 
 		if (counter == time.todaysDate)
 		{
-			$("#calendar-item-" + counter).append("<div class='label'>Today</div>");
+			$("#calendar-item-" + counter).append("<div class='calendar-label'>Today</div>");
 			$("#calendar-item-" + counter).addClass("active-cell");
 		}
 
 		if (counter == 28)
 		{
-			$("#calendar-item-28").append("<div class='label'>Payday</div>");
+			$("#calendar-item-28").append("<div class='calendar-label'>Payday</div>");
 		}
 
 		$("#calendar-item-" + counter)
@@ -336,6 +336,8 @@ function getModalValue(rawValue,parentCell)
 
 function getFormValue(parentCell,firstField,secondField,money)
 {
+	// takes the amount of spend and adds it to a json file
+	// also, evaluates it for great success
 	//var firstField = formId.currentTarget.previousElementSibling.previousElementSibling.className;
 	//var secondField = formId.currentTarget.previousElementSibling.className;
 	//var rootId = formId.currentTarget.offsetParent.offsetParent.id;
@@ -350,10 +352,15 @@ function getFormValue(parentCell,firstField,secondField,money)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
+			// add to the dom
+			// todo: make this happen by a function that takes params
 			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>");
 
+
+			// count how much
 			money.spendThisMonth += parseInt(secondFieldVal);
 
+			// persistence
 			removeModal(parentCell);
 		}
 	}

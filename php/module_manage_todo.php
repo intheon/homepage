@@ -3,13 +3,21 @@
 // will take json and write it to a file
 require "main_conf.php";
 
-
+if (!isset($_POST['filename']))
+{
+	$file = null;
+}
+else
+{
+	$file  = $_POST['filename'];
+}
 // retrieving the file
 if (isset($_GET['get']))
 {
 	if ($_GET['get'] == true)
 	{
-		echo file_get_contents("../todo_numbers.json");
+		echo file_get_contents("../" . $file)
+		//echo file_get_contents("../todo_numbers.json");
 	}
 }
 
