@@ -37,33 +37,13 @@ function defineMetadata(time,money)
 	time.payday 			= moment().date("28");
 	time.toPayday 			= time.payday.diff(time.today,"days");
 // money
-	getPay(money,"netPay",time.monthNum);
+	getMonthInfo(time,money);
 
 	money.spendThisMonth 	= 0;
 
 // object-listener
 	Object.observe(money,function(changes){
 		loadInformation(time,money)
-	});
-}
-
-function getPay(rootObject,newPropertyName,monthToCheck)
-{
-	var rootDir 		= "http://localhost/money-calendar/"; // local
-	//var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
-
-	// checks if this file exists on the server
-	$.ajax({
-		type				: "POST",
-		url                 : rootDir + "php/money.php",
-		data 				: 
-		{
-			monthToCheck	: monthToCheck	
-		},
-		success				: function(data)
-		{
-			rootObject[newPropertyName] = data;
-		}
 	});
 }
 
@@ -134,90 +114,35 @@ function loadCalendar(time,money)
 				}
 			}
 		});
-	}
+	};
+	getNotes();
+	getSpend();
 }
 
-// and draws all the helpful bits of motovational information
+// and draws all the helpful bits of motivational information
 function loadInformation(time,money)
 {
-	if (money.netPay == "empty")
-	{
-		$(document.body).prepend("<div class='overlay-wrapper'><div class='full-page-overlay'></div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3><input type='text' placeholder='$$$$$' id='this-months-pay'><input type='button' value='Submit to DB' id='submit-months-pay'></div></div>");
-		$("#submit-months-pay").click(function(){
-			var amount = $("#this-months-pay").val();
+	console.log(document.callee)
+	var blah = parseInt(money.netPay - money.spendThisMonth);
+	
+	$("#information-panel").html("<div class='information-wrapper'>\
+		<div class='information-month information-row'>"+time.month+"</div>\
+		<div class='information-next-payday information-row'><div class='integer'>"+time.toPayday+"</div> days until payday</div>\
+		<div class='information-payday-amount information-row'><div class='integer'>£"+money.netPay+"</div> wage this month</div>\
+		<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
+		<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
+		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
+		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(blah / time.daysInMonth)  +"</div> allowance per day</div>\
+	</div>");
 
-			if (amount == "")
-			{
-				$("#this-months-pay").val("empty");
-			}
-			else
-			{
-				if (!isNaN(amount))
-				{
-					if (amount <= 5000)
-					{
-						var rootDir 			= "http://localhost/money-calendar/"; 	// local
-						//var rootDir 			= "http://intheon.xyz/money-calendar/"; // production
-						$.ajax({
-							type				: "POST",
-							url     			: rootDir + "php/money.php",
-							data 				: 
-							{
-								newMonthAmount	: amount,
-								exactDate		: time.fullDate,
-								monthNumber		: time.monthNum
-							},
-							success	: function(data)
-							{
-								if (data == "remove")
-								{
-									$(".overlay-wrapper").fadeOut(function(){
-										$(".overlay-wrapper").hide();
-									});
+	var toEvaluate = {
+		remaining: ["information-wage-remaining",parseInt(money.netPay - money.spendThisMonth)],
+		spend: ["information-month-spend", money.spendThisMonth]
+	};
 
-									ajaxController(money,"netPay",time.monthNum);
-								}
-								else
-								{
-									console.log("something went horribly wrong");
-								}
-							}
-						});
-					}
-					else
-					{
-						$("#this-months-pay").val("Are you rich?");
-					}
-				}
-				else
-				{
-					$("#this-months-pay").val("NaN");
-				}
-			}
-		});
-	}
-	else
-	{
-		var blah = parseInt(money.netPay - money.spendThisMonth);
-		$("#information-panel").html("<div class='information-wrapper'>\
-			<div class='information-month information-row'>"+time.month+"</div>\
-			<div class='information-next-payday information-row'><div class='integer'>"+time.toPayday+"</div> days until payday</div>\
-			<div class='information-payday-amount information-row'><div class='integer'>£"+money.netPay+"</div> wage this month</div>\
-			<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
-			<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
-			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
-			<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(blah / time.daysInMonth)  +"</div> allowance per day</div>\
-		</div>");
+	calculateColour(toEvaluate);
 
-		var toEvaluate = {
-			remaining: ["information-wage-remaining",parseInt(money.netPay - money.spendThisMonth)],
-			spend: ["information-month-spend", money.spendThisMonth]
-		};
-
-		calculateColour(toEvaluate);
-
-		//$("#calendar-item-28 .date-body").append("£"+money.netPay);
-	}
+	//$("#calendar-item-28 .date-body").append("£"+money.netPay);
 }
 
 
@@ -317,19 +242,11 @@ function removeModal(whoRang)
 
 function getModalValue(rawValue,parentCell)
 {
-	console.log("getMod");
 	var tidyValue = rawValue.replace(/[^\w\s!?]/g,'');
 
 	var noteHTML = "<div class='note'><div class='pin'></div>" + tidyValue + "</div>"
 
-	//var parentCell = event.currentTarget.id;
-
-	// todo - persistence!
-	$("#" + parentCell + " .date-body").append(noteHTML);
-
 	setNotes(parentCell,noteHTML);
-
-
 
 	removeModal(parentCell);
 }
@@ -352,10 +269,9 @@ function getFormValue(parentCell,firstField,secondField,money)
 		if (isNaN(secondFieldVal)) showWarning("this isnt a number!");
 		else
 		{
-			// add to the dom
-			// todo: make this happen by a function that takes params
-			$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>");
-
+			// submit to json file + immediately retrieve
+			setSpend(parentCell,firstFieldVal,secondFieldVal);
+			//$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>");
 
 			// count how much
 			money.spendThisMonth += parseInt(secondFieldVal);
@@ -379,35 +295,252 @@ function showWarning(message)
 
 }
 
-// ajax up in this biatch!
+function getMonthInfo(time,money)
+{
+	/*
+		This is a bit of a weird one.
+
+		I've decided to go with setting all the information about historic paydays
+		into one json file. It used to be stored in a mysql db but i want to play with
+		json files instead.
+
+		The idea here is money.netPay is set by this function automatically.
+
+		The calling function defineMetadata is listening for any changes with Object.observer
+		which is awesome, but only available in ES6 and such just works in chrome for now.
+	*/
+
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/module_file_manager.php",
+		data 				: 
+		{
+			filename        : "history.json",
+			method   		: "readFile",
+			data            : null
+		},
+		success				: function(data)
+		{
+			setMonthInfo(time,money,data);
+		}
+	});
+
+
+}
+function setMonthInfo(time,money,data)
+{
+	/*
+		the purpose of this block is to build a blocking front end to 
+		prompt the user to give how much they got paid this month
+
+		from there, it's submited to a json file
+	*/
+
+	if (data == "file doesnt exist")
+	{
+		setWageForMonth(time,money);
+	}
+	else
+	{
+		// cycles through the block and find the correct month amount
+		var json = JSON.parse(data);
+
+		for (property in json)
+		{
+			for (items in json[property])
+			{
+				if (time.year == json[property][items].year && time.monthNum == json[property][items].monthNumber)
+				{
+					money.netPay = json[property][items].wageAmount;
+				}
+			}
+		}
+	}
+
+}
+
 function getNotes()
 {
-
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/module_file_manager.php",
+		data 				: 
+		{
+			filename        : "notes.json",
+			method   		: "readFile",
+			data            : null
+		},
+		success				: function(jsonString)
+		{
+			//console.log(jsonString);
+			writeToCalendar(jsonString,"notes");
+		}
+	});
 }
 
 function setNotes(parentCell,noteHTML)
 {
-	var rootDir 		= "http://localhost/money-calendar/"; // local
+	var rootDir 		= "http://localhost/homepage/"; // local
   //var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
 
 	var jsonItem = {};
 		jsonItem.parentCell = parentCell;
 		jsonItem.noteHTML = noteHTML;
-		
 
-		/*
-	// checks if this file exists on the server
+		//console.log(jsonItem);
+		
+	
+	// set the note in a file
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/money.php",
+		url                 : rootDir + "php/module_file_manager.php",
 		data 				: 
 		{
-			monthToCheck	: monthToCheck	
+			filename        : "notes.json", 
+			method			: "addToFile",
+			data   			: jsonItem
 		},
-		success				: function(data)
+		success				: function(response)
 		{
-			rootObject[newPropertyName] = data;
+			getNotes();
 		}
 	});
-*/
+}
+
+function getSpend()
+{
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/module_file_manager.php",
+		data 				: 
+		{
+			filename        : "spend.json",
+			method   		: "readFile",
+			data            : null
+		},
+		success				: function(jsonString)
+		{
+			//console.log(jsonString);
+			writeToCalendar(jsonString,"spend");
+		}
+	});
+}
+
+function setSpend(parentCell,firstFieldVal,secondFieldVal)
+{
+	var rootDir 			= "http://localhost/homepage/"; // local
+  //var rootDir 			= "http://intheon.xyz/money-calendar/"; // production
+
+	var jsonItem = {};
+		jsonItem.parentCell = parentCell;
+		jsonItem.label 		= firstFieldVal;
+		jsonItem.integer 	= secondFieldVal;
+
+		
+	// set the spend in a file
+	$.ajax({
+		type				: "POST",
+		url                 : rootDir + "php/module_file_manager.php",
+		data 				: 
+		{
+			filename        : "spend.json", 
+			method			: "addToFile",
+			data   			: jsonItem
+		},
+		success				: function(response)
+		{
+			getSpend();
+		}
+	});
+}
+
+
+function setWageForMonth(time,money)
+{
+	$(document.body).prepend("<div class='overlay-wrapper'>\
+		<div class='full-page-overlay'>\
+			</div><div class='full-page-capture'><h2>Staph!</h2><h3>How much did you get paid this month?</h3>\
+			<input type='text' placeholder='$$$$$' id='this-months-pay'>\
+			<input type='button' value='Submit' id='submit-months-pay'>\
+			</div></div>");
+
+	$("#submit-months-pay").click(function(){
+		var amount = $("#this-months-pay").val();
+
+		if (amount == "") $("#this-months-pay").val("Please fill this out");
+		else
+		{
+			if (!isNaN(amount))
+			{
+				if (amount <= 3000)
+				{
+					var jsonItem = {};
+						jsonItem.date 			= time.fullDate;
+						jsonItem.monthNumber 	= time.monthNum;
+						jsonItem.year			= time.year;
+						jsonItem.wageAmount 	= amount;
+
+					$.ajax({
+						type				: "POST",
+						url     			: rootDir + "php/module_file_manager.php",
+						data 				: 
+						{
+							filename        : "history.json", 
+							method			: "addToFile",
+							data   			: jsonItem
+						},
+						success	: function(data)
+						{
+							$(".overlay-wrapper").fadeOut(function(){
+								$(".overlay-wrapper").hide();
+							});
+							getMonthInfo();
+						}
+						});
+				}
+				else
+				{
+					$("#this-months-pay").val("Are you rich?");
+				}
+			}
+			else
+			{
+				$("#this-months-pay").val("NaN");
+			}
+		}
+	});
+}
+
+function writeToCalendar(jsonString,type,time,money)
+{
+	if (jsonString != "file doesnt exist")
+	{
+		var jsonString = JSON.parse(jsonString);
+	
+		for (property in jsonString)
+		{
+			for (items in jsonString[property])
+			{
+				if (type == "notes")
+				{
+					var parent = jsonString[property][items].parentCell;
+					var noteHTML = jsonString[property][items].noteHTML;
+
+					$("#" + parent + " .date-body").html("");
+					$("#" + parent + " .date-body").append(noteHTML);
+				}
+				else if (type == "spend")
+				{
+					var parent = jsonString[property][items].parentCell;
+					var label = jsonString[property][items].label;
+					var integer = jsonString[property][items].integer;
+
+					//money.spendThisMonth += integer;
+
+					$("#" + parent + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + label + "</div><div class='spend-value'>£" + integer + "</div></div>");
+				}
+			}
+		}
+		loadInformation();
+	}
 }

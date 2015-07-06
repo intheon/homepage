@@ -21,14 +21,14 @@ function loadTodoList()
 		</div>\
 	</div>");
 
-		if ($("#todoInput").val() == "")
-		{
-			$("#todoSubmit").hide();
-		}
-		else
-		{
-			$("#todoSubmit").fadeIn();
-		}
+	if ($("#todoInput").val() == "")
+	{
+		$("#todoSubmit").hide();
+	}
+	else
+	{
+		$("#todoSubmit").fadeIn();
+	}
 
 	$("#todoInput").keyup(function(){
 		if ($("#todoInput").val() == "")
@@ -64,8 +64,8 @@ function jsonify(item)
 {
 	if (item == "")
 	{
-		console.log("this function has been called");
-		return
+		console.log("no text has been entered");
+		return;
 	}
 	else
 	{
@@ -74,21 +74,22 @@ function jsonify(item)
 		jsonItem.itemName = item;
 		jsonItem.date = new Date();
 
-		sendToInterwebs(jsonItem,"new");
+		sendToInterwebs(jsonItem,"addToFile");
 	}
 
 }
 
 // ajax this to php
-function sendToInterwebs(jsonItem,flag)
+function sendToInterwebs(jsonItem,method)
 {
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_manage_todo.php",
+		url                 : rootDir + "php/module_file_manager.php",
 		data 				: 
 		{
-			json   			: jsonItem,
-			flag			: flag
+			filename        : "todo.json", 
+			method			: method,
+			data   			: jsonItem,
 		},
 		success				: function(jsonString)
 		{
@@ -102,11 +103,13 @@ function sendToInterwebs(jsonItem,flag)
 function retrieveFromInterwebs()
 {
 	$.ajax({
-		type				: "GET",
-		url                 : rootDir + "php/module_manage_todo.php",
+		type				: "POST",
+		url                 : rootDir + "php/module_file_manager.php",
 		data 				: 
 		{
-			get   			: true
+			filename        : "todo.json",
+			method   		: "readFile",
+			data            : null
 		},
 		success				: function(jsonString)
 		{
@@ -119,38 +122,43 @@ function retrieveFromInterwebs()
 // plonk on the page
 function writeToPage(jsonString)
 {
-	var jsonString = JSON.parse(jsonString);
-
-	$("#outstandingTodos").html("");
-	$("#outstandingTodos").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'></div>");
-	for (property in jsonString)
+	if (jsonString == "file doesnt exist")
 	{
-		for (items in jsonString[property])
-		{
-			var name = jsonString[property][items].itemName;
-			var date = jsonString[property][items].date;
-				date = date.substr(0,date.length-29);
-			$("#outstandingTodosContent").append("<div class='item' data-number='"+items+"'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
-			$("#taskCount").html(parseInt(items) + 1);
-		}
+		$("#outstandingTodos").html("");
+		$("#todo").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'>No current todos!</div>");
 	}
+	else
+	{
+		var jsonString = JSON.parse(jsonString);
 
-	$(".item .icon").click(function(e){
+		$("#outstandingTodos").html("");
+		$("#outstandingTodos").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'></div>");
+		for (property in jsonString)
+		{
+			for (items in jsonString[property])
+			{
+				var name = jsonString[property][items].itemName;
+				var date = jsonString[property][items].date;
+					date = date.substr(0,date.length-29);
+				$("#outstandingTodosContent").append("<div class='item' data-number='"+items+"'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+name+"</div><div class='smallText'>"+date+"</div></div></div>");
+				$("#taskCount").html(parseInt(items) + 1);
+			}
+		}
 
-		handleDelete(e,jsonString);
-	});
-
-
-	$(".item .icon")
-		.mouseover(function(event){
-			$(this).removeClass("thumb tack icon");
-			$(this).addClass("remove link icon");
-		})
-		.mouseout(function(event){
-			$(this).removeClass("remove link icon");
-			$(this).addClass("thumb tack icon");
+		$(".item .icon").click(function(e){
+			handleDelete(e,jsonString);
 		});
 
+		$(".item .icon")
+			.mouseover(function(event){
+				$(this).removeClass("thumb tack icon");
+				$(this).addClass("remove link icon");
+			})
+			.mouseout(function(event){
+				$(this).removeClass("remove link icon");
+				$(this).addClass("thumb tack icon");
+			});
+		}
 }
 
 function handleDelete(e,jsonString)
@@ -169,7 +177,7 @@ function handleDelete(e,jsonString)
 		}
 		else
 		{
-			sendToInterwebs(jsonString.items,"deleteItem");
+			sendToInterwebs(jsonString.items,"deleteRecord");
 		}
 
 

@@ -94,6 +94,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	font-size:				0.8em;
 }
+.offline-message
+{
+    font-size:              1.3em;
+    opacity:                0.4;
+    padding:                1%;
+}
 #welcome, #tasks
 {
 	display:				flex;
@@ -504,10 +510,7 @@ input[type="text"]
     z-index:            22;
 }
 */
-.modal-overlay form
-{
-    color:  red;
-}
+
 ::-webkit-input-placeholder { /* WebKit browsers */
     color:              #AA7700;
     letter-spacing:     3px;
@@ -732,4 +735,19 @@ textarea:focus, input:focus
     margin:             2.3%;
     flex-direction:     column;
     border-bottom:      2px solid;
+}
+
+
+@media screen and (max-width:1020px){
+
+#tasks
+{
+    display:            block !important;
+}
+
+#tasks .one-half
+{
+    width:              auto !important;
+}
+
 }

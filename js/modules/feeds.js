@@ -4,13 +4,21 @@
 // - url
 // - id of element to be inserted into
 // - quantity of results
-getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
-getFeed("http://feeds.bbci.co.uk/news/technology/rss.xml","bbc",7);
-getFeed("http://www.reddit.com/r/skateboarding/.rss","reddit",5);
-getFeed("http://clientsfromhell.tumblr.com/rss","clients",5);
-getFeed("http://www.gamespot.com/feeds/reviews/","gamespot",6);
-getFeed("http://preshing.com/feed/","preshing",6);
-getFeed("http://feeds.feedburner.com/codinghorror","coding",6);
+
+if (!internetStatus)
+{
+	$(".feed").append("<div class='offline-message'>Offline!</div>");
+}
+else
+{
+	getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
+	getFeed("http://feeds.bbci.co.uk/news/technology/rss.xml","bbc",7);
+	getFeed("http://www.reddit.com/r/skateboarding/.rss","reddit",5);
+	getFeed("http://clientsfromhell.tumblr.com/rss","clients",5);
+	getFeed("http://www.gamespot.com/feeds/reviews/","gamespot",6);
+	getFeed("http://preshing.com/feed/","preshing",6);
+	getFeed("http://feeds.feedburner.com/codinghorror","coding",6);
+}
 
 
 
