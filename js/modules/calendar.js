@@ -40,6 +40,7 @@ function defineMetadata(time,money)
 	getMonthInfo(time,money);
 
 	money.spendThisMonth 	= 0;
+	money.netPay            = null;
 
 // object-listener
 	Object.observe(money,function(changes){
@@ -115,15 +116,16 @@ function loadCalendar(time,money)
 			}
 		});
 	};
-	getNotes();
-	getSpend();
+	getNotes(time,money);
+	getSpend(time,money);
 }
 
 // and draws all the helpful bits of motivational information
 function loadInformation(time,money)
 {
-
-	var blah = parseInt(money.netPay - money.spendThisMonth);
+	console.log(time);
+	console.log(money);
+	var remaining = parseInt(money.netPay - money.spendThisMonth);
 	
 	$("#information-panel").html("<div class='information-wrapper'>\
 		<div class='information-month information-row'>"+time.month+"</div>\
@@ -132,7 +134,7 @@ function loadInformation(time,money)
 		<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
 		<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
 		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
-		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(blah / time.daysInMonth)  +"</div> allowance per day</div>\
+		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(remaining / time.daysInMonth)  +"</div> allowance per day</div>\
 	</div>");
 
 	var toEvaluate = {
@@ -143,7 +145,6 @@ function loadInformation(time,money)
 	calculateColour(toEvaluate);
 
 	//$("#calendar-item-28 .date-body").append("£"+money.netPay);
-
 }
 
 
@@ -247,7 +248,7 @@ function getModalValue(rawValue,parentCell)
 
 	var noteHTML = "<div class='note'><div class='pin'></div>" + tidyValue + "</div>"
 
-	setNotes(parentCell,noteHTML);
+	setNotes(parentCell,noteHTML,time,money);
 
 	removeModal(parentCell);
 }
@@ -357,10 +358,9 @@ function setMonthInfo(time,money,data)
 			}
 		}
 	}
-
 }
 
-function getNotes()
+function getNotes(time,money)
 {
 	$.ajax({
 		type				: "POST",
@@ -374,12 +374,12 @@ function getNotes()
 		success				: function(jsonString)
 		{
 			//console.log(jsonString);
-			writeToCalendar(jsonString,"notes");
+			writeToCalendar(jsonString,"notes",time,money);
 		}
 	});
 }
 
-function setNotes(parentCell,noteHTML)
+function setNotes(parentCell,noteHTML,time,money)
 {
 	var rootDir 		= "http://localhost/homepage/"; // local
   //var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
@@ -403,12 +403,12 @@ function setNotes(parentCell,noteHTML)
 		},
 		success				: function(response)
 		{
-			getNotes();
+			getNotes(time,money);
 		}
 	});
 }
 
-function getSpend()
+function getSpend(time,money)
 {
 	$.ajax({
 		type				: "POST",
@@ -421,8 +421,7 @@ function getSpend()
 		},
 		success				: function(jsonString)
 		{
-			//console.log(jsonString);
-			writeToCalendar(jsonString,"spend");
+			writeToCalendar(jsonString,"spend",time,money);
 		}
 	});
 }
@@ -450,7 +449,7 @@ function setSpend(parentCell,firstFieldVal,secondFieldVal)
 		},
 		success				: function(response)
 		{
-			getSpend();
+			getSpend(time,money);
 		}
 	});
 }
@@ -495,7 +494,7 @@ function setWageForMonth(time,money)
 							$(".overlay-wrapper").fadeOut(function(){
 								$(".overlay-wrapper").hide();
 							});
-							getMonthInfo();
+							getMonthInfo(time,money);
 						}
 						});
 				}
@@ -514,6 +513,7 @@ function setWageForMonth(time,money)
 
 function writeToCalendar(jsonString,type,time,money)
 {
+	console.log(arguments)
 	if (jsonString != "file doesnt exist")
 	{
 		var jsonString = JSON.parse(jsonString);
@@ -536,11 +536,13 @@ function writeToCalendar(jsonString,type,time,money)
 					var label = jsonString[property][items].label;
 					var integer = jsonString[property][items].integer;
 
-					//money.spendThisMonth += integer;
+
+					money.spendThisMonth += +(integer);
 
 					$("#" + parent + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + label + "</div><div class='spend-value'>£" + integer + "</div></div>");
 				}
 			}
 		}
 	}
+	loadInformation(time,money);
 }
