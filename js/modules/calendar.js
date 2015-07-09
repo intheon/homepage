@@ -43,7 +43,7 @@ function defineMetadata(time,money)
 
 // object-listener
 	Object.observe(money,function(changes){
-		loadInformation(time,money)
+		loadInformation(time,money);
 	});
 }
 
@@ -122,7 +122,7 @@ function loadCalendar(time,money)
 // and draws all the helpful bits of motivational information
 function loadInformation(time,money)
 {
-	console.log(document.callee)
+
 	var blah = parseInt(money.netPay - money.spendThisMonth);
 	
 	$("#information-panel").html("<div class='information-wrapper'>\
@@ -143,6 +143,7 @@ function loadInformation(time,money)
 	calculateColour(toEvaluate);
 
 	//$("#calendar-item-28 .date-body").append("£"+money.netPay);
+
 }
 
 
@@ -541,6 +542,5 @@ function writeToCalendar(jsonString,type,time,money)
 				}
 			}
 		}
-		loadInformation();
 	}
 }

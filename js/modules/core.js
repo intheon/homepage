@@ -9,4 +9,6 @@ $(document).ready(function() {
 var rootDir = "http://localhost/homepage/";
 //var rootDir = "http://intheon.xyz/liv/";
 
-var internetStatus = (navigator.online ? true : false);
+var internetStatus = (navigator.onLine ? true : false);
+
+console.log(internetStatus);
