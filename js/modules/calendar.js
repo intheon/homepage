@@ -123,8 +123,6 @@ function loadCalendar(time,money)
 // and draws all the helpful bits of motivational information
 function loadInformation(time,money)
 {
-	console.log(time);
-	console.log(money);
 	var remaining = parseInt(money.netPay - money.spendThisMonth);
 	
 	$("#information-panel").html("<div class='information-wrapper'>\
@@ -133,9 +131,11 @@ function loadInformation(time,money)
 		<div class='information-payday-amount information-row'><div class='integer'>£"+money.netPay+"</div> wage this month</div>\
 		<div class='information-month-spend information-row'><div class='integer'>£"+ money.spendThisMonth +"</div> spent this month</div>\
 		<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
-		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
+		<div class='information-wage-daily-spend information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
 		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(remaining / time.daysInMonth)  +"</div> allowance per day</div>\
 	</div>");
+
+	$("#moneyCount").html("£" + parseInt(money.netPay - money.spendThisMonth));
 
 	var toEvaluate = {
 		remaining: ["information-wage-remaining",parseInt(money.netPay - money.spendThisMonth)],
@@ -535,7 +535,6 @@ function writeToCalendar(jsonString,type,time,money)
 					var parent = jsonString[property][items].parentCell;
 					var label = jsonString[property][items].label;
 					var integer = jsonString[property][items].integer;
-
 
 					money.spendThisMonth += +(integer);
 

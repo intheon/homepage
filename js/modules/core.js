@@ -11,4 +11,3 @@ var rootDir = "http://localhost/homepage/";
 
 var internetStatus = (navigator.onLine ? true : false);
 
-console.log(internetStatus);

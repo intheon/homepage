@@ -125,6 +125,7 @@ function writeToPage(jsonString)
 	if (jsonString == "file doesnt exist")
 	{
 		$("#outstandingTodos").html("");
+		$("#outstandingTodosContent").html("");
 		$("#todo").append("<div class='ui divided very relaxed list' id='outstandingTodosContent'>No current todos!</div>");
 	}
 	else
