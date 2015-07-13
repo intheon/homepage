@@ -133,6 +133,7 @@ function loadInformation(time,money)
 		<div class='information-wage-remaining information-row'><div class='integer'>£"+ parseInt(money.netPay - money.spendThisMonth) +"</div> remains</div>\
 		<div class='information-wage-daily-spend information-row'><div class='integer'>£"+ parseInt(money.spendThisMonth / time.daysInMonth)  +"</div> spending per day</div>\
 		<div class='information-wage-daily information-row'><div class='integer'>£"+ parseInt(remaining / time.daysInMonth)  +"</div> allowance per day</div>\
+		<div class='information-show-year information-row'><a class='' href='year-outlook.html' target='_blank'>Show year</a></div>\
 	</div>");
 
 	$("#moneyCount").html("£" + parseInt(money.netPay - money.spendThisMonth));

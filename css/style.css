@@ -342,6 +342,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     display:                flex;
     flex-wrap:              wrap;
 }
+
+.modal-calendar
+{
+    display:inline;
+    overflow: scroll;
+}
 .calendar-item
 {
     position:           relative !important;
@@ -351,6 +357,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     position:           relative;
     z-index:            1;
     padding:            0.5%;
+}
+
+.modal-calendar .calendar-item
+{
+    display:inline-block;
+}
+.calendar-month
+{
+    margin:1%;
 }
 .calendar-item:nth-child(odd)
 {
@@ -717,6 +732,20 @@ textarea:focus, input:focus
     font-size:          2.2em;
     border-bottom:      0px !important;
 }
+
+.information-show-year
+{
+    padding:            1%;
+    position:           absolute;
+    bottom:             0;
+    right:              4%;
+    opacity:            0.4;
+    color:              #000000;
+    font-size:          2.2em;
+    border-bottom:      0px !important; 
+}
+
+
 
 .integer
 {
