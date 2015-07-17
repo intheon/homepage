@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
       $(".resizable-grid").shapeshift();
-      $("body").smoothWheel();
+      $(".smoothWheel").smoothWheel();
  });
 
 
