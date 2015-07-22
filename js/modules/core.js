@@ -2,12 +2,11 @@
 
 $(document).ready(function() {
       $(".resizable-grid").shapeshift();
-      $(".smoothWheel").smoothWheel();
  });
 
 
 var rootDir = "http://localhost/homepage/";
 //var rootDir = "http://intheon.xyz/liv/";
 
-var internetStatus = (navigator.onLine ? true : false);
-
+//var internetStatus = (navigator.onLine ? true : false);
+var internetStatus = false;

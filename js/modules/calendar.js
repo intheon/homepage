@@ -51,57 +51,66 @@ function defineMetadata(time,money)
 // actually draws the calendar to the dom
 function loadCalendar(time,money)
 {
+	$("#cost-calendar").attr("data-month-number",time.monthNum)
 	// draw all the dates
 	for (counter = 1; counter <= time.daysInMonth; counter++)
 	{
 		var day = moment(counter,"D");
 			day = day.format("dd");
 
-		$("#cost-calendar").append("<div class='calendar-item' id='calendar-item-"+counter+"'>\
-			<div class='cell-menu'><img src='../homepage/img/note.png' class='button-add' id='button-note' width='22%'><img src='../homepage/img/paper-bill.png' width='22%' class='button-add' id='button-spend'></div>\
+		$("#cost-calendar").append("<div class='calendar-item calendar-item-"+counter+"'>\
+			<div class='cell-menu'><img src='../homepage/img/note.png' class='button-add button-note' width='22%'><img src='../homepage/img/paper-bill.png' width='22%' class='button-add button-spend'></div>\
 			<div class='date-number'>"+counter+"<div class='day-label'>"+day+"</div></div>\
 			<div class='date-body'></div></div>");
 
 		if (counter == time.todaysDate)
 		{
-			$("#calendar-item-" + counter).append("<div class='calendar-label'>Today</div>");
-			$("#calendar-item-" + counter).addClass("active-cell");
+			$(".calendar-item-" + counter).append("<div class='calendar-label'>Today</div>");
+			$(".calendar-item-" + counter).addClass("active-cell");
 		}
 
 		if (counter == 28)
 		{
-			$("#calendar-item-28").append("<div class='calendar-label'>Payday</div>");
+			$(".calendar-item-28").append("<div class='calendar-label'>Payday</div>");
 		}
 
-		$("#calendar-item-" + counter)
+		$(".calendar-item-" + counter)
 			.mouseover(function(event){
-				var un = event.currentTarget.id;
 
-				$("#" + un + " .cell-menu").show();
+				var allClassNames = event.currentTarget.className;
+				var uniqueClassName = allClassNames.split(" ")[1];
+
+				$("." + uniqueClassName + " .cell-menu").show();
 			})
 			.mouseout(function(event){
-				var un = event.currentTarget.id;
-				$("#" + un + " .cell-menu").hide();
+				var allClassNames = event.currentTarget.className;
+				var uniqueClassName = allClassNames.split(" ")[1];
+
+				$("." + uniqueClassName + " .cell-menu").hide();
 			})
 
-		$("#calendar-item-" + counter + " .button-add").click(function(event){
-			var un 		= event.currentTarget.parentNode.parentNode.id;
-			var type	= event.currentTarget.id;
+		$(".calendar-item-" + counter + " .button-add").click(function(event){
+			var allClassNames = event.currentTarget.parentNode.parentNode.className;
+			var uniqueClassName = allClassNames.split(" ")[1];
+
+			var allButtonClasses = event.currentTarget.className;
+			var buttonClassType = allButtonClasses.split(" ")[1];
+			var type	= buttonClassType;
 			var cont 	= undefined;
 
 			if (alreadyHasModal[0] === undefined || null)
 			{
-				alreadyHasModal.push(un)
-				drawModal(un,type,money);
+				alreadyHasModal.push(uniqueClassName)
+				drawModal(uniqueClassName,type,time,money);
 			}
 			else
 			{
-				if (alreadyHasModal[0] == un) return false
+				if (alreadyHasModal[0] == uniqueClassName) return false
 				else 
 				{
 					for (on = 0; on <= alreadyHasModal.length - 1; on++)
 					{	
-						if (alreadyHasModal[on] == un)
+						if (alreadyHasModal[on] == uniqueClassName)
 						{
 							cont = false;
 							break;
@@ -109,8 +118,8 @@ function loadCalendar(time,money)
 					}
 					if (cont !== false)
 					{
-						alreadyHasModal.push(un);
-						drawModal(un,type);
+						alreadyHasModal.push(uniqueClassName);
+						drawModal(uniqueClassName,type,time,money);
 					}
 				}
 			}
@@ -162,88 +171,90 @@ function calculateColour(subjects)
 var alreadyHasModal = [];
 
 
-function drawModal(whoRang,type,money)
+function drawModal(whoRang,type,time,money)
 {
 	if (type == "button-note")
 	{
-		$("#" + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
+		$("." + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
 	}
 	else if (type == "button-spend")
 	{
-		$("#" + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
+		$("." + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
 	}
 
-	$("#" + whoRang).keyup(function(event){
+	$("." + whoRang).keyup(function(event){
 		if (event.keyCode == 13 && type == "button-note")
 		{	
 			var rawValue = event.target.value;
-			var parentCell = event.currentTarget.id;
-			//console.log(event.target.value);
-			getModalValue(rawValue,parentCell);
+			var allClassNames = event.currentTarget.className;
+			var parentCell = allClassNames.split(" ")[1];
+			getModalValue(rawValue,parentCell,time,money);
 		}
 	});
 
 	$(".button-add-spend").click(function(event){
-		var rootId = event.currentTarget.offsetParent.offsetParent.offsetParent.id;
-
+		
+		var allClassNames = event.currentTarget.offsetParent.offsetParent.offsetParent.className;
+		var parentCell = allClassNames.split(" ")[1];
 		var classes = [];
 
-		$("#" + whoRang + " input[type='text']").each(function(){
+		$("." + whoRang + " input[type='text']").each(function(){
 			classes.push(this.className);
 		});
 
-		getFormValue(rootId,classes[0],classes[1],money)
+		getFormValue(parentCell,classes[0],classes[1],time,money)
 	});
 
 	$(".button-add-note").click(function(event){
 
-		var parentCell = event.currentTarget.offsetParent.offsetParent.offsetParent.id;
-		var rawValue = $("#" + parentCell + " .modal-overlay form textarea").val();
+		var allClassNames = event.currentTarget.offsetParent.offsetParent.offsetParent.className;
+		var parentCell = allClassNames.split(" ")[1];
+		var rawValue = $("." + parentCell + " .modal-overlay form textarea").val();
 		
-		getModalValue(rawValue,parentCell)
+		getModalValue(rawValue,parentCell,time,money)
 	});
 
 
-	$("#" + whoRang + " input[type='text']").keyup(function(event){
+	$("." + whoRang + " input[type='text']").keyup(function(event){
 		if (event.keyCode == 13)
 		{
 			var classes = [];
 
-			$("#" + whoRang + " input[type='text']").each(function(){
+			$("." + whoRang + " input[type='text']").each(function(){
 				classes.push(this.className);
 			});
 
-			var rootId = event.currentTarget.offsetParent.offsetParent.id;
-
-			getFormValue(rootId,classes[0],classes[1],money);
+			var allClassNames = event.currentTarget.offsetParent.offsetParent.className;
+			var parentCell = allClassNames.split(" ")[1];
+			getFormValue(parentCell,classes[0],classes[1],time,money);
 		}
 	});
 
 
 	$(".modal-overlay-close").click(function(event){
-		var id = event.currentTarget.offsetParent.offsetParent.id;
-		removeModal(id);
+		var allClassNames = event.currentTarget.offsetParent.offsetParent.className;
+		var parentCell = allClassNames.split(" ")[1];
+		removeModal(parentCell);
 	});
 }
 
-function removeModal(whoRang)
+function removeModal(parentCell)
 {
-	var id = whoRang;
 
-	$("#" + id + " .modal-overlay").fadeOut(function(){
+	$("." + parentCell + " .modal-overlay").fadeOut(function(){
 		$(this).remove();
 	});
 
-	var index = alreadyHasModal.indexOf(id);
+	var index = alreadyHasModal.indexOf(parentCell);
 
 	if (index > -1) {
     	alreadyHasModal.splice(index, 1);
 	}
 
-	$("#" + id).unbind("keyup");
+	$("." + parentCell).unbind("keyup");
 }
 
-function getModalValue(rawValue,parentCell)
+function getModalValue(rawValue,parentCell,time,money)
 {
 	var tidyValue = rawValue.replace(/[^\w\s!?]/g,'');
 
@@ -254,7 +265,7 @@ function getModalValue(rawValue,parentCell)
 	removeModal(parentCell);
 }
 
-function getFormValue(parentCell,firstField,secondField,money)
+function getFormValue(parentCell,firstField,secondField,time,money)
 {
 	// takes the amount of spend and adds it to a json file
 	// also, evaluates it for great success
@@ -262,9 +273,8 @@ function getFormValue(parentCell,firstField,secondField,money)
 	//var secondField = formId.currentTarget.previousElementSibling.className;
 	//var rootId = formId.currentTarget.offsetParent.offsetParent.id;
 
-	var firstFieldVal = $("#" + parentCell + " .modal-overlay form .add-spend-label").val()
-	var secondFieldVal = $("#" + parentCell + " .modal-overlay form .add-spend-integer").val()
-	//console.log(firstField.className);
+	var firstFieldVal = $("." + parentCell + " .modal-overlay form .add-spend-label").val()
+	var secondFieldVal = $("." + parentCell + " .modal-overlay form .add-spend-integer").val()
 	
 	if (firstFieldVal == "" || secondFieldVal == "") showWarning("fill out all fields");
 	else 
@@ -273,8 +283,7 @@ function getFormValue(parentCell,firstField,secondField,money)
 		else
 		{
 			// submit to json file + immediately retrieve
-			setSpend(parentCell,firstFieldVal,secondFieldVal);
-			//$("#" + parentCell + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + firstFieldVal + "</div><div class='spend-value'>£" + secondFieldVal + "</div></div>");
+			setSpend(parentCell,firstFieldVal,secondFieldVal,time,money);
 
 			// count how much
 			money.spendThisMonth += parseInt(secondFieldVal);
@@ -374,7 +383,6 @@ function getNotes(time,money)
 		},
 		success				: function(jsonString)
 		{
-			//console.log(jsonString);
 			writeToCalendar(jsonString,"notes",time,money);
 		}
 	});
@@ -386,11 +394,11 @@ function setNotes(parentCell,noteHTML,time,money)
   //var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
 
 	var jsonItem = {};
-		jsonItem.parentCell = parentCell;
-		jsonItem.noteHTML = noteHTML;
+		jsonItem.parentCell 	= parentCell;
+		jsonItem.noteHTML 		= noteHTML;
+		jsonItem.year 			= time.year;
+		jsonItem.month 			= time.monthNum;
 
-		//console.log(jsonItem);
-		
 	
 	// set the note in a file
 	$.ajax({
@@ -427,7 +435,7 @@ function getSpend(time,money)
 	});
 }
 
-function setSpend(parentCell,firstFieldVal,secondFieldVal)
+function setSpend(parentCell,firstFieldVal,secondFieldVal,time,money)
 {
 	var rootDir 			= "http://localhost/homepage/"; // local
   //var rootDir 			= "http://intheon.xyz/money-calendar/"; // production
@@ -436,6 +444,8 @@ function setSpend(parentCell,firstFieldVal,secondFieldVal)
 		jsonItem.parentCell = parentCell;
 		jsonItem.label 		= firstFieldVal;
 		jsonItem.integer 	= secondFieldVal;
+		jsonItem.year 		= time.year;
+		jsonItem.month 		= time.monthNum;
 
 		
 	// set the spend in a file
@@ -514,7 +524,6 @@ function setWageForMonth(time,money)
 
 function writeToCalendar(jsonString,type,time,money)
 {
-	console.log(arguments)
 	if (jsonString != "file doesnt exist")
 	{
 		var jsonString = JSON.parse(jsonString);
@@ -525,11 +534,12 @@ function writeToCalendar(jsonString,type,time,money)
 			{
 				if (type == "notes")
 				{
-					var parent = jsonString[property][items].parentCell;
+					var cellToMatch = jsonString[property][items].parentCell;
+					var monthToMatch = jsonString[property][items].month;
 					var noteHTML = jsonString[property][items].noteHTML;
 
-					$("#" + parent + " .date-body").html("");
-					$("#" + parent + " .date-body").append(noteHTML);
+					$("." + parent + " .date-body").html("");
+					$("div [data-month-number='"+monthToMatch+"'] ."+cellToMatch+" .date-body").append(noteHTML);
 				}
 				else if (type == "spend")
 				{
@@ -538,8 +548,9 @@ function writeToCalendar(jsonString,type,time,money)
 					var integer = jsonString[property][items].integer;
 
 					money.spendThisMonth += +(integer);
-
-					$("#" + parent + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + label + "</div><div class='spend-value'>£" + integer + "</div></div>");
+					
+					$("." + parent + " .date-body").html("");
+					$("." + parent + " .date-body").append("<div class='spend-item'><div class='pin'></div><div class='spend-label'>" + label + "</div><div class='spend-value'>£" + integer + "</div></div>");
 				}
 			}
 		}
