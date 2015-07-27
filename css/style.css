@@ -135,7 +135,7 @@ filter:                      progid:DXImageTransform.Microsoft.gradient( startCo
 {
     position:               absolute;
     height:                 500px;
-    width:                  257px;
+    width:                  420px;
 }
 .resizable-grid > div:hover
 {
@@ -156,18 +156,21 @@ filter:                      progid:DXImageTransform.Microsoft.gradient( startCo
 .news-item header
 {
 	font-size:				1.45em;
-	border-bottom:			1px solid #ACC7CF;
+	border-bottom:			1px solid rgba(0, 0, 0, .1);
 	margin-bottom:			2%;
 	padding-top:			1%;
 	padding-bottom:			1%;
+    text-align:             center;
 }
 
 .news-item .item
 {
-	color:					#979797 !important;
+	color:					#000000 !important;
 	margin:					0% !important;
 	padding:				0% !important;
-	padding:				6px !important;
+	padding:				3px !important;
+    margin-top:             3px !important;
+    margin-bottom:          3px !important;
 	font-size:				1.05em !important;
 }
 .padding
@@ -343,62 +346,62 @@ filter:                      progid:DXImageTransform.Microsoft.gradient( startCo
 
 .calendar-item
 {
-    position:           relative !important;
-    flex-wrap:          wrap;
-    width:              10%;
-    transition:         width 1.4s;
-    z-index:            1;
-    padding:            0.5%;
+    position:               relative !important;
+    flex-wrap:              wrap;
+    width:                  10%;
+    transition:             width 1.4s;
+    z-index:                1;
+    padding:                0.5%;
 }
 
 .modal-calendar .calendar-item
 {
-    display:inline-block;
+    display:                inline-block;
 }
 .calendar-month
 {
-    margin:1%;
-    position: relative;
+    margin:                 1%;
+    position:               relative;
 }
 .calendar-item:nth-child(odd)
 {
-    border-right:        1px solid;
-    border-bottom:          1px solid;
-    border-color:        #F1f1f1;
+    border-right:           1px solid rgba(0, 0, 0, .1);
+    border-bottom:          1px solid rgba(0, 0, 0, .1);
 }
 .calendar-item:nth-child(even)
 {
-    border-right:        1px solid;
-    border-bottom:         1px solid;
-    border-color:        #F1f1f1;
+    border-right:           1px solid rgba(0, 0, 0, .1);
+    border-bottom:          1px solid rgba(0, 0, 0, .1);
 }
 .calendar-item:hover
 {
-    cursor:             pointer;
-    width:               15%;
+    cursor:                 pointer;
+    width:                  15%;
 }
 .date-number
 {
-    color:              #CCCCCC;
-    padding:            1%;
+    color:                  #000000;
+    padding:                1%;
 }
 .date-body
 {   
-    min-height:         44px;
-    display:            flex;
-    flex-wrap:          wrap;
+    min-height:             44px;
+    display:                flex;
+    flex-wrap:              wrap;
 }
 .active-cell
 {
-    background-color:   #FDE7BA;
+    background-color:       none !important;
+    background:             url(../img/trans.png) !important;
+    background-size:        cover !important;
 }
 .modal-overlay
 {
     position:           absolute !important;
-     background-color:  white;
-     z-index: 100000;
-     width:100%;
-     height:100%;
+    background-color:   white;
+    z-index: 100000;
+    width:100%;
+    height:100%;
 }
 .modal-overlay textarea 
 {
@@ -745,7 +748,6 @@ textarea:focus, input:focus
     font-size:          2.2em;
     border-bottom:      0px !important; 
 }
-
 
 
 .integer
