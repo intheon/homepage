@@ -1,7 +1,9 @@
 body
 {
     background:url(../img/bg.jpg);
-    background-size: cover;
+    background-size: fixed;
+    background-repeat: no-repeat;
+
     /*
 background:                 rgb(255,255,255);  Old browsers 
 background:                 -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(239,239,239,1) 100%); 

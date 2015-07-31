@@ -65,7 +65,7 @@ function drawCalendars(time,money,raw)
 			{
 
 				$("."+monthLowercase+"Cal").append("<div class='calendar-item calendar-item-"+d+"'>\
-				<div class='cell-menu'><img src='../homepage/img/note.png' class='button-add button-note' width='22%'><img src='../homepage/img/paper-bill.png' width='22%' class='button-add button-spend'></div>\
+				<div class='cell-menu'><img src='../home/img/note.png' class='button-add button-note' width='22%'><img src='../home/img/paper-bill.png' width='22%' class='button-add button-spend'></div>\
 				<div class='date-number'>"+d+"<div class='day-label'></div></div>\
 				<div class='date-body'></div></div>");
 
@@ -138,11 +138,11 @@ function drawCalendars(time,money,raw)
 
 		if (type == "button-note")
 		{
-			$("." + parentShort + " ." + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
+			$("." + parentShort + " ." + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../home/img/cross.png'></div><div class='modal-overlay-add'><img src='../home/img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
 		}
 		else if (type == "button-spend")
 		{
-			$("." + parentShort + " ." + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
+			$("." + parentShort + " ." + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../home/img/cross.png'></div><div class='modal-overlay-add'><img src='../home/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
 		}
 
 		$("." + whoRang).keyup(function(event){

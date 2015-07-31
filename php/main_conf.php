@@ -1,5 +1,5 @@
 <?php
 
 
-$rootDir = "http://localhost/homepage/";
+$rootDir = "http://intheon.uk/home";
 ?>

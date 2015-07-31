@@ -84,7 +84,7 @@ function sendToInterwebs(jsonItem,method)
 {
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "todo.json", 
@@ -104,7 +104,7 @@ function retrieveFromInterwebs()
 {
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "todo.json",

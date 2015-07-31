@@ -59,7 +59,7 @@ function loadCalendar(time,money)
 			day = day.format("dd");
 
 		$("#cost-calendar").append("<div class='calendar-item calendar-item-"+counter+"'>\
-			<div class='cell-menu'><img src='../homepage/img/note.png' class='button-add button-note' width='22%'><img src='../homepage/img/paper-bill.png' width='22%' class='button-add button-spend'></div>\
+			<div class='cell-menu'><img src='./img/note.png' class='button-add button-note' width='22%'><img src='./img/paper-bill.png' width='22%' class='button-add button-spend'></div>\
 			<div class='date-number'>"+counter+"<div class='day-label'>"+day+"</div></div>\
 			<div class='date-body'></div></div>");
 
@@ -175,11 +175,11 @@ function drawModal(whoRang,type,time,money)
 {
 	if (type == "button-note")
 	{
-		$("." + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
+		$("." + whoRang).prepend("<div class='modal-overlay'><div class='modal-overlay-close'><img src='./img/cross.png'></div><div class='modal-overlay-add'><img src='./img/add.png' class='button-add-note'></div><form><textarea placeholder='add...'></textarea></form></div>");
 	}
 	else if (type == "button-spend")
 	{
-		$("." + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='../homepage/img/cross.png'></div><div class='modal-overlay-add'><img src='../homepage/img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
+		$("." + whoRang).prepend("<div class='modal-overlay ui form'><div class='modal-overlay-close'><img src='./img/cross.png'></div><div class='modal-overlay-add'><img src='./img/add.png' class='button-add-spend'></div><form><input type='text' placeholder='label' class='add-spend-label'><input type='text' placeholder='integer' class='add-spend-integer'></form></div>");
 	}
 
 	$("." + whoRang).keyup(function(event){
@@ -324,7 +324,7 @@ function getMonthInfo(time,money)
 
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "history.json",
@@ -374,7 +374,7 @@ function getNotes(time,money)
 {
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "notes.json",
@@ -390,8 +390,8 @@ function getNotes(time,money)
 
 function setNotes(parentCell,noteHTML,time,money)
 {
-	var rootDir 		= "http://localhost/homepage/"; // local
-  //var rootDir 		= "http://intheon.xyz/money-calendar/"; // production
+	//var rootDir 		= "http://localhost/home/"; // local
+  	var rootDir 		= "http://intheon.uk/home/"; // production
 
 	var jsonItem = {};
 		jsonItem.parentCell 	= parentCell;
@@ -403,7 +403,7 @@ function setNotes(parentCell,noteHTML,time,money)
 	// set the note in a file
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "notes.json", 
@@ -421,7 +421,7 @@ function getSpend(time,money)
 {
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "spend.json",
@@ -437,8 +437,8 @@ function getSpend(time,money)
 
 function setSpend(parentCell,firstFieldVal,secondFieldVal,time,money)
 {
-	var rootDir 			= "http://localhost/homepage/"; // local
-  //var rootDir 			= "http://intheon.xyz/money-calendar/"; // production
+	//var rootDir 			= "http://localhost/homepage/"; // local
+  	var rootDir 			= "http://intheon.uk/home/"; // production
 
 	var jsonItem = {};
 		jsonItem.parentCell = parentCell;
@@ -451,7 +451,7 @@ function setSpend(parentCell,firstFieldVal,secondFieldVal,time,money)
 	// set the spend in a file
 	$.ajax({
 		type				: "POST",
-		url                 : rootDir + "php/module_file_manager.php",
+		url                 : "./php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "spend.json", 
@@ -493,7 +493,7 @@ function setWageForMonth(time,money)
 
 					$.ajax({
 						type				: "POST",
-						url     			: rootDir + "php/module_file_manager.php",
+						url     			: "./php/module_file_manager.php",
 						data 				: 
 						{
 							filename        : "history.json", 

@@ -26,7 +26,7 @@ else
 function getFeed(websiteUrl,tag,limit)
 {
 	$.ajax({
-		url: rootDir + "php/module_get_feed.php",
+		url: "./php/module_get_feed.php",
 		type: "POST",
 		data: {
 			website: websiteUrl,
