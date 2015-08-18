@@ -36,7 +36,21 @@ function drawCalendars(time)
 		
 		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
 		{
-			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'>"+cellLoop+"</div>");
+			var day = moment(cellLoop,"D");
+				day = day.format("dd");
+
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'>\
+					<div class='ui dropdown'>\
+						<i class='dropdown icon'></i>\
+						<div class='menu'>\
+						<div class='item'>New Purchase</div>\
+						<div class='item'>New Diary entry</div>\
+					</div>\
+					<div class='date-number'>"+cellLoop+"</div>\
+					<div class='day-label'>"+day+"</div>\
+				</div>");
 		}
 	}
+
+	$('.ui.dropdown').dropdown();
 }

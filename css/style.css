@@ -336,6 +336,7 @@ body
 .modal-calendar
 {
     padding:                2%;
+    display:                relative;
 }
 
 .calendar-item
@@ -347,7 +348,7 @@ body
 
 .modal-calendar .calendar-item
 {
-    display:         inline-block;
+    display:                inline-block;
 }
 .calendar-month
 {
@@ -465,9 +466,8 @@ body
 }
 .day-label
 {
-    position:           absolute;
-    right:              0;
-    bottom:             0;
+    float:              left;
+    color:              rgba(0,0,0,0.3);
 }
 .calendar-label
 {
