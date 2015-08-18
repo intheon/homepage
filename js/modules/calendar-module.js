@@ -14,7 +14,7 @@ function loadCalendar(type)
 		thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
 		thisMonthAsPhrase: 				moment().format("MMMM").toLowerCase(),
 		quantToDisplay: (function(){
-				var array = (type == "full") ? "display full" : this.thisMonthAsObj;
+				var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
 				return array;
 		})(type)
 	} 
