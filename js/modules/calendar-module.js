@@ -19,5 +19,24 @@ function loadCalendar(type)
 		})(type)
 	} 
 
-	console.log(time.quantToDisplay);
+	drawCalendars(time);
+}
+
+function drawCalendars(time)
+{
+	// dynamically draws a calendar for each month 
+	// based upon each property in 'time'
+	for (var loop = 0; loop < time.quantToDisplay.length - 1; loop++)
+	{
+		// shorthand vars
+		var monthLowercase 	= time.quantToDisplay[loop].format("MMMM").toLowerCase();
+		var daysInThisMonth = time.quantToDisplay[loop].daysInMonth();
+
+		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+time.quantToDisplay[loop]._i+"'><h3>"+time.quantToDisplay[loop].format("MMMM")+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div></div>");
+		
+		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
+		{
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'>"+cellLoop+"</div>");
+		}
+	}
 }
