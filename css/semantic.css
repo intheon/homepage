@@ -11511,7 +11511,7 @@ body.dimmable>.dimmer {
     height: auto;
     border-top: none;
     line-height: 1.2em;
-    color: rgba(0, 0, 0, .8);
+    color: rgba(0, 0, 0, 1);
     padding: .65rem 1.25rem!important;
     font-size: 1rem;
     text-transform: none;
@@ -11795,8 +11795,8 @@ select.ui.dropdown {
     border-radius: .2857rem;
 }
 .ui.dropdown .menu>.item:hover {
-    background: rgba(0, 0, 0, .05);
-    color: rgba(0, 0, 0, .8);
+    background: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, .5);
     z-index: 12;
 }
 .ui.dropdown .menu .active.item {
@@ -11822,8 +11822,8 @@ select.ui.dropdown {
     z-index: -1;
 }
 .ui.dropdown .menu .selected.item, .ui.dropdown.selected {
-    background: rgba(0, 0, 0, .03);
-    color: rgba(0, 0, 0, .8);
+    background: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, .6);
 }
 .ui.dropdown>.filtered.text {
     visibility: hidden;

@@ -43,8 +43,9 @@ function drawCalendars(time)
 					<div class='ui dropdown'>\
 						<i class='dropdown icon'></i>\
 						<div class='menu'>\
-						<div class='item'>New Purchase</div>\
-						<div class='item'>New Diary entry</div>\
+							<div class='item show-modal purchase'><i class='money icon'></i>New Purchase</div>\
+							<div class='item show-modal diary'><i class='calendar icon'></i>New Diary entry</div>\
+						</div>\
 					</div>\
 					<div class='date-number'>"+cellLoop+"</div>\
 					<div class='day-label'>"+day+"</div>\
@@ -53,4 +54,9 @@ function drawCalendars(time)
 	}
 
 	$('.ui.dropdown').dropdown();
+
+	$(".dropdown .item").click(function(){
+		$('.ui.modal').modal('show');
+	});
+
 }
