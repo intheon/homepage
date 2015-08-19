@@ -70,8 +70,10 @@ function assignData(globalTime)
 
 	// therefore listen to the object for changes
 	// chrome only, but i dont give a shit
+
+	// 'ajaxHandler' ajax onSuccess assignment statement gets this handler to fire
 	Object.observe(jsonData,function(whatChanged){
-		console.log(whatChanged);
+		if (whatChanged[0].name == "spend") assignSpendToCells(whatChanged[0].object);
 	});
 
 }
@@ -104,4 +106,45 @@ function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
 			objName[propName] = data;
 		}
 	});
+}
+
+
+function assignSpendToCells(jsonData)
+{
+	var asJSON = JSON.parse(jsonData.spend);
+
+	var arrayOfTotals = calculateTotals(asJSON);
+
+	//console.log(arrayOfTotals);
+}
+
+function calculateTotals(json)
+{
+	// we're gonna do two things; calculate how much happened per month, and per day
+
+	var records = json.items;
+
+	var totals = [];
+
+	// per month
+	// if it matches the same year and month
+	// merge the values together and store
+
+	for (var i = 0; i < records.length; i++)
+	{
+		// always needs an initial value
+		if (totals.length === 0) console.log("nothing");
+
+		totals.push(records[i].year);
+		console.log(records[i].year);
+		console.log(records[i].month);
+		console.log(records[i].integer);
+	}
+
+
+
+	console.log(records);
+
+
+	return json;
 }
