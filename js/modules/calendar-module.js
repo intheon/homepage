@@ -129,8 +129,16 @@ function parseObject(object,globalTime)
 			var yearObj = asJSON.items[years][globalTime.thisYearAsInt];
 			for (var months in yearObj.monthlyBreakdown)
 			{
-				$("div [data-month-label='"+months+"'] .month-section-footnotes").html("something");
-				console.log(months);
+				// this assigns stuff to the cells
+
+				// todo: this
+
+				
+				// this draws some helpful info
+				var monthSpend = yearObj.monthlyBreakdown[months].monthSpend;
+				var wageEarned = yearObj.monthlyBreakdown[months].monthWage;
+				var savings = +wageEarned - +monthSpend;
+				$("div [data-month-label='"+months+"'] .month-section-footnotes").append("<div class='ui mini pink statistic'><div class='value'>"+monthSpend+"</div><div class='label'>Spent this month</div></div><div class='ui mini red statistic'><div class='value'>"+wageEarned+"</div><div class='label'>Earned this month</div></div><div class='ui mini blue statistic'><div class='value'>"+savings+"</div><div class='label'>Remaining</div></div>");
 			}
 			break;
 		}

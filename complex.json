@@ -4,7 +4,7 @@
 			"totalSpend" 	: "18304",
 			"monthlyBreakdown" : {
 				"August" : {
-					"monthSpend" : "2000",
+					"monthSpend" : "1650",
 					"monthWage" : "2000",
 					"payDay" : "28",
 					"monthNum" : "8",
@@ -20,7 +20,7 @@
 					}
 				},
 				"July" : {
-					"monthSpend" : "1500",
+					"monthSpend" : "1400",
 					"monthWage" : "1500",
 					"payDay" : "28",
 					"monthNum" : "7",
