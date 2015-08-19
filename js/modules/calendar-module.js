@@ -132,18 +132,24 @@ function calculateTotals(json)
 
 	for (var i = 0; i < records.length; i++)
 	{
+		var tempObject = {
+			year: records[i].year,
+			month: records[i].month,
+			monthSpend: records[i].integer
+		}
 		// always needs an initial value
-		if (totals.length === 0) console.log("nothing");
-
-		totals.push(records[i].year);
-		console.log(records[i].year);
-		console.log(records[i].month);
-		console.log(records[i].integer);
+		if (totals.length === 0) totals.push(tempObject);
+		if (totals.length > 0) 
+		{
+			for (var t = 0; t < totals.length; t++)
+			{
+				console.log(totals[t]);
+			}
+		}
 	}
 
 
-
-	console.log(records);
+	console.log(totals);
 
 
 	return json;
