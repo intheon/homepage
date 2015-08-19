@@ -7,7 +7,6 @@
 					"monthSpend" : "2000",
 					"monthWage" : "2000",
 					"payDay" : "28",
-					"monthNum" : "8",
 					"daySpends" : {
 						"11" : {
 							"totalDaySpend" : "45",
@@ -21,9 +20,6 @@
 				},
 				"July" : {
 					"monthSpend" : "1500",
-					"monthWage" : "1500",
-					"payDay" : "28",
-					"monthNum" : "7",
 					"daySpends" : {
 						"4" : {
 							"totalDaySpend" : "15",

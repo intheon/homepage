@@ -11,6 +11,7 @@ function loadCalendar(type)
 		today: 							moment(),
 		todaysDayAsInt: 				parseInt(moment().format("D")),
 		thisMonthAsInt: 				parseInt(moment().format("M")),
+		thisYearAsInt: 					parseInt(moment().format("YYYY")),
 		thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
 		thisMonthAsPhrase: 				moment().format("MMMM").toLowerCase(),
 		quantToDisplay: 				(function(){
@@ -31,10 +32,11 @@ function drawCalendars(globalTime)
 	for (var loop = 0; loop < globalTime.quantToDisplay.length - 1; loop++)
 	{
 		// shorthand vars
+		var month	= globalTime.quantToDisplay[loop].format("MMMM");
 		var monthLowercase 	= globalTime.quantToDisplay[loop].format("MMMM").toLowerCase();
 		var daysInThisMonth = globalTime.quantToDisplay[loop].daysInMonth();
 
-		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"'><h3>"+globalTime.quantToDisplay[loop].format("MMMM")+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div></div>");
+		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"' data-month-label='"+month+"'><h3>"+month+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div><div class='month-section-footnotes'></div></div></div>");
 		
 		// for each day in the month
 		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
@@ -67,18 +69,17 @@ function assignData(globalTime)
 	};
 	*/
 	var payload = {
-		files: [{filename: "complex.json", propName: "test"}]
+		files: [{filename: "complex.json", propName: "historical"}]
 	};
 
-	// this doesnt execute immediately!
+	// this takes a while to do its thing
 	getDataFromFile("POST", "./php/module_file_manager.php", payload, "readFile", jsonData);
 
-	// therefore listen to the object for changes
-	// chrome only, but i dont give a shit
-
+	// listening to the object
+	// only works on chrome, but i dont give a shit about other browsers
 	// 'ajaxHandler' ajax onSuccess assignment statement gets this handler to fire
 	Object.observe(jsonData,function(whatChanged){
-		if (whatChanged[0].name == "test") assignSpendToCells(whatChanged[0].object);
+		parseObject(whatChanged[0].object,globalTime)
 	});
 
 }
@@ -113,21 +114,38 @@ function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
 	});
 }
 
-
-function assignSpendToCells(jsonData)
+function parseObject(object,globalTime)
 {
+	var objName = Object.keys(object)[0];
 
-	var asJSON = JSON.parse(jsonData.test);
-	console.log(asJSON);
-	//var arrayOfTotals = calculateTotals(asJSON);
+	var asJSON = JSON.parse(object[objName]);
 
-	//console.log(arrayOfTotals);
+	// find this year
+	for (var years in asJSON.items)
+	{
+		// all this does is match 2015 == 2015, 2016 == 2016 etc
+		if (parseInt(Object.keys(asJSON.items[years])[0]) == globalTime.thisYearAsInt)
+		{
+			var yearObj = asJSON.items[years][globalTime.thisYearAsInt];
+			for (var months in yearObj.monthlyBreakdown)
+			{
+				$("div [data-month-label='"+months+"'] .month-section-footnotes").html("something");
+				console.log(months);
+			}
+			break;
+		}
+	}
+
+	// to do... allow historic years
+	// for (some code to do some shit)
+
 }
 
 function calculateTotals(json)
 {
 	// we're gonna do two things; calculate how much happened per month, and per day
 
+/*
 	var records = json.items;
 	var monthRunningTotal = 0;
 
@@ -170,7 +188,6 @@ function calculateTotals(json)
 
 	console.log(complexObject);
 
-/*
 
 	// per month
 	// if it matches the same year and month
