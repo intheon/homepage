@@ -1,0 +1,42 @@
+{"items" : [
+	{
+		"2015": {
+			"totalSpend" 	: "18304",
+			"monthlyBreakdown" : {
+				"August" : {
+					"monthSpend" : "2000",
+					"monthWage" : "2000",
+					"payDay" : "28",
+					"daySpends" : {
+						"11" : {
+							"totalDaySpend" : "45",
+							"spendItems" : [{"label": "dogs", "price": "20"},{"label":"cheeses","price":"25"}]
+						},
+						"22" : {
+							"totalDaySpend" : "25",
+							"spendItems" : [{"label": "win", "price": "10"},{"label":"feet","price":"15"}]
+						}
+					}
+				},
+				"July" : {
+					"monthSpend" : "1500",
+					"daySpends" : {
+						"4" : {
+							"totalDaySpend" : "15",
+							"spendItems" : [{"label": "sand", "price": "15"}]
+						}
+					}
+				}
+			}
+		}
+	},
+	{
+		"2014":{
+			"totalSpend":"1234",
+			"monthlyBreakdown": {
+				"August": "something",
+				"July": "something else"
+			}
+		}
+	}
+	]}

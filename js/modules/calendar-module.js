@@ -61,8 +61,13 @@ function assignData(globalTime)
 	var jsonData = {};
 
 	// our request payload to the server
+	/*
 	var payload = {
 		files: [{filename: "history.json", propName: "history"}, {filename: "notes.json", propName: "notes"}, {filename: "spend.json", propName: "spend"}]
+	};
+	*/
+	var payload = {
+		files: [{filename: "complex.json", propName: "test"}]
 	};
 
 	// this doesnt execute immediately!
@@ -73,7 +78,7 @@ function assignData(globalTime)
 
 	// 'ajaxHandler' ajax onSuccess assignment statement gets this handler to fire
 	Object.observe(jsonData,function(whatChanged){
-		if (whatChanged[0].name == "spend") assignSpendToCells(whatChanged[0].object);
+		if (whatChanged[0].name == "test") assignSpendToCells(whatChanged[0].object);
 	});
 
 }
@@ -111,9 +116,10 @@ function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
 
 function assignSpendToCells(jsonData)
 {
-	var asJSON = JSON.parse(jsonData.spend);
 
-	var arrayOfTotals = calculateTotals(asJSON);
+	var asJSON = JSON.parse(jsonData.test);
+	console.log(asJSON);
+	//var arrayOfTotals = calculateTotals(asJSON);
 
 	//console.log(arrayOfTotals);
 }
@@ -123,8 +129,48 @@ function calculateTotals(json)
 	// we're gonna do two things; calculate how much happened per month, and per day
 
 	var records = json.items;
+	var monthRunningTotal = 0;
 
 	var totals = [];
+
+	var complexObject = [
+		{
+			2015: {
+				totalSpend : 13400, 
+				monthlyBreakdown : { 
+					august : { 
+						monthSpend : 2000,
+						daySpends : {
+							23 : {
+								totalDaySpend: 45,
+								spendItems: [{label: "dogs", price: 20},{label: "cheese", price: 25}]
+							},
+							14 : {
+								totalDaySpend: 15,
+								spendItems: [{label: "yams", price: 10},{label: "crackers", price: 25}]
+							}
+						}
+					}, 
+					july : { 
+						monthSpend: 1230 
+					}} 
+				}
+		}, { 
+			2014: { 
+				totalSpend : 12450, 
+				monthlyBreakdown : { 
+					june : { 
+						monthSpend : 1234 
+					}, 
+					may : { 
+						monthSpend : 1452 
+					}}
+		}}
+	];
+
+	console.log(complexObject);
+
+/*
 
 	// per month
 	// if it matches the same year and month
@@ -135,22 +181,26 @@ function calculateTotals(json)
 		var tempObject = {
 			year: records[i].year,
 			month: records[i].month,
-			monthSpend: records[i].integer
+			monthSpend: +records[i].integer
 		}
 		// always needs an initial value
 		if (totals.length === 0) totals.push(tempObject);
 		if (totals.length > 0) 
 		{
+			// checks for duplicate months
 			for (var t = 0; t < totals.length; t++)
 			{
-				console.log(totals[t]);
+				if (tempObject.year == totals[t].year && tempObject.month == totals[t].month)
+				{
+					// found one!
+					monthRunningTotal += +tempObject.monthSpend;
+					tempObject.monthSpend = monthRunningTotal;
+				}
 			}
 		}
 	}
 
 
-	console.log(totals);
-
-
 	return json;
+	*/
 }
