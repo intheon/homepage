@@ -126,17 +126,33 @@ function parseObject(object,globalTime)
 		// all this does is match 2015 == 2015, 2016 == 2016 etc
 		if (parseInt(Object.keys(asJSON.items[years])[0]) == globalTime.thisYearAsInt)
 		{
-			var yearObj = asJSON.items[years][globalTime.thisYearAsInt];
-			for (var months in yearObj.monthlyBreakdown)
+			var currentYearObj = asJSON.items[years][globalTime.thisYearAsInt];
+			//console.log(currentYearObj);
+			for (var months in currentYearObj.monthlyBreakdown)
 			{
+				var monthlySpendsObj = currentYearObj.monthlyBreakdown[months].daySpends;
+				var monthlyEventsObj = currentYearObj.monthlyBreakdown[months].dayEvents;
 				// this assigns stuff to the cells
 
-				// todo: this
+				// let's do spend first
+				for (spend in monthlySpendsObj)
+				{
+					$("div [data-month-label='"+months+"'] .month-section-body .calendar-item-"+spend+"").append("<div class='ui label inverted green'><i class='pound icon'></i>"+monthlySpendsObj[spend].totalDaySpend+"</div>")
+				}
+
+				for (events in monthlyEventsObj)
+				{
+					$("div [data-month-label='"+months+"'] .month-section-body .calendar-item-"+events+"").append("<div class='ui label red'><i class='calendar outline icon'></i>"+monthlySpendsObj[spend].totalDaySpend+"</div>")
+				}
+
+
+				//console.log(monthlySpendsObj);
+
 
 				
 				// this draws some helpful info
-				var monthSpend = yearObj.monthlyBreakdown[months].monthSpend;
-				var wageEarned = yearObj.monthlyBreakdown[months].monthWage;
+				var monthSpend = currentYearObj.monthlyBreakdown[months].monthSpend;
+				var wageEarned = currentYearObj.monthlyBreakdown[months].monthWage;
 				var savings = +wageEarned - +monthSpend;
 				$("div [data-month-label='"+months+"'] .month-section-footnotes").append("<div class='ui mini pink statistic'><div class='value'>"+monthSpend+"</div><div class='label'>Spent this month</div></div><div class='ui mini red statistic'><div class='value'>"+wageEarned+"</div><div class='label'>Earned this month</div></div><div class='ui mini blue statistic'><div class='value'>"+savings+"</div><div class='label'>Remaining</div></div>");
 			}
