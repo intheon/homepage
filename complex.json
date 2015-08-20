@@ -17,6 +17,12 @@
 							"totalDaySpend" : "25",
 							"spendItems" : [{"label": "win", "price": "10"},{"label":"feet","price":"15"}]
 						}
+					},
+					"dayEvents" : {
+						"11" : {
+							"totalDayEvents" : "2",
+							"dayEventItems" : [{"label": "brushed teeth"},{"label": "took dog for walk"}]
+						}
 					}
 				},
 				"July" : {
