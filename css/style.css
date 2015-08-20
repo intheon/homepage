@@ -344,6 +344,7 @@ body
     z-index:                1;
     padding:                0.5%;
     width:                  8%;
+    min-height:             100px;
 }
 
 .modal-calendar .calendar-item
