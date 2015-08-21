@@ -1,8 +1,7 @@
 body
 {
     background:             url(../img/bg.jpg);
-    background-size:        fixed;
-    background-repeat:      no-repeat;
+    background-attachment:  fixed;
 }
 
 ::-webkit-scrollbar-track

@@ -13,7 +13,8 @@ function loadCalendar(type)
 		thisMonthAsInt: 				parseInt(moment().format("M")),
 		thisYearAsInt: 					parseInt(moment().format("YYYY")),
 		thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
-		thisMonthAsPhrase: 				moment().format("MMMM").toLowerCase(),
+		thisMonthAsPhrase: 				moment().format("MMMM"),
+		thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
 		quantToDisplay: 				(function(){
 											var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
 											return array;
@@ -21,6 +22,13 @@ function loadCalendar(type)
 	};
 
 	drawCalendars(globalTime);
+
+	$("html, body").animate({
+		scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top
+	},1100);
+
+
+
 }
 
 function drawCalendars(globalTime)
@@ -145,10 +153,6 @@ function parseObject(object,globalTime)
 				{
 					$("div [data-month-label='"+months+"'] .month-section-body .calendar-item-"+events+"").append("<div class='ui label red'><i class='calendar outline icon'></i>"+monthlySpendsObj[spend].totalDaySpend+"</div>")
 				}
-
-
-				//console.log(monthlySpendsObj);
-
 
 				
 				// this draws some helpful info
