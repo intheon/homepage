@@ -24,7 +24,7 @@ function loadCalendar(type)
 	drawCalendars(globalTime);
 
 	$("html, body").animate({
-		scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top
+		scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
 	},1100);
 
 
@@ -51,7 +51,7 @@ function drawCalendars(globalTime)
 		{
 			var day = moment(cellLoop,"D");
 				day = day.format("dd");
-			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal purchase'><i class='money icon'></i>New Purchase</div><div class='item show-modal diary'><i class='calendar icon'></i>New Diary entry</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal' id='purchase-modal'><i class='money icon'></i>New Purchase</div><div class='item show-modal' id='diary-modal''><i class='calendar icon'></i>New Diary entry</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
 		}
 	}
 
@@ -59,7 +59,21 @@ function drawCalendars(globalTime)
 	$('.ui.dropdown').dropdown();
 
 	// instill modal when clicked
-	$(".dropdown .item").click(function(){$('.ui.modal').modal('show')});
+	$(".dropdown .item").click(function(){
+
+		// can either have a modal for adding spending or a diary event
+		// need to make sure the title, view, and behaviour reflects that
+		// we ascertain which is which from this baby
+
+		var type = event.currentTarget.id;
+
+		var title = (type == "purchase-modal") ? "Add Spend" :  "Add Diary";
+
+		$(".ui.modal .modal-header").html(title);
+
+		$('.ui.modal').modal('show');
+
+	});
 
 	// now that our calendar is drawn, populate it with data
 	assignData(globalTime);

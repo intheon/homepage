@@ -341,9 +341,9 @@ body
 .calendar-item
 {
     z-index:                1;
-    padding:                0.5%;
     width:                  8%;
     min-height:             100px;
+    padding:             0.5%;
 }
 
 .modal-calendar .calendar-item
