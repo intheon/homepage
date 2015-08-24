@@ -208,18 +208,19 @@ function writeDataToFile(payload,globalData)
 							// testing for existing properties/days
 							if (days == dayIdAsInt)
 							{
+								var newObj = {
+									label: payload.label,
+									price: payload.detail
+								}
 								// do something to append
-								console.log(currentYearObj.monthlyBreakdown[months].daySpends[days]);
+								toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].daySpends[days].spendItems.push(newObj);
+								toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].daySpends[days].totalDaySpend = +currentYearObj.monthlyBreakdown[months].daySpends[days].totalDaySpend + +payload.detail;
 							}
 							else
 							{
 								break;
 							}
 						}
-
-						console.log(days);
-						
-						console.log(currentYearObj.monthlyBreakdown[months].daySpends[days]);
 
 						//console.log(payload);
 						//console.log(toWrite);
