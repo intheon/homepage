@@ -166,7 +166,7 @@ function getDataFromFile(httpMethod,phpFile,payload,classMethod,objectName)
 	// objectName is the root object to assign this to
 	for (keys in payload.files)
 	{
-		ajaxHandler(httpMethod, phpFile, payload.files[keys].filename, classMethod, objectName, payload.files[keys].propName);
+		ajaxHandler(httpMethod, phpFile, payload.files[keys].filename, classMethod, objectName, payload.files[keys].propName,null);
 	}
 }
 
@@ -225,14 +225,9 @@ function writeDataToFile(payload,globalData)
 									enumerable: true,
 									writeable: true
 								});
-								console.log(toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].daySpends);
 								break;
 							}
 						}
-
-						//console.log(payload);
-						//console.log(toWrite);
-
 					}
 					else if (payload.actionType ==  "diary-modal")
 					{
@@ -243,12 +238,16 @@ function writeDataToFile(payload,globalData)
 		}
 	}
 
+	console.log(toWrite);
+
+	ajaxHandler("POST", "./php/module_file_manager.php", "complex.json", "addToFile", "globalData", "historical",toWrite);
+
 	//console.log(payload);
 	//console.log(globalData);
 }
 
 
-function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
+function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName,data)
 {
 	// a reusable ajax handler for doing some php stuff to objects
 	$.ajax({
@@ -258,7 +257,7 @@ function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
 		{
 			filename        : filename,
 			method   		: classMethod,
-			data            : null
+			data            : data
 		},
 		success				: function(data)
 		{
@@ -274,7 +273,7 @@ function parseObject(object,globalTime)
 	var asJSON = JSON.parse(object[objName]);
 
 	globalData = asJSON;
-	//console.log(asJSON);
+	console.log(asJSON);
 
 	// find this year
 	for (var years in asJSON.items)
@@ -316,85 +315,4 @@ function parseObject(object,globalTime)
 	// to do... allow historic years
 	// for (some code to do some shit)
 
-}
-
-function calculateTotals(json)
-{
-	// we're gonna do two things; calculate how much happened per month, and per day
-
-/*
-	var records = json.items;
-	var monthRunningTotal = 0;
-
-	var totals = [];
-
-	var complexObject = [
-		{
-			2015: {
-				totalSpend : 13400, 
-				monthlyBreakdown : { 
-					august : { 
-						monthSpend : 2000,
-						daySpends : {
-							23 : {
-								totalDaySpend: 45,
-								spendItems: [{label: "dogs", price: 20},{label: "cheese", price: 25}]
-							},
-							14 : {
-								totalDaySpend: 15,
-								spendItems: [{label: "yams", price: 10},{label: "crackers", price: 25}]
-							}
-						}
-					}, 
-					july : { 
-						monthSpend: 1230 
-					}} 
-				}
-		}, { 
-			2014: { 
-				totalSpend : 12450, 
-				monthlyBreakdown : { 
-					june : { 
-						monthSpend : 1234 
-					}, 
-					may : { 
-						monthSpend : 1452 
-					}}
-		}}
-	];
-
-	console.log(complexObject);
-
-
-	// per month
-	// if it matches the same year and month
-	// merge the values together and store
-
-	for (var i = 0; i < records.length; i++)
-	{
-		var tempObject = {
-			year: records[i].year,
-			month: records[i].month,
-			monthSpend: +records[i].integer
-		}
-		// always needs an initial value
-		if (totals.length === 0) totals.push(tempObject);
-		if (totals.length > 0) 
-		{
-			// checks for duplicate months
-			for (var t = 0; t < totals.length; t++)
-			{
-				if (tempObject.year == totals[t].year && tempObject.month == totals[t].month)
-				{
-					// found one!
-					monthRunningTotal += +tempObject.monthSpend;
-					tempObject.monthSpend = monthRunningTotal;
-				}
-			}
-		}
-	}
-
-
-	return json;
-	*/
 }
