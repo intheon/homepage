@@ -218,6 +218,14 @@ function writeDataToFile(payload,globalData)
 							}
 							else
 							{
+								Object.defineProperty(toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].daySpends,dayIdAsInt,{
+									value: {
+										spendItems: [{"label" : payload.label, "price": payload.detail}]
+									},
+									enumerable: true,
+									writeable: true
+								});
+								console.log(toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].daySpends);
 								break;
 							}
 						}
