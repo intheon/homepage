@@ -248,7 +248,7 @@ function writeDataToFile(payload,globalData)
 	console.log(typeof toWrite);
 
 	ajaxHandler("POST", "./php/module_file_manager.php", "complex.json", "addToFile", "globalData", "historical", toWrite , "complex");
-
+	parseObject(toWrite,globalTime)
 }
 
 
