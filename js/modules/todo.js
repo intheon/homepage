@@ -90,6 +90,7 @@ function sendToInterwebs(jsonItem,method)
 			filename        : "todo.json", 
 			method			: method,
 			data   			: jsonItem,
+			flag            : todo
 		},
 		success				: function(jsonString)
 		{

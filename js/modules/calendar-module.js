@@ -149,7 +149,7 @@ function assignData(globalTime)
 	};
 
 	// this takes a while to do its thing
-	getDataFromFile("POST", "./php/module_file_manager.php", payload, "readFile", jsonData);
+	getDataFromFile("POST", "./php/module_file_manager.php", payload, "readFile", jsonData, "complex");
 
 	// listening to the object
 	// only works on chrome, but i dont give a shit about other browsers
@@ -160,13 +160,13 @@ function assignData(globalTime)
 
 }
 
-function getDataFromFile(httpMethod,phpFile,payload,classMethod,objectName)
+function getDataFromFile(httpMethod,phpFile,payload,classMethod,objectName, flag)
 {
 	// payload is an object with filenames, and the object properties to assign the contents of the filename to.
 	// objectName is the root object to assign this to
 	for (keys in payload.files)
 	{
-		ajaxHandler(httpMethod, phpFile, payload.files[keys].filename, classMethod, objectName, payload.files[keys].propName,null);
+		ajaxHandler(httpMethod, phpFile, payload.files[keys].filename, classMethod, objectName, payload.files[keys].propName, null, flag);
 	}
 }
 
@@ -239,16 +239,20 @@ function writeDataToFile(payload,globalData)
 		}
 	}
 
-	console.log(toWrite);
+	Object.observe(toWrite,function(whatChanged){
+		console.log("something happened");
+		console.log(whatChanged);
+		parseObject(whatChanged[0].object,globalTime)
+	});
 
-	ajaxHandler("POST", "./php/module_file_manager.php", "complex.json", "addToFile", "globalData", "historical",toWrite);
+	console.log(typeof toWrite);
 
-	//console.log(payload);
-	//console.log(globalData);
+	ajaxHandler("POST", "./php/module_file_manager.php", "complex.json", "addToFile", "globalData", "historical", toWrite , "complex");
+
 }
 
 
-function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName,data)
+function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName,data,flag)
 {
 	// a reusable ajax handler for doing some php stuff to objects
 	$.ajax({
@@ -258,7 +262,8 @@ function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName,da
 		{
 			filename        : filename,
 			method   		: classMethod,
-			data            : data
+			data            : data,
+			flag            : flag
 		},
 		success				: function(data)
 		{
@@ -274,7 +279,6 @@ function parseObject(object,globalTime)
 	var asJSON = JSON.parse(object[objName]);
 
 	globalData = asJSON;
-	console.log(asJSON);
 
 	// find this year
 	for (var years in asJSON.items)

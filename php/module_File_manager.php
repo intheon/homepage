@@ -6,14 +6,15 @@ if (isset($_POST['filename']))
 
 	$file 					= $_POST['filename'];
 
-	if (isset($_POST['method']))
+	if (isset($_POST['method']) && isset($_POST['flag']))
 	{
 		$method 			= $_POST['method'];
+		$flag 				= $_POST['flag'];
 
 		if (isset($_POST['data']))
 		{
 			$data 			= $_POST['data'];
-			checkMethod($file,$method,$data);
+			checkMethod($file,$method,$data,$flag);
 		}
 	}
 }
@@ -21,7 +22,7 @@ if (isset($_POST['filename']))
 
 class filemanager 
 {
-	public function addToFile($filename,$data)
+	public function addToFile($filename,$data,$flag)
 	{
 		if (!file_exists("../" . $filename))
 		{
@@ -31,12 +32,20 @@ class filemanager
 		}
 		else
 		{
-			// append to existing file
-			$current = file_get_contents("../" . $filename);
-			$current = substr($current,0,strlen($current)-2);
-			$new = json_encode($data);
-			$json = $current . ',' . $new . ']}';
-			writeFile($filename,$json);
+			if ($flag == "todo")
+			{
+				// append to existing file
+				$current = file_get_contents("../" . $filename);
+				$current = substr($current,0,strlen($current)-2);
+				$new = json_encode($data);
+				$json = $current . ',' . $new . ']}';
+				writeFile($filename,$json);
+			}
+			else if ($flag == "complex")
+			{
+				$json = json_encode($data);
+				writeFile($filename,$json);
+			}
 		}
 	}
 
@@ -58,14 +67,14 @@ class filemanager
 
 }
 
-function checkMethod($file,$method,$data)
+function checkMethod($file,$method,$data,$flag)
 {
 	$filemanager 		= new filemanager;
 
 	switch ($method) 
 	{
 		case "addToFile":
-			$filemanager->addToFile($file,$data);
+			$filemanager->addToFile($file,$data,$flag);
 			break;
 
 		case "readFile":
