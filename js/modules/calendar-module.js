@@ -2,6 +2,7 @@ $(document).ready(function(){
 	// globalTime is blank and global and 
 	// will contain a crap ton of stuff
 	var globalTime 		= {};
+	var globalData 		= {};
 });
 
 function loadCalendar(type)
@@ -40,11 +41,12 @@ function drawCalendars(globalTime)
 	for (var loop = 0; loop < globalTime.quantToDisplay.length - 1; loop++)
 	{
 		// shorthand vars
-		var month	= globalTime.quantToDisplay[loop].format("MMMM");
+		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
+		var month			= globalTime.quantToDisplay[loop].format("MMMM");
 		var monthLowercase 	= globalTime.quantToDisplay[loop].format("MMMM").toLowerCase();
 		var daysInThisMonth = globalTime.quantToDisplay[loop].daysInMonth();
 
-		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"' data-month-label='"+month+"'><h3>"+month+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div><div class='month-section-footnotes'></div></div></div>");
+		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"' data-month-label='"+month+"' data-year-label='"+year+"'><h3>"+month+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div><div class='month-section-footnotes'></div></div></div>");
 		
 		// for each day in the month
 		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
@@ -59,7 +61,7 @@ function drawCalendars(globalTime)
 	$('.ui.dropdown').dropdown();
 
 	// instill modal when clicked
-	$(".dropdown .item").click(function(){
+	$(".dropdown .item").click(function(event){
 
 		// create the blasted modal
 
@@ -69,9 +71,17 @@ function drawCalendars(globalTime)
 		// need to make sure the title, view, and behaviour reflects that
 		// we ascertain which is which from this baby
 		var type = event.currentTarget.id;
+
+		// this is prepping a new object to be used
+		var updatedPayload  = {};
+
+		var yearIdentifier 	= event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel;
+		var monthIdentifier = event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel;
+		var dayIdentifier 	= event.currentTarget.parentNode.parentElement.parentElement.className;
+			dayIdentifier 	= dayIdentifier.split(" ");
+			dayIdentifier	= dayIdentifier[1];
+
 		var content, title = "";
-
-
 
 		if (type == "purchase-modal")
 		{
@@ -87,21 +97,12 @@ function drawCalendars(globalTime)
 		$(".ui.modal .modal-header").html(title);
 		$(".ui.modal .content .fields").html(content);
 		$('.ui.modal').modal('show');
-		var one = 0;
 
 		$(".ui.modal .actions .button").click(function(event){
 
-			// this has a really weird bug were it repeats loads
-			// not sure why, needs reinvestigating.
-
-			/*
-			console.log(arguments);
-			one++;
-			console.log(one);
-			*/
-
 			var type = event.currentTarget.id;
-			
+			console.log(type);
+
 			if (type == "add-item-modal") 
 			{	
 				var id = $(".modal-form-wrapper")[0].id;
@@ -109,7 +110,15 @@ function drawCalendars(globalTime)
 
 				// TODO VALIDATION and make sure bounds and type is good
 				var name = $("#" + split[0] +"-item-name").val();
-				var amount = $("#" + split[0] +"-item-desc").val();
+				var detail = $("#" + split[0] +"-item-desc").val();
+
+				var updatedPayload = {
+					name: name,
+					detail: detail 
+				}
+				// apply this new value to our huge json block
+				writeDataToFile(updatedPayload,globalData);
+
 				// remove modal from dom to stop duplicate values from appearing.
 				$(".ui.dimmer.modals").fadeOut("slow", function(){
 					$(this).remove();
@@ -128,7 +137,6 @@ function assignData(globalTime)
 {
 	// our raw data to play with
 	var jsonData = {};
-
 	// our request payload to the server
 	/*
 	var payload = {
@@ -161,6 +169,12 @@ function getDataFromFile(httpMethod,phpFile,payload,classMethod,objectName)
 	}
 }
 
+function writeDataToFile(payload,globalData)
+{
+	console.log(payload);
+	console.log(globalData);
+}
+
 
 function ajaxHandler(httpMethod,phpFile,filename,classMethod,objName,propName)
 {
@@ -186,6 +200,9 @@ function parseObject(object,globalTime)
 	var objName = Object.keys(object)[0];
 
 	var asJSON = JSON.parse(object[objName]);
+
+	globalData = asJSON;
+	//console.log(asJSON);
 
 	// find this year
 	for (var years in asJSON.items)
