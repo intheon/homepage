@@ -67,23 +67,26 @@ function drawCalendars(globalTime)
 
 		$("body").append("<div class='ui modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
 
+		// start making some preliminary object info
+		// this will ultimately be the values which get populated into the master object
+		// this will only get applied when 'add' is clicked
+
+		var updatedPayload  = {
+			actionType: 			event.currentTarget.id,
+			yearIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel,
+			monthIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel,
+			dayIdentifier: 			(function(){
+										var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
+											dayId = dayId.split(" ");
+											dayId = dayId[1];
+										return dayId;
+									}(event))
+		};
+
 		// can either have a modal for adding spending or a diary event
 		// need to make sure the title, view, and behaviour reflects that
-		// we ascertain which is which from this baby
-		var type = event.currentTarget.id;
-
-		// this is prepping a new object to be used
-		var updatedPayload  = {};
-
-		var yearIdentifier 	= event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel;
-		var monthIdentifier = event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel;
-		var dayIdentifier 	= event.currentTarget.parentNode.parentElement.parentElement.className;
-			dayIdentifier 	= dayIdentifier.split(" ");
-			dayIdentifier	= dayIdentifier[1];
-
 		var content, title = "";
-
-		if (type == "purchase-modal")
+		if (updatedPayload.actionType == "purchase-modal")
 		{
 			title = "Add Spend";
 			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc'></div></div>";
@@ -101,7 +104,6 @@ function drawCalendars(globalTime)
 		$(".ui.modal .actions .button").click(function(event){
 
 			var type = event.currentTarget.id;
-			console.log(type);
 
 			if (type == "add-item-modal") 
 			{	
@@ -112,10 +114,9 @@ function drawCalendars(globalTime)
 				var name = $("#" + split[0] +"-item-name").val();
 				var detail = $("#" + split[0] +"-item-desc").val();
 
-				var updatedPayload = {
-					name: name,
-					detail: detail 
-				}
+				updatedPayload.label = name;
+				updatedPayload.detail = detail;
+
 				// apply this new value to our huge json block
 				writeDataToFile(updatedPayload,globalData);
 
@@ -171,8 +172,70 @@ function getDataFromFile(httpMethod,phpFile,payload,classMethod,objectName)
 
 function writeDataToFile(payload,globalData)
 {
-	console.log(payload);
-	console.log(globalData);
+	// dont cry... !
+	var toWrite = globalData;
+	// compare globalData against payload
+	// merge if matching values
+	// add if doesn't exist
+
+	// find this year
+	for (var years in toWrite.items)
+	{
+		// all this does is match 2015 == 2015, 2016 == 2016 etc
+		if (parseInt(Object.keys(toWrite.items[years])[0]) == payload.yearIdentifier)
+		{
+			// current
+			var currentYearObj = toWrite.items[years][payload.yearIdentifier];
+
+			for (var months in currentYearObj.monthlyBreakdown)
+			{
+				if (months == payload.monthIdentifier)
+				{
+					// update the month spend if it was a spending item
+					if (payload.actionType ==  "purchase-modal")
+					{
+						// update monthly spend
+						// this is horrible... i know - but at least it's dynamic!!
+						toWrite.items[years][payload.yearIdentifier].monthlyBreakdown[months].monthSpend = +currentYearObj.monthlyBreakdown[months].monthSpend + +payload.detail;
+
+						// turns 'calendar-item-4' into '4'
+						var dayIdAsInt = payload.dayIdentifier;
+							dayIdAsInt = dayIdAsInt.split("-");
+							dayIdAsInt = dayIdAsInt[2];
+
+						for (days in currentYearObj.monthlyBreakdown[months].daySpends)
+						{
+							// testing for existing properties/days
+							if (days == dayIdAsInt)
+							{
+								// do something to append
+								console.log(currentYearObj.monthlyBreakdown[months].daySpends[days]);
+							}
+							else
+							{
+								break;
+							}
+						}
+
+						console.log(days);
+						
+						console.log(currentYearObj.monthlyBreakdown[months].daySpends[days]);
+
+						//console.log(payload);
+						//console.log(toWrite);
+
+					}
+					else if (payload.actionType ==  "diary-modal")
+					{
+						// something
+					}
+				}
+			}
+		}
+	}
+
+	//console.log(payload);
+	//console.log(globalData);
 }
 
 
