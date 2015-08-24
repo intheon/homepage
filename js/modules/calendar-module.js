@@ -66,12 +66,44 @@ function drawCalendars(globalTime)
 		// we ascertain which is which from this baby
 
 		var type = event.currentTarget.id;
+		var content, title = "";
 
-		var title = (type == "purchase-modal") ? "Add Spend" :  "Add Diary";
+		if (type == "purchase-modal")
+		{
+			title = "Add Spend";
+			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-cost'></div></div>";
+		}
+		else
+		{
+			title = "Add Diary";
+			content = "<div id='event-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
+		}
 
 		$(".ui.modal .modal-header").html(title);
-
+		$(".ui.modal .content .fields").html(content);
 		$('.ui.modal').modal('show');
+		var one = 0;
+
+		$(".ui.modal .actions .button").click(function(event){
+
+			// this has a really weird bug were it repeats loads
+			// not sure why, needs reinvestigating.
+			console.log(arguments);
+			one++;
+			console.log(one);
+			var type = event.currentTarget.id;
+			
+			if (type == "add-item-modal") 
+			{	
+				var id = $(".modal-form-wrapper")[0].id;
+				console.log(id);
+				/*
+				var name = $("#spending-item-name").val();
+				var amount = $("#spending-item-cost").val();
+				*/
+			}
+		});
+
 
 	});
 

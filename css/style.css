@@ -338,6 +338,16 @@ body
     display:                relative;
 }
 
+.modal-field
+{
+    margin-right:           3% !important;
+    min-width:              46%
+}
+.modal-textarea textarea
+{
+    float:                   left;
+}
+
 .calendar-item
 {
     z-index:                1;
