@@ -11518,6 +11518,7 @@ body.dimmable>.dimmer {
     font-weight: 400;
     box-shadow: none;
     -webkit-touch-callout: none;
+    z-index:    3333;
 }
 .ui.dropdown .menu>.item:first-child {
     border-top: none;

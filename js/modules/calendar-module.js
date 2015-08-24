@@ -61,22 +61,27 @@ function drawCalendars(globalTime)
 	// instill modal when clicked
 	$(".dropdown .item").click(function(){
 
+		// create the blasted modal
+
+		$("body").append("<div class='ui modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
+
 		// can either have a modal for adding spending or a diary event
 		// need to make sure the title, view, and behaviour reflects that
 		// we ascertain which is which from this baby
-
 		var type = event.currentTarget.id;
 		var content, title = "";
+
+
 
 		if (type == "purchase-modal")
 		{
 			title = "Add Spend";
-			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-cost'></div></div>";
+			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc'></div></div>";
 		}
 		else
 		{
 			title = "Add Diary";
-			content = "<div id='event-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
+			content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
 		}
 
 		$(".ui.modal .modal-header").html(title);
@@ -88,19 +93,27 @@ function drawCalendars(globalTime)
 
 			// this has a really weird bug were it repeats loads
 			// not sure why, needs reinvestigating.
+
+			/*
 			console.log(arguments);
 			one++;
 			console.log(one);
+			*/
+
 			var type = event.currentTarget.id;
 			
 			if (type == "add-item-modal") 
 			{	
 				var id = $(".modal-form-wrapper")[0].id;
-				console.log(id);
-				/*
-				var name = $("#spending-item-name").val();
-				var amount = $("#spending-item-cost").val();
-				*/
+				var split = id.split("-");
+
+				// TODO VALIDATION and make sure bounds and type is good
+				var name = $("#" + split[0] +"-item-name").val();
+				var amount = $("#" + split[0] +"-item-desc").val();
+				// remove modal from dom to stop duplicate values from appearing.
+				$(".ui.dimmer.modals").fadeOut("slow", function(){
+					$(this).remove();
+				});
 			}
 		});
 
