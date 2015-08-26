@@ -29,8 +29,6 @@ function loadCalendar(type)
 		scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
 	},1100);
 
-
-
 }
 
 function drawCalendars(globalTime)
@@ -63,29 +61,34 @@ function drawCalendars(globalTime)
 
 	// instill modal when clicked
 	$(".dropdown .item").click(function(event){
+		createModals(event);
+	});
 
-		// create the blasted modal
+	// now that our calendar is drawn, populate it with data
+	assignData(globalTime);
+}
 
-		$("body").append("<div class='ui modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
+function createModals(event)
+{
+	// create a blank modal
+	$("body").append("<div class='ui modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
 
-		// start making some preliminary object info
-		// this will ultimately be the values which get populated into the master object
-		// this will only get applied when 'add' is clicked
-
-		var updatedPayload  = {
-			actionType: 			event.currentTarget.id,
-			yearIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel,
-			monthIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel,
-			dayIdentifier: 			(function(){
-										var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
-											dayId = dayId.split(" ");
-											dayId = dayId[1];
-											dayId = dayId.split("-");
-											dayId = dayId[2];
-										return dayId;
-									}(event))
+	// super useful stuff
+	var updatedPayload  = {
+		actionType: 			event.currentTarget.id,
+		yearIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel,
+		monthIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel,
+		dayIdentifier: 			(function(){
+									var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
+										dayId = dayId.split(" ");
+										dayId = dayId[1];
+										dayId = dayId.split("-");
+										dayId = dayId[2];
+									return dayId;
+								}(event))
 		};
 
+		
 		// can either have a modal for adding spending or a diary event
 		// need to make sure the title, view, and behaviour reflects that
 		var content, title = "";
@@ -107,7 +110,7 @@ function drawCalendars(globalTime)
 			// want to match with year, month, day of that of the modal
 			// updatedPayload already has the answers
 			var matchingDays = returnMatchingDay(updatedPayload.yearIdentifier, updatedPayload.monthIdentifier, updatedPayload.dayIdentifier);
-			//console.log(matchingDays);
+			console.log(matchingDays);
 		}
 
 		$(".ui.modal .modal-header").html(title);
@@ -141,10 +144,6 @@ function drawCalendars(globalTime)
 		});
 
 
-	});
-
-	// now that our calendar is drawn, populate it with data
-	assignData(globalTime);
 }
 
 function assignData(globalTime)
@@ -334,7 +333,6 @@ function parseObject(object,globalTime)
 }
 
 // all these dig down into the obj and return the matching data
-
 function returnMatchingYear(year)
 {
 	var toOperate = globalData;
@@ -404,6 +402,13 @@ function returnMatchingDay(year, month, day)
 		}
 	}
 
-	return dayActivities;
+	if ($.isEmptyObject(dayActivities))
+	{
+		return "Nothing!";
+	}
+	else
+	{
+		return dayActivities;
+	}
 }
 
