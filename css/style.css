@@ -56,7 +56,14 @@ body
     color:                  #AD503F;
 }
 
-
+.content
+{
+    position:                relative !important;
+}
+.content .column
+{
+    width:                  auto !important;
+}
 .integer_count
 {
     font-size:              0.7em;

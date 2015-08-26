@@ -71,7 +71,7 @@ function drawCalendars(globalTime)
 function createModals(event)
 {
 	// create a blank modal
-	$("body").append("<div class='ui modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
+	$("body").append("<div class='ui modal' id='modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
 
 	// super useful stuff
 	var updatedPayload  = {
@@ -92,25 +92,53 @@ function createModals(event)
 		// can either have a modal for adding spending or a diary event
 		// need to make sure the title, view, and behaviour reflects that
 		var content, title = "";
-		if (updatedPayload.actionType == "purchase-modal")
-		{
-			title = "Add Spend";
-			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc'></div></div>";
-		}
-		else if (updatedPayload.actionType == "diary-modal")
-		{
-			title = "Add Diary";
-			content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
-		}
-		else if (updatedPayload.actionType == "stats-modal")
-		{
-			title = "Overview for day";
-			content = "<div id='stats-overview>Some useful stats here</div>";
 
-			// want to match with year, month, day of that of the modal
-			// updatedPayload already has the answers
-			var matchingDays = returnMatchingDay(updatedPayload.yearIdentifier, updatedPayload.monthIdentifier, updatedPayload.dayIdentifier);
-			console.log(matchingDays);
+		switch (updatedPayload.actionType)
+		{
+			case "purchase-modal":
+				title = "Add Spend";
+				content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc'></div></div>";
+				break;
+
+			case "diary-modal":
+				title = "Add Diary";
+				content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
+				break;
+
+			case "stats-modal":
+				title = "Overview for day";
+				content = "<div id='stats-overview>Some useful stats here</div>";
+				var matchingDays = returnMatchingDay(updatedPayload.yearIdentifier, updatedPayload.monthIdentifier, updatedPayload.dayIdentifier);
+
+					if (matchingDays !== null)
+					{
+						$(".content").html("<div class='ui two column middle aligned very relaxed stackable grid' id='stats-display'></div>");
+						for (keys in matchingDays)
+						{
+							var object = matchingDays[keys];
+							if (keys == "spending")
+							{
+								$("#stats-display").append("<div class='column'><div class='ui horizontal statistic'><div class='value'>"+object.totalDaySpend+"</div><div class='label'>Spent today</div></div></div>");
+							}
+							if (keys == "events")
+							{
+								console.log(matchingDays[keys]);
+								$("#stats-display").append("<div class='column'><div class='ui horizontal statistic'><div class='value'>"+object.totalDayEvents+"</div><div class='label'>Events today</div></div></div>");
+							}
+						}
+					}
+					else if (matchingDays === null)
+					{
+						$(".content").html("<h3>No stats to show!</h3>");
+						$("#add-item-modal").fadeOut();
+						$("#cancel-modal").fadeOut();
+					}
+
+				break;
+
+			default:
+				console.log("lol b0rked");
+				break;
 		}
 
 		$(".ui.modal .modal-header").html(title);
@@ -135,15 +163,26 @@ function createModals(event)
 
 				// apply this new value to our huge json block
 				writeDataToFile(updatedPayload,globalData);
-
-				// remove modal from dom to stop duplicate values from appearing.
-				$(".ui.dimmer.modals").fadeOut("slow", function(){
-					$(this).remove();
-				});
 			}
+				// remove modal from dom to stop duplicate values from appearing.
+				removeModalFromDom();
 		});
 
+		$("#modal .icon").click(function(){
+			removeModalFromDom();
+		});
+		$("#modal .button").click(function(){
+			removeModalFromDom();
+		});
+}
 
+function removeModalFromDom()
+{
+	$("#modal").fadeOut("slow", function(){
+		console.log("running");
+		$("#modal").remove();
+		$(".ui.dimmer.modals").remove();
+	});
 }
 
 function assignData(globalTime)
@@ -404,7 +443,7 @@ function returnMatchingDay(year, month, day)
 
 	if ($.isEmptyObject(dayActivities))
 	{
-		return "Nothing!";
+		return null;
 	}
 	else
 	{
