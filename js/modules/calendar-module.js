@@ -3,6 +3,7 @@ $(document).ready(function(){
 	// will contain a crap ton of stuff
 	var globalTime 		= {};
 	var globalData 		= {};
+
 });
 
 function loadCalendar(type)
@@ -53,7 +54,7 @@ function drawCalendars(globalTime)
 		{
 			var day = moment(cellLoop,"D");
 				day = day.format("dd");
-			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal' id='purchase-modal'><i class='money icon'></i>New Purchase</div><div class='item show-modal' id='diary-modal''><i class='calendar icon'></i>New Diary entry</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal' id='purchase-modal'><i class='money icon'></i>New Purchase</div><div class='item show-modal' id='diary-modal'><i class='calendar icon'></i>New Diary entry</div><div class='item show-modal' id='stats-modal'><i class='tasks icon'></i>Statistics</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
 		}
 	}
 
@@ -79,6 +80,8 @@ function drawCalendars(globalTime)
 										var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
 											dayId = dayId.split(" ");
 											dayId = dayId[1];
+											dayId = dayId.split("-");
+											dayId = dayId[2];
 										return dayId;
 									}(event))
 		};
@@ -91,10 +94,20 @@ function drawCalendars(globalTime)
 			title = "Add Spend";
 			content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc'></div></div>";
 		}
-		else
+		else if (updatedPayload.actionType == "diary-modal")
 		{
 			title = "Add Diary";
 			content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc'></div></div>";
+		}
+		else if (updatedPayload.actionType == "stats-modal")
+		{
+			title = "Overview for day";
+			content = "<div id='stats-overview>Some useful stats here</div>";
+
+			// want to match with year, month, day of that of the modal
+			// updatedPayload already has the answers
+			var matchingDays = returnMatchingDay(updatedPayload.yearIdentifier, updatedPayload.monthIdentifier, updatedPayload.dayIdentifier);
+			//console.log(matchingDays);
 		}
 
 		$(".ui.modal .modal-header").html(title);
@@ -306,7 +319,6 @@ function parseObject(object,globalTime)
 					$("div [data-month-label='"+months+"'] .month-section-body .calendar-item-"+events+"").append("<div class='ui label red'><i class='calendar outline icon'></i>"+monthlySpendsObj[spend].totalDaySpend+"</div>")
 				}
 
-				
 				// this draws some helpful info
 				var monthSpend = currentYearObj.monthlyBreakdown[months].monthSpend;
 				var wageEarned = currentYearObj.monthlyBreakdown[months].monthWage;
@@ -319,5 +331,79 @@ function parseObject(object,globalTime)
 
 	// to do... allow historic years
 	// for (some code to do some shit)
+}
+
+// all these dig down into the obj and return the matching data
+
+function returnMatchingYear(year)
+{
+	var toOperate = globalData;
+	for (items in toOperate)
+	{
+		for (keys in toOperate[items])
+		{
+			var actualKeys = Object.keys(toOperate[items][keys]);
+			for (var i = 0; i < keys.length; i++)
+			{
+				if (parseInt(actualKeys[i]) == year)
+				{
+					// we have it johnson
+					return toOperate[items][keys][year];
+				}
+
+			}
+		}
+	}
+}
+
+function returnMatchingMonth(year, month)
+{
+	// params
+	// year, month
+
+	// first get the yearly object
+	var yearObj = returnMatchingYear(year);
+
+	// second loop through and find a match
+
+	for (months in yearObj.monthlyBreakdown)
+	{
+		console.log(months);
+	}
+	/*
+	for (items in toOperate)
+	{
+		for (keys in toOperate[items])
+		{
+			var actualKeys = Object.keys(toOperate[items][keys]);
+			for (var i = 0; i < keys.length; i++)
+			{
+				if (parseInt(actualKeys[i]) == year)
+				{
+					// we have it johnson
+					return toOperate[items][keys][year];
+				}
+
+			}
+		}
+	}
+	*/
+
+	//return yearObj;
 
 }
+
+
+function returnMatchingDay(year, month, day)
+{
+	// params
+	// year, month, day
+
+	// first get the monthly object
+	var monthObj = returnMatchingMonth(year, month);
+
+	console.log(monthObj)
+
+	//console.log(year, month, day);
+}
+
