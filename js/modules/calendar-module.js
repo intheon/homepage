@@ -112,18 +112,27 @@ function createModals(event)
 
 					if (matchingDays !== null)
 					{
+						$("#add-item-modal").fadeOut();
 						$(".content").html("<div class='ui two column middle aligned very relaxed stackable grid' id='stats-display'></div>");
 						for (keys in matchingDays)
 						{
 							var object = matchingDays[keys];
-							if (keys == "spending")
-							{
-								$("#stats-display").append("<div class='column'><div class='ui horizontal statistic'><div class='value'>"+object.totalDaySpend+"</div><div class='label'>Spent today</div></div></div>");
-							}
+
 							if (keys == "events")
 							{
-								console.log(matchingDays[keys]);
-								$("#stats-display").append("<div class='column'><div class='ui horizontal statistic'><div class='value'>"+object.totalDayEvents+"</div><div class='label'>Events today</div></div></div>");
+								$("#stats-display").append("<div class='column' id='events'><div class='ui horizontal statistic'><div class='value'>"+object.totalDayEvents+"</div><div class='label'>Events today</div></div><div class='ui divided very relaxed list' id='events-todo'></div></div>");
+								for (events in matchingDays[keys].dayEventItems)
+								{
+									$("#events-todo").append("<div class='item'>"+matchingDays[keys].dayEventItems[events].label+"</item>")
+								}
+							}
+							if (keys == "spending")
+							{
+								$("#stats-display").append("<div class='column' id='spending'><div class='ui horizontal statistic'><div class='value'>£"+object.totalDaySpend+"</div><div class='label'>Spent today</div></div><div class='ui divided very relaxed list' id='spending-list'></div></div>");
+								for (spends in matchingDays[keys].spendItems)
+								{
+									$("#spending-list").append("<div class='item'>"+matchingDays[keys].spendItems[spends].label+" | £"+matchingDays[keys].spendItems[spends].price+"</item>");
+								}
 							}
 						}
 					}
@@ -179,9 +188,8 @@ function createModals(event)
 function removeModalFromDom()
 {
 	$("#modal").fadeOut("slow", function(){
-		console.log("running");
 		$("#modal").remove();
-		$(".ui.dimmer.modals").remove();
+		$(".ui.dimmer.modals").remove()
 	});
 }
 
