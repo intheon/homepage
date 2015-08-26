@@ -358,39 +358,18 @@ function returnMatchingYear(year)
 
 function returnMatchingMonth(year, month)
 {
-	// params
-	// year, month
-
+	// params = year, month
 	// first get the yearly object
 	var yearObj = returnMatchingYear(year);
-
-	// second loop through and find a match
-
+	// then cycle through and exposes ALL monthly objects
 	for (months in yearObj.monthlyBreakdown)
-	{
-		console.log(months);
-	}
-	/*
-	for (items in toOperate)
-	{
-		for (keys in toOperate[items])
+	{	
+		if (months == month)
 		{
-			var actualKeys = Object.keys(toOperate[items][keys]);
-			for (var i = 0; i < keys.length; i++)
-			{
-				if (parseInt(actualKeys[i]) == year)
-				{
-					// we have it johnson
-					return toOperate[items][keys][year];
-				}
-
-			}
+			// we have it!
+			return yearObj.monthlyBreakdown[month];
 		}
 	}
-	*/
-
-	//return yearObj;
-
 }
 
 
@@ -402,7 +381,7 @@ function returnMatchingDay(year, month, day)
 	// first get the monthly object
 	var monthObj = returnMatchingMonth(year, month);
 
-	console.log(monthObj)
+	//console.log(monthObj)
 
 	//console.log(year, month, day);
 }
