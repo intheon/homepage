@@ -90,7 +90,7 @@ function sendToInterwebs(jsonItem,method)
 			filename        : "todo.json", 
 			method			: method,
 			data   			: jsonItem,
-			flag            : todo
+			flag            : "todo"
 		},
 		success				: function(jsonString)
 		{
@@ -110,7 +110,8 @@ function retrieveFromInterwebs()
 		{
 			filename        : "todo.json",
 			method   		: "readFile",
-			data            : null
+			data            : null,
+			flag            : "todo"
 		},
 		success				: function(jsonString)
 		{

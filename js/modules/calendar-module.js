@@ -25,9 +25,12 @@ function loadCalendar(type)
 
 	drawCalendars(globalTime);
 
-	$("html, body").animate({
+	if (type == "complex")
+	{
+		$("html, body").animate({
 		scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
-	},1100);
+		},1100);
+	}
 
 }
 
@@ -37,8 +40,10 @@ function drawCalendars(globalTime)
 	// based upon each property in 'globalTime'
 
 	// for each month
-	for (var loop = 0; loop < globalTime.quantToDisplay.length - 1; loop++)
+	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
 	{
+		console.log("is this even looping?");
+
 		// shorthand vars
 		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
 		var month			= globalTime.quantToDisplay[loop].format("MMMM");
@@ -71,7 +76,7 @@ function drawCalendars(globalTime)
 function createModals(event)
 {
 	// create a blank modal
-	$("body").append("<div class='ui modal' id='modal'><i class='close icon'></i><div class='header modal-header'></div><div class='content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
+	$("body").append("<div class='ui modal' id='modal'><i class='close icon'></i><div class='header modal-header'></div><div class='modal-content'><div class='ui fluid form'><div class='fields'></div></div></div><div class='actions'><div class='ui inverted black button' id='cancel-modal'>Cancel</div><div class='ui inverted orange button' id='add-item-modal'>Add</div></div>");
 
 	// super useful stuff
 	var updatedPayload  = {
@@ -113,7 +118,7 @@ function createModals(event)
 					if (matchingDays !== null)
 					{
 						$("#add-item-modal").fadeOut();
-						$(".content").html("<div class='ui two column middle aligned very relaxed stackable grid' id='stats-display'></div>");
+						$(".modal-content").html("<div class='ui two column middle aligned very relaxed stackable grid' id='stats-display'></div>");
 						for (keys in matchingDays)
 						{
 							var object = matchingDays[keys];
@@ -138,7 +143,7 @@ function createModals(event)
 					}
 					else if (matchingDays === null)
 					{
-						$(".content").html("<h3>No stats to show!</h3>");
+						$(".modal-content").html("<h3>No stats to show!</h3>");
 						$("#add-item-modal").fadeOut();
 						$("#cancel-modal").fadeOut();
 					}
@@ -151,7 +156,7 @@ function createModals(event)
 		}
 
 		$(".ui.modal .modal-header").html(title);
-		$(".ui.modal .content .fields").html(content);
+		$(".ui.modal .modal-content .fields").html(content);
 		$('.ui.modal').modal('show');
 
 		$(".ui.modal .actions .button").click(function(event){

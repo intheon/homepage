@@ -64,9 +64,12 @@
 
 			<div id="calendar" class="flex-item one-half"><div class="padding">
 			    <h5 class="ui horizontal header divider"><i class="calendar icon"></i>Calendar</h5>
+			    <div class="modal-calendar"></div>
+			    <!--
 			    <div id="messages"></div>
 				<div class="calendar" id="cost-calendar"></div>
 				<div class="information" id="information-panel"></div>
+				-->
 			</div></div>
 
 			<div id="todo" class="flex-item one-half"><div class="padding">
@@ -126,9 +129,12 @@
 <script type="text/javascript" src="js/modules/gmail.js"></script>
 <script type="text/javascript" src="js/modules/feeds.js"></script>
 <script type="text/javascript" src="js/modules/todo.js"></script>
-<script type="text/javascript" src="js/modules/calendar.js"></script>
+<script type="text/javascript" src="js/modules/calendar-module.js"></script>
 <script type="text/javascript" src="js/modules/display.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
+<script type="text/javascript">
+	loadCalendar("simple");
+</script>
 
 </body>
 </html>
