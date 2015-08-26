@@ -375,14 +375,35 @@ function returnMatchingMonth(year, month)
 
 function returnMatchingDay(year, month, day)
 {
-	// params
-	// year, month, day
-
+	// params = year, month, day
 	// first get the monthly object
 	var monthObj = returnMatchingMonth(year, month);
+	// then cycle through and exposes ALL daily objects
 
-	//console.log(monthObj)
+	// there's two things we need: the spends and the events
+	var theSpends = monthObj.daySpends;
+	var theEvents = monthObj.dayEvents;
 
-	//console.log(year, month, day);
+	var dayActivities = {};
+
+	// we only care about ones for our day arguments
+	for (days in theSpends)
+	{
+		if (parseInt(days) == day)
+		{
+			dayActivities.spending = theSpends[day];
+			break;
+		}
+	}
+	for (days in theEvents)
+	{
+		if (parseInt(days) == day)
+		{
+			dayActivities.events = theEvents[day];
+			break;
+		}
+	}
+
+	return dayActivities;
 }
 
