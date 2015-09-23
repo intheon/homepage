@@ -1,7 +1,13 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot");
+  src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot?#iefix") format("embedded-opentype"), local("Open Sans"), local("Open-Sans-regular"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff2") format("woff2"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff") format("woff"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.ttf") format("truetype"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans") format("svg"); }
 body {
   background: url(../img/bg.jpg);
   background-attachment: fixed;
-  font-family: arial; }
+  font-family: "Open Sans" !important; }
 
 .center {
   margin-left: auto !important;
@@ -17,30 +23,30 @@ body {
 
 input[type="text"], button {
   padding: 1.6%;
+  border-radius: 7px;
   outline: none;
-  background: #fcf5f5;
+  background: rgba(255, 255, 255, 0.3);
   border: none;
-  border-bottom: 2px solid #f2d7d7;
-  transition: all 0.7s; }
+  border-bottom: 2px solid #f8eaea;
+  transition: all 0.7s;
+  font-family: "Open Sans" !important; }
 
 input[type="text"]:focus, button:hover {
-  border-bottom: 2px solid #cb6464;
+  border-bottom: 2px solid #bd3f3f;
   background: none;
   cursor: -moz-pointer;
   cursor: -webkit-pointer;
   cursor: pointer; }
 
-#login-forms {
-  display: flex; }
-
-#login-forms * {
-  margin: 0.5%;
-  text-shadow: 1px 1px 1px #888888; }
-
-input[type="text"] {
-  width: 35%; }
+.forms * {
+  font-size: 1.2em;
+  margin-bottom: 3%;
+  color: #000000; }
 
 .big-header {
-  font-size: 1.6em; }
+  font-size: 2em; }
+
+#register-forms {
+  display: none; }
 
 /*# sourceMappingURL=login-style.css.map */

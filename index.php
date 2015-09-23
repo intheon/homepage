@@ -1,3 +1,14 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION['username']))
+{
+    header("Location: login.php");
+    die();
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -12,6 +23,13 @@
 </head>
 
 <body class="smoothWheel">
+
+<div class="user-toolbar">
+	<div class="user-info">
+		<?php echo $_SESSION['username']; ?>
+		<i class="user icon"></i>
+	</div>
+</div>
 
 	<!-- PANEL ONE -->
 	<div class="area" id="home">

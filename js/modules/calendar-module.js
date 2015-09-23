@@ -67,7 +67,7 @@ var Calendar = {
 
 			// render the days within the month
 			for (d = 1; d < t.dInM; d++){
-				var dl = moment().date(d).format("dd").toLowerCase();
+				var dl = moment().date(d).format("dd");
 				$("#" + t.id + " .month-section-body").append("<div class='calendar-item calendar-item-"+d+"'>\
 					<div class='ui dropdown'>\
 						<i class='dropdown icon'></i>\
@@ -90,8 +90,19 @@ var Calendar = {
 
 		});
 
+		// register dropdown handler
+		$('.ui.dropdown').dropdown();
 
+		// instill modal when clicked
+		$(".dropdown .item").click(function(event){
+			Calendar.presentModal(event);
+		});
+	},
+
+	presentModal: function(){
+		console.log("modal code here");
 	}
+	
 
 		/*
 	}
