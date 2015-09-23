@@ -11,7 +11,11 @@ var Calendar = {
 			thisMonthAsPhrase: 				moment().format("MMMM"),
 			thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
 			quantToDisplay: 				(function(){
-												var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
+												var momentBuilder = function(offset){
+													return moment().month(parseInt(moment().format("M") - 1) + offset);
+												};
+
+												var array = (type == "full") ? [momentBuilder(-2), momentBuilder(-1), momentBuilder(+0), momentBuilder(+1), momentBuilder(+2), momentBuilder(+3), momentBuilder(+4), momentBuilder(+5)] : [momentBuilder(+0)];
 												return array;
 											})(type)
 		};
@@ -25,12 +29,10 @@ var Calendar = {
 	renderCal: function(time){
 
 		_.each(time.quantToDisplay, function(arrItem){
-			var aString 	= arrItem._d.toString();
-			var aSplit 		= aString.split(" ");
-			console.log(aSplit);
+			console.log(arrItem);
 		});
 
-
+	},
 		/*
 
 	// for each month
@@ -64,7 +66,6 @@ var Calendar = {
 	// now that our calendar is drawn, populate it with data
 	assignData(globalTime);
 	*/
-	},
 
 	scrollToElement: function(){
 		$("html, body").animate({
