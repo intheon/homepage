@@ -7,6 +7,12 @@ $(document).ready(function(){
 	$("#register-details").click(function(){
 		registerDetails();
 	});
+
+	$("#submit-sign-in").click(function(){
+		signIn();
+	});
+
+
 });	
 
 function showRegisterForm(){
@@ -57,6 +63,34 @@ function registerDetails(){
 					createErrorMSG("No data received");
 					break;
 			}
+		}
+	});
+}
+
+function signIn(){
+	var payload = {
+		usr: 	$("#login-form-username").val(),
+		pwd: 	$("#login-form-password").val(),
+	}
+
+	// SUBMIT PAYLOAD TO PHP
+	$.ajax({
+		type: 	"POST",
+		url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+		data: 	{
+			type: 		"signInUser",
+			payload: 	JSON.stringify(payload)
+		},
+		success: function(response){
+				switch (response){
+					case "success":
+						window.location = "index.php";
+						break;
+
+					default:
+						createErrorMSG("No data received");
+						break;
+				}
 		}
 	});
 }

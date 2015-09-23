@@ -27,6 +27,14 @@ function checkMethod($type)
 			$userManager->getUsersWages();
 			break;
 
+		case "signInUser":
+			if (isset($_POST["payload"]))
+			{
+				$payload = $_POST["payload"];
+				$userManager->signInUser($payload);
+			}
+			break;
+
 		default:
 		echo "shit broke y0";
 		break;
@@ -78,6 +86,28 @@ class userManager
 
 		print_r($match);
 		*/
+	}
+
+	public function signInUser($payload)
+	{
+		global $connect;
+
+		$arr = json_decode($payload);
+
+		foreach ($arr as $key => $val)
+		{
+			switch ($key)
+			{
+				case "usr":
+				$usr = $val;
+				break;
+
+				case "pwd":
+				$pwd = $val;
+				break;
+			}
+		}
+		$this->logUserIn($usr);
 	}
 
 	public function getUsersWages()
