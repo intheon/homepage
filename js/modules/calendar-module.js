@@ -10,19 +10,38 @@ var Calendar = {
 			thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
 			thisMonthAsPhrase: 				moment().format("MMMM"),
 			thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
+			// this one is a little crazy
+			// basically i either want to show lots of months, or one
+			// the flag 'full' builds a lot of moment objects with offsets
 			quantToDisplay: 				(function(){
-												var momentBuilder = function(offset){
-													return moment().month(parseInt(moment().format("M") - 1) + offset);
-												};
+											var momentBuilder = function(offset){
+												return moment().month(parseInt(moment().format("M") - 1) + offset);
+											};
 
-												var array = (type == "full") ? [momentBuilder(-2), momentBuilder(-1), momentBuilder(+0), momentBuilder(+1), momentBuilder(+2), momentBuilder(+3), momentBuilder(+4), momentBuilder(+5)] : [momentBuilder(+0)];
-												return array;
-											})(type)
+											var array = (type == "full") 
+												? 
+												[
+													momentBuilder(-2),
+													momentBuilder(-1), 
+													momentBuilder(+0), 
+													momentBuilder(+1), 
+													momentBuilder(+2), 
+													momentBuilder(+3), 
+													momentBuilder(+4), 
+													momentBuilder(+5)
+												] 
+												: 
+												[
+													momentBuilder(+0)
+												];
+											return array;
+										})(type)
 		};
 
-		// UX stuffffew
+		// UX stuff
 		if (type == "complex") scrollToElement();
 
+		// finally build it
 		this.renderCal(time);
 	},
 
