@@ -18,11 +18,8 @@ var Calendar = {
 											})(type)
 		};
 
-		// UX stuff
-		if (type == "complex")
-		{
-			scrollToElement();
-		}
+		// UX stuffffew
+		if (type == "complex") scrollToElement();
 
 		this.render(time);
 	},
