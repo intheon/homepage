@@ -1,10 +1,8 @@
 var Calendar = {
 
-	initialise: function(type)
-	{
+	initialise: function(type){
 		// define some useful metadata
-		var time = 
-		{
+		var time = {
 			today: 							moment(),
 			todaysDayAsInt: 				parseInt(moment().format("D")),
 			thisMonthAsInt: 				parseInt(moment().format("M")),
@@ -21,23 +19,10 @@ var Calendar = {
 		// UX stuffffew
 		if (type == "complex") scrollToElement();
 
-		this.render(time);
+		this.renderCal(time);
 	},
 
-	render: function(time)
-	{
-		this.drawCal(time);
-	},
-
-	scrollToElement: function()
-	{
-		$("html, body").animate({
-			scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
-		},1100);
-	},
-
-	drawCal: function(time)
-	{
+	drawCal: function(time){
 		// dynamically draws a calendar for each month 
 		for (var loop = 0; loop < time.quantToDisplay.length; loop++)
 		{
@@ -77,7 +62,13 @@ var Calendar = {
 	// now that our calendar is drawn, populate it with data
 	assignData(globalTime);
 	*/
-	}
+	},
+
+	scrollToElement: function(){
+		$("html, body").animate({
+			scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
+		},1100);
+	},
 
 };
 
