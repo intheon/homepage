@@ -43,6 +43,7 @@ var Calendar = {
 
 		// finally build it
 		this.renderCalFrame(time);
+		this.getUsersWages();
 	},
 
 	renderCalFrame: function(time){
@@ -95,13 +96,29 @@ var Calendar = {
 
 		// instill modal when clicked
 		$(".dropdown .item").click(function(event){
-			Calendar.presentModal(event);
+			Calendar.presentPopupModal(event);
 		});
+
+		Calendar.scrollToElement(moment().format("MMMM"),moment().format("YYYY"));
+
 	},
 
-	presentModal: function(){
+	presentPopupModal: function(){
 		console.log("modal code here");
-	}
+	},
+
+	getUsersWages: function(){
+		$.ajax({
+			type: 	"POST",
+			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			data: 	{
+				type: 		"getUsersWages",
+			},
+			success: function(response){
+				console.log(response)
+			}
+		});
+	},
 	
 
 		/*
@@ -139,13 +156,14 @@ var Calendar = {
 	assignData(globalTime);
 
 
-
-	scrollToElement: function(){
-		$("html, body").animate({
-			scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
-		},1100);
-	},
 	*/
+	// scrolls to the current month for good UX
+	scrollToElement: function(month, year){
+		$("html, body").animate({
+			scrollTop: $("#" + month + year).offset().top - 20
+		},1100);
+	}
+
 };
 
 

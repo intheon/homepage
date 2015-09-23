@@ -16,12 +16,16 @@ function checkMethod($type)
 	switch ($type)
 	{
 		case "registerNewUser":
-		if (isset($_POST["payload"]))
-		{
-			$payload = $_POST["payload"];
-			$userManager->registerNewUser($payload);
-		}
-		break;
+			if (isset($_POST["payload"]))
+			{
+				$payload = $_POST["payload"];
+				$userManager->registerNewUser($payload);
+			}
+			break;
+
+		case "getUsersWages":
+			$userManager->getUsersWages();
+			break;
 
 		default:
 		echo "shit broke y0";
@@ -74,6 +78,50 @@ class userManager
 
 		print_r($match);
 		*/
+	}
+
+	public function getUsersWages()
+	{
+		global $connect;
+
+		session_start();
+
+		$usr = $_SESSION['username'];
+
+		$userId = mysqli_query($connect, "SELECT u_id FROM users WHERE u_username = '$usr'");
+
+		$match = mysqli_fetch_row($userId);
+
+		foreach ($match as $vals)
+
+		$wages = mysqli_query($connect, "SELECT w_amount FROM wages WHERE w_user = '$vals'");
+
+		foreach ($wages as $something => $else)
+		{
+			foreach ($else as $blah)
+			{
+				echo $blah;
+			}
+		}
+
+		/*
+		foreach ($wages as $rows => $val)
+		{
+			$wAmount = mysqli_fetch_row($wages);
+			echo $wAmount;
+		}
+
+
+
+		$wAmount = mysqli_fetch_row($wages);
+
+		print_r($wAmount);
+
+		foreach ($wAmount as $amount)
+		{
+			echo $amount;
+		}
+*/
 	}
 
 	private function logUserIn($username)
