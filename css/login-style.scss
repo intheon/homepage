@@ -1,0 +1,91 @@
+
+body
+{
+    background:                         url(../img/bg.jpg);
+    background-attachment:              fixed;
+    font-family:                        arial;
+}
+
+$bigPadding:                            3%;
+$padding:                               0.8%;
+$colour1:                               #AA3939;
+$colour2:                               #AA6C39;
+$colour3:                               #FFFFFF;
+$trans:                                 rgba(255,255,255,0.3);
+$border-radius-amount:                  7px;        
+
+%center-element
+{
+    margin-left:                        auto !important;
+    margin-right:                       auto !important;
+    display:                            inline-block !important;
+    text-align:                         center;
+}
+
+.center
+{
+    @extend                             %center-element;
+}
+
+.panel
+{
+    margin:                             $bigPadding;
+    padding:                            $bigPadding;
+    border-radius:                      $border-radius-amount;
+    background:                         $trans;
+}
+
+%input-default
+{
+    padding:                            $padding * 2;
+    outline:                            none;
+    background:                         lighten($colour1, 53%);
+    border:                             none;
+    border-bottom:                      2px solid lighten($colour1, 45%);
+    transition:                         all 0.7s;
+}
+%input-hover
+{
+    border-bottom:                      2px solid lighten($colour1, 15%);
+    background:                         none;
+    cursor:                             -moz-pointer;
+    cursor:                             -webkit-pointer;
+    cursor:                             pointer;
+}
+
+#login-forms
+{
+    display:                            flex;
+}
+
+#login-forms *
+{
+    margin:                             0.5%;
+    text-shadow:                         1px 1px 1px #888888;
+}
+
+input[type="text"]
+{
+    width:                              35%;
+    @extend                             %input-default;
+}
+
+input[type="text"]:focus
+{
+    @extend                             %input-hover;
+}
+
+button
+{
+    @extend                             %input-default;
+}
+
+button:hover
+{
+    @extend                             %input-hover;
+}
+
+.big-header
+{
+    font-size:                           1.6em;
+}

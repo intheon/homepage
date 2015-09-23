@@ -1,10 +1,134 @@
+var Calendar = {
+
+	initialise: function(type)
+	{
+		// define some useful metadata
+		var time = 
+		{
+			today: 							moment(),
+			todaysDayAsInt: 				parseInt(moment().format("D")),
+			thisMonthAsInt: 				parseInt(moment().format("M")),
+			thisYearAsInt: 					parseInt(moment().format("YYYY")),
+			thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
+			thisMonthAsPhrase: 				moment().format("MMMM"),
+			thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
+			quantToDisplay: 				(function(){
+												var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
+												return array;
+											})(type)
+		};
+
+		// UX stuff
+		if (type == "complex")
+		{
+			scrollToElement();
+		}
+
+		this.render(time);
+	},
+
+	render: function(time)
+	{
+		this.drawCal(time);
+	},
+
+	scrollToElement: function()
+	{
+		$("html, body").animate({
+			scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
+		},1100);
+	},
+
+	drawCal: function(time)
+	{
+		// dynamically draws a calendar for each month 
+		for (var loop = 0; loop < time.quantToDisplay.length; loop++)
+		{
+
+		}
+
+		/*
+
+	// for each month
+	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
+	{
+		// shorthand vars
+		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
+		var month			= globalTime.quantToDisplay[loop].format("MMMM");
+		var monthLowercase 	= globalTime.quantToDisplay[loop].format("MMMM").toLowerCase();
+		var daysInThisMonth = globalTime.quantToDisplay[loop].daysInMonth();
+
+		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"' data-month-label='"+month+"' data-year-label='"+year+"'><h3>"+month+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div><div class='month-section-footnotes'></div></div></div>");
+		
+		// for each day in the month
+		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
+		{
+			var day = moment(cellLoop,"D");
+				day = day.format("dd");
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal' id='purchase-modal'><i class='money icon'></i>New Purchase</div><div class='item show-modal' id='diary-modal'><i class='calendar icon'></i>New Diary entry</div><div class='item show-modal' id='stats-modal'><i class='tasks icon'></i>Statistics</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
+		}
+	}
+
+	// register dropdown handler
+	$('.ui.dropdown').dropdown();
+
+	// instill modal when clicked
+	$(".dropdown .item").click(function(event){
+		createModals(event);
+	});
+
+	// now that our calendar is drawn, populate it with data
+	assignData(globalTime);
+	*/
+	}
+
+};
+
+
+
+/*
 $(document).ready(function(){
 	// globalTime is blank and global and 
 	// will contain a crap ton of stuff
 	var globalTime 		= {};
 	var globalData 		= {};
 
+	var Calendar = {
+
+		initialise: function(type)
+		{
+			var time = 
+			{
+				today: 							moment(),
+				todaysDayAsInt: 				parseInt(moment().format("D")),
+				thisMonthAsInt: 				parseInt(moment().format("M")),
+				thisYearAsInt: 					parseInt(moment().format("YYYY")),
+				thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
+				thisMonthAsPhrase: 				moment().format("MMMM"),
+				thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
+				quantToDisplay: 				(function(){
+													var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
+													return array;
+												})(type)
+			};
+
+			return time;
+		},
+
+		render: function(type)
+		{
+			console.log(type);
+			//console.log(Calendar.initialise());
+		}
+
+	};
+
+
+	//Calendar.render();
 });
+
+/*
+
 
 function loadCalendar(type)
 {
@@ -42,8 +166,6 @@ function drawCalendars(globalTime)
 	// for each month
 	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
 	{
-		console.log("is this even looping?");
-
 		// shorthand vars
 		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
 		var month			= globalTime.quantToDisplay[loop].format("MMMM");
@@ -203,11 +325,7 @@ function assignData(globalTime)
 	// our raw data to play with
 	var jsonData = {};
 	// our request payload to the server
-	/*
-	var payload = {
-		files: [{filename: "history.json", propName: "history"}, {filename: "notes.json", propName: "notes"}, {filename: "spend.json", propName: "spend"}]
-	};
-	*/
+
 	var payload = {
 		files: [{filename: "complex.json", propName: "historical"}]
 	};
@@ -464,3 +582,4 @@ function returnMatchingDay(year, month, day)
 	}
 }
 
+*/
