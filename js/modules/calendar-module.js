@@ -42,17 +42,59 @@ var Calendar = {
 		if (type == "complex") scrollToElement();
 
 		// finally build it
-		this.renderCal(time);
+		this.renderCalFrame(time);
 	},
 
-	renderCal: function(time){
+	renderCalFrame: function(time){
 
 		_.each(time.quantToDisplay, function(arrItem){
-			console.log(arrItem);
+			// temp object for time | all it is is shorthand
+			var t = {
+				year: 	arrItem.format("YYYY"),
+				month: 	arrItem.format("MMMM"),
+				mLower: arrItem.format("MMMM").toLowerCase(),
+				dInM: 	arrItem.daysInMonth(),
+				id:     (arrItem.format("MMMM")) + (arrItem.format("YYYY"))
+			};
+
+			// render the month
+			$(".modal-calendar").append("<div class='ui raised segment'>\
+				<div class='month-section' id='"+t.id+"' data-month-label='"+t.month+"' data-year-label='"+t.year+"'>\
+					<h3>"+t.month+"</h3>\
+					<div class='month-section-body "+t.mLower+"Calendar'></div>\
+					<div class='month-section-footnotes'></div>\
+				</div></div>");
+
+			// render the days within the month
+			for (d = 1; d < t.dInM; d++){
+				var dl = moment().date(d).format("dd").toLowerCase();
+				$("#" + t.id + " .month-section-body").append("<div class='calendar-item calendar-item-"+d+"'>\
+					<div class='ui dropdown'>\
+						<i class='dropdown icon'></i>\
+						<div class='menu'>\
+							<div class='item show-modal' id='purchase-modal'>\
+								<i class='money icon'></i>New Purchase\
+							</div>\
+							<div class='item show-modal' id='diary-modal'>\
+								<i class='calendar icon'></i>New Diary entry\
+							</div>\
+							<div class='item show-modal' id='stats-modal'>\
+								<i class='tasks icon'></i>Statistics\
+							</div>\
+						</div>\
+					</div>\
+					<div class='date-number'>"+d+"</div>\
+					<div class='day-label'>"+dl+"</div>\
+				</div>");
+			}
+
 		});
 
-	},
+
+	}
+
 		/*
+	}
 
 	// for each month
 	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
@@ -84,14 +126,15 @@ var Calendar = {
 
 	// now that our calendar is drawn, populate it with data
 	assignData(globalTime);
-	*/
+
+
 
 	scrollToElement: function(){
 		$("html, body").animate({
 			scrollTop: $("div [data-month-label='"+globalTime.thisMonthAsPhrase+"']").offset().top + +40
 		},1100);
 	},
-
+	*/
 };
 
 
