@@ -22,12 +22,14 @@ var Calendar = {
 		this.renderCal(time);
 	},
 
-	drawCal: function(time){
-		// dynamically draws a calendar for each month 
-		for (var loop = 0; loop < time.quantToDisplay.length; loop++)
-		{
+	renderCal: function(time){
 
-		}
+		_.each(time.quantToDisplay, function(arrItem){
+			var aString 	= arrItem._d.toString();
+			var aSplit 		= aString.split(" ");
+			console.log(aSplit);
+		});
+
 
 		/*
 
