@@ -77,15 +77,6 @@ class userManager
 		mysqli_query($connect, "INSERT INTO users (u_username, u_password, u_name, u_email) VALUES ('$usr', '$pwd', '$nm', '$email')");
 
 		$this->logUserIn($usr);
-		// get u_id of matching username
-
-		/* this will be useful in a mo
-		$userId = mysqli_query($connect, "SELECT u_id FROM users WHERE u_username = '$usr'");
-
-		$match = mysqli_fetch_row($userId);
-
-		print_r($match);
-		*/
 	}
 
 	public function signInUser($payload)
@@ -126,69 +117,16 @@ class userManager
 
 		$sqlResult = mysqli_query($connect, "SELECT w_date, w_amount FROM wages WHERE w_user = '$vals'");
 
-		$returnPayload = array();
+		$json = array();
 
 		while ($row = mysqli_fetch_array($sqlResult, MYSQLI_ASSOC)) 
 		{
-
-			/*
-			echo $row['w_date'];
-			echo "\n";
-    		echo $row['w_amount'];
-    		echo "\n";
-			*/
+			$json[] =  $row;
 		}
 
-		//echo $returnPayload;
+		mysqli_close($connect);
 
-		/*
-
-		calendar-module.js:118 mysqli_result Object
-(
-    [current_field] => 1
-    [field_count] => 2
-    [lengths] => Array
-        (
-            [0] => 6
-            [1] => 4
-        )
-
-    [num_rows] => 2
-    [type] => 0
-)
-
-		foreach ($wages as $something => $else)
-		{
-
-			foreach ($else as $blah)
-			{
-				echo $blah;
-				echo "\n";
-				echo $wages;
-				echo "\n";
-			}
-		}
-
-		/*
-
-
-		foreach ($wages as $rows => $val)
-		{
-			$wAmount = mysqli_fetch_row($wages);
-			echo $wAmount;
-		}
-
-
-
-		$wAmount = mysqli_fetch_row($wages);
-
-		print_r($wAmount);
-
-		foreach ($wAmount as $amount)
-		{
-			echo $amount;
-		}
-*/
+		echo json_encode($json);
 	}
 
 	private function logUserIn($username)

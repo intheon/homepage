@@ -126,6 +126,24 @@ body
     opacity:                0.4;
     padding:                1%;
 }
+
+.month-labels
+{
+    display:            flex;
+}
+
+.month-label
+{
+
+}
+
+.month-spend
+{
+    margin-top:             9.5%;
+    padding-left:           20%;
+    font-size:              1.1em;
+}
+
 #welcome, #tasks
 {
     display:                flex;

@@ -61,7 +61,10 @@ var Calendar = {
 			// render the month
 			$(".modal-calendar").append("<div class='ui raised segment'>\
 				<div class='month-section' id='"+t.id+"' data-month-label='"+t.month+"' data-year-label='"+t.year+"'>\
-					<h3>"+t.month+"</h3>\
+					<div class='month-labels'>\
+						<h3 class='month-label'>"+t.month+"</h3>\
+						<div class='month-info-container'></div>\
+					</div>\
 					<div class='month-section-body "+t.mLower+"Calendar'></div>\
 					<div class='month-section-footnotes'></div>\
 				</div></div>");
@@ -115,22 +118,34 @@ var Calendar = {
 				type: 		"getUsersWages",
 			},
 			success: function(response){
-				// lets just presume the php magicaly worked
-
-				var payload = [{
-					wages: 3000,
-					date: "2015-08"
-				},{
-					wages: 2225,
-					date: "2015-09"
-				}]
-				Calendar.parseWages(payload);
+				Calendar.parseWages(response);
 			}
 		});
 	},
 
 	parseWages: function(payload){
-		console.log(payload);
+		var json = JSON.parse(payload);
+
+		_.each(json, function(obj){
+			Calendar.associateWithMonth(obj)
+		});
+	},
+
+	associateWithMonth: function(json){
+		// w_date is in the format yyyy-m
+		// the id of the element is 'September-2015', so need to do some trickery
+		var phrase = Calendar.convertDate(json.w_date);
+
+		// add it in
+		$("#" + phrase + " .month-info-container").append("<div class='month-spend'>£"+json.w_amount+"</div>");
+	},
+
+	convertDate: function(date){
+		var year = date.split("-")[0];
+		var month = date.split("-")[1];
+		// the -1 is because moment counts from 0
+		var mAsObj = moment().month(month - 1).format("MMMM");
+		return (mAsObj+ year).toString();
 	},
 	
 
