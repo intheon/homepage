@@ -124,17 +124,54 @@ class userManager
 
 		foreach ($match as $vals)
 
-		$wages = mysqli_query($connect, "SELECT w_amount FROM wages WHERE w_user = '$vals'");
+		$sqlResult = mysqli_query($connect, "SELECT w_date, w_amount FROM wages WHERE w_user = '$vals'");
+
+		$returnPayload = array();
+
+		while ($row = mysqli_fetch_array($sqlResult, MYSQLI_ASSOC)) 
+		{
+
+			/*
+			echo $row['w_date'];
+			echo "\n";
+    		echo $row['w_amount'];
+    		echo "\n";
+			*/
+		}
+
+		//echo $returnPayload;
+
+		/*
+
+		calendar-module.js:118 mysqli_result Object
+(
+    [current_field] => 1
+    [field_count] => 2
+    [lengths] => Array
+        (
+            [0] => 6
+            [1] => 4
+        )
+
+    [num_rows] => 2
+    [type] => 0
+)
 
 		foreach ($wages as $something => $else)
 		{
+
 			foreach ($else as $blah)
 			{
 				echo $blah;
+				echo "\n";
+				echo $wages;
+				echo "\n";
 			}
 		}
 
 		/*
+
+
 		foreach ($wages as $rows => $val)
 		{
 			$wAmount = mysqli_fetch_row($wages);

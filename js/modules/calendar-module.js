@@ -115,9 +115,22 @@ var Calendar = {
 				type: 		"getUsersWages",
 			},
 			success: function(response){
-				console.log(response)
+				// lets just presume the php magicaly worked
+
+				var payload = [{
+					wages: 3000,
+					date: "2015-08"
+				},{
+					wages: 2225,
+					date: "2015-09"
+				}]
+				Calendar.parseWages(payload);
 			}
 		});
+	},
+
+	parseWages: function(payload){
+		console.log(payload);
 	},
 	
 
