@@ -43,7 +43,8 @@ var Calendar = {
 
 		// finally build it
 		this.renderCalFrame(time);
-		this.getUsersWages();
+		this.getUsersWages(Calendar.parseWages);
+		//this.getUsersWages(Calendar.requestWages);
 	},
 
 	renderCalFrame: function(time){
@@ -110,7 +111,7 @@ var Calendar = {
 		console.log("modal code here");
 	},
 
-	getUsersWages: function(){
+	getUsersWages: function(callback){
 		$.ajax({
 			type: 	"POST",
 			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
@@ -118,34 +119,54 @@ var Calendar = {
 				type: 		"getUsersWages",
 			},
 			success: function(response){
-				Calendar.parseWages(response);
+				callback(response);
 			}
 		});
 	},
 
 	parseWages: function(payload){
+		var ran = false;
 		var json = JSON.parse(payload);
 
 		_.each(json, function(obj){
-			Calendar.associateWithMonth(obj)
+			Calendar.associateWithMonth(obj);
+
+			console.log(obj.w_date);
+			//console.log(Calendar.convertCurrentDateToDbFormat());
+
+			if (obj.w_date !== Calendar.convertCurrentDateToDbFormat()){
+				if (ran === false)
+				{
+					Calendar.requestWages();
+				}
+				ran = true;
+			}
 		});
+	},
+
+	requestWages: function(){
+		console.log("omg");
 	},
 
 	associateWithMonth: function(json){
 		// w_date is in the format yyyy-m
 		// the id of the element is 'September-2015', so need to do some trickery
-		var phrase = Calendar.convertDate(json.w_date);
+		var phrase = Calendar.convertDateToId(json.w_date);
 
 		// add it in
 		$("#" + phrase + " .month-info-container").append("<div class='month-spend'>£"+json.w_amount+"</div>");
 	},
 
-	convertDate: function(date){
+	convertDateToId: function(date){
 		var year = date.split("-")[0];
 		var month = date.split("-")[1];
 		// the -1 is because moment counts from 0
 		var mAsObj = moment().month(month - 1).format("MMMM");
 		return (mAsObj+ year).toString();
+	},
+
+	convertCurrentDateToDbFormat: function(){
+		return (moment().year() + "-" + (moment().month() + 1)).toString();
 	},
 	
 
