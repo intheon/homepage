@@ -125,23 +125,17 @@ var Calendar = {
 	},
 
 	parseWages: function(payload){
-		var ran = false;
+		var match = false;
 		var json = JSON.parse(payload);
+		var cu = Calendar.convertCurrentDateToDbFormat()
 
 		_.each(json, function(obj){
 			Calendar.associateWithMonth(obj);
 
-			console.log(obj.w_date);
-			//console.log(Calendar.convertCurrentDateToDbFormat());
-
-			if (obj.w_date !== Calendar.convertCurrentDateToDbFormat()){
-				if (ran === false)
-				{
-					Calendar.requestWages();
-				}
-				ran = true;
-			}
+			if (obj.w_date == cu) match = true;
 		});
+
+		if (!match) Calendar.requestWages();
 	},
 
 	requestWages: function(){
