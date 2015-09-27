@@ -92,6 +92,8 @@ var Calendar = {
 					</div>\
 					<div class='date-number'>"+d+"</div>\
 					<div class='day-label'>"+dl+"</div>\
+					<div class='day-summary'></div>\
+					<div class='day-details'></div>\
 				</div>");
 			}
 
@@ -287,8 +289,46 @@ var Calendar = {
 	parseUsersEvents: function(payload){
 		// need to either parse events or spends.
 		var hs = JSON.parse(payload);
+		var ss = [];
+		var es = [];
 
-		console.log(hs);
+		_.each(hs, function(obj){
+			for (keys in obj){
+				if (keys == "s_name"){
+					ss.push(obj);
+				}
+				else if (keys == "e_name"){
+					es.push(obj);
+				}
+			}
+		});
+
+		// parse all events
+
+		_.each(ss, function(item){
+
+
+
+			var cId = item.s_date.substr(0, item.s_date.length - 3);
+				cId = Calendar.convertDateToId(cId);
+
+			var d = item.s_date.split("-")[2];
+				d = " .calendar-item-" + d;
+
+			$("#" + cId + d + " .day-details").append("<div class='spend-item'>"+item.s_name + " " + item.s_price + "</div>");
+			$("#" + cId + d + " .day-summary").append("<div class='spend-summary'>"+ss.length+" spends</div>");
+		});
+		// parse all spends
+		_.each(es, function(item){
+			var cId = item.e_date.substr(0, item.e_date.length - 3);
+				cId = Calendar.convertDateToId(cId);
+
+			var d = item.e_date.split("-")[2];
+				d = " .calendar-item-" + d;
+
+			$("#" + cId + d + " .day-details").append("<div class='event-item'>"+item.e_name + " " + item.e_desc + "</div>");
+			$("#" + cId + d + " .day-summary").append("<div class='event-summary'>"+es.length+" events</div>");
+		});
 
 	},
 

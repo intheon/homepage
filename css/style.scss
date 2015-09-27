@@ -550,6 +550,18 @@ button:hover
     resize:             none;
 }
 
+.day-details
+{
+    display:            none;
+}
+
+.day-summary
+{
+    padding-top:3%;
+    position: absolute;
+    display:block;
+}
+
 .modal-overlay input[type="text"] 
 {
     width:              60% !important;
