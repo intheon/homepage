@@ -44,7 +44,8 @@ var Calendar = {
 		// finally build it
 		this.renderCalFrame(time);
 		this.getUsersWages(Calendar.parseWages);
-		this.getUsersWages(Calendar.requestWages)
+		this.getUsersWages(Calendar.requestWages);
+		this.getUsersEvents(null);
 		//this.getUsersWages(Calendar.requestWages);
 	},
 
@@ -238,7 +239,16 @@ var Calendar = {
 	},
 
 	getUsersEvents: function(){
-
+		$.ajax({
+			type: 	"POST",
+			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			data: 	{
+				type: 		"getUsersEvents"
+			},
+			success: function(response){
+				Calendar.parseUsersEvents(response);
+			}
+		});
 	},
 
 	setUsersEvents: function(payload){
@@ -258,8 +268,8 @@ var Calendar = {
 				detail: 	payload.detail,
 				date: 		fd
 			},
-			success: function(response){
-				console.log(response);
+			success: function(){
+				Calendar.getUsersEvents();
 			}
 		});
 	},
@@ -272,6 +282,14 @@ var Calendar = {
 		_.each(json, function(obj){
 			Calendar.associateWithMonth(obj);
 		});
+	},
+
+	parseUsersEvents: function(payload){
+		// need to either parse events or spends.
+		var hs = JSON.parse(payload);
+
+		console.log(hs);
+
 	},
 
 	requestWages: function(payload){

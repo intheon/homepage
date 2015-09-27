@@ -37,6 +37,7 @@ function checkMethod($type)
 			break;
 
 		case "getUsersEvents":
+			$userManager->getUsersEvents();
 			break;
 
 		case "setUsersEvents":
@@ -47,9 +48,6 @@ function checkMethod($type)
 				$date = $_POST["date"];
 				$userManager->setUsersEvents($name, $detail, $date);
 			}
-			break;
-
-		case "getUsersSpend":
 			break;
 
 		case "setUsersSpend":
@@ -188,11 +186,6 @@ class userManager
 		echo "done";
 	}
 
-	public function getUsersSpend()
-	{
-
-	}
-
 	public function setUsersSpend($name, $detail, $date)
 	{
 		global $connect;
@@ -208,7 +201,30 @@ class userManager
 
 	public function getUsersEvents()
 	{
+		global $connect;
+
+		$match = $this->getUserId();
+
+		foreach ($match as $uid);
 		
+		$events = mysqli_query($connect, "SELECT e_name, e_desc, e_date FROM cal_events WHERE e_user = '$uid'");
+		$spends = mysqli_query($connect, "SELECT s_name, s_price, s_date FROM cal_spends WHERE s_user = '$uid'");
+
+		$json = array();
+
+		while ($row = mysqli_fetch_array($spends, MYSQLI_ASSOC)) 
+		{
+			$json[] =  $row;
+		}
+
+		while ($row = mysqli_fetch_array($events, MYSQLI_ASSOC)) 
+		{
+			$json[] =  $row;
+		}
+
+		mysqli_close($connect);
+
+		echo json_encode($json);
 	}
 
 	public function setUsersEvents($name, $detail, $date)
