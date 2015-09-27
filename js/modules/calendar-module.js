@@ -44,6 +44,7 @@ var Calendar = {
 		// finally build it
 		this.renderCalFrame(time);
 		this.getUsersWages(Calendar.parseWages);
+		this.getUsersWages(Calendar.requestWages)
 		//this.getUsersWages(Calendar.requestWages);
 	},
 
@@ -125,27 +126,34 @@ var Calendar = {
 	},
 
 	parseWages: function(payload){
-		var ran = false;
 		var json = JSON.parse(payload);
 
 		_.each(json, function(obj){
 			Calendar.associateWithMonth(obj);
-
-			console.log(obj.w_date);
-			//console.log(Calendar.convertCurrentDateToDbFormat());
-
-			if (obj.w_date !== Calendar.convertCurrentDateToDbFormat()){
-				if (ran === false)
-				{
-					Calendar.requestWages();
-				}
-				ran = true;
-			}
 		});
 	},
 
-	requestWages: function(){
-		console.log("omg");
+	requestWages: function(payload){
+		var json = JSON.parse(payload);
+		var current = Calendar.convertCurrentDateToDbFormat();
+		var isMonth = false;
+
+
+		_.each(json, function(obj){
+			if (obj.w_date == current) isMonth = true;
+		});
+
+		if (!isMonth){
+			var phrase = Calendar.convertDateToId(current);
+
+			$("#" + phrase).prepend("<div class='request-wage-overlay'>\
+				<div class='wage-request-form'>\
+					<h2>How much did you get paid on 28th August?</h2>\
+					<input type='text' placeholder='Integer' id='wage-request-amount' />\
+					<input type='button' value='Confirm' id='wage-request-confirm'/>\
+				</div>\
+				</div>");
+		}
 	},
 
 	associateWithMonth: function(json){

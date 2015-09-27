@@ -12,8 +12,48 @@
        url('../css/fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans') format('svg');
 }
 
+$bigPadding:                            3%;
+$padding:                               0.8%;
+$colour1:                               #AA3939;
+$colour2:                               #AA6C39;
+$colour3:                               #FFFFFF;
+$trans:                                 rgba(255,255,255,0.3);
+$border-radius-amount:                  7px;    
 $padding:                   2%;
 $transparent-bg:            rgba(0,0,0,0.8);
+
+%center-element
+{
+    margin-left:                        auto !important;
+    margin-right:                       auto !important;
+    display:                            inline-block !important;
+    text-align:                         center;
+}
+%input-default
+{
+    padding:                            $padding * 2;
+    border-radius:                      $border-radius-amount;
+    outline:                            none;
+    background:                         $trans;
+    border:                             none;
+    border-bottom:                      2px solid lighten($colour1, 50%);
+    transition:                         all 0.7s;
+        font-family:                     "Open Sans" !important;
+}
+%input-hover
+{
+    border-bottom:                      2px solid lighten($colour1, 5%);
+    background:                         none;
+    cursor:                             -moz-pointer;
+    cursor:                             -webkit-pointer;
+    cursor:                             pointer;
+}
+
+
+.center
+{
+    @extend                             %center-element;
+}
 
 body
 {
@@ -144,6 +184,16 @@ body
     font-size:              1.1em;
 }
 
+.request-wage-overlay
+{
+    padding: 2%;
+    width:94%;
+    position: absolute;
+    z-index: 4000;
+    text-align: center;
+    background: rgba(255,255,255,1);
+}
+
 #welcome, #tasks
 {
     display:                flex;
@@ -252,6 +302,27 @@ body
     background-color:       #1A2737 !important;
     color:                  #FFFFFF !important;
 }
+input[type="text"]
+{
+    @extend                             %input-default;
+}
+
+input[type="text"]:focus
+{
+    @extend                             %input-hover;
+}
+
+
+button
+{
+    @extend                             %input-default;
+}
+
+button:hover
+{
+    @extend                             %input-hover;
+}
+
 
 
 .jcarousel-wrapper 

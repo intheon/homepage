@@ -4,6 +4,29 @@
   font-style: normal;
   src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot");
   src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot?#iefix") format("embedded-opentype"), local("Open Sans"), local("Open-Sans-regular"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff2") format("woff2"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff") format("woff"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.ttf") format("truetype"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans") format("svg"); }
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: inline-block !important;
+  text-align: center; }
+
+input[type="text"], button {
+  padding: 4%;
+  border-radius: 7px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  border-bottom: 2px solid #f8eaea;
+  transition: all 0.7s;
+  font-family: "Open Sans" !important; }
+
+input[type="text"]:focus, button:hover {
+  border-bottom: 2px solid #bd3f3f;
+  background: none;
+  cursor: -moz-pointer;
+  cursor: -webkit-pointer;
+  cursor: pointer; }
+
 body {
   background: url(../img/bg.jpg);
   background-attachment: fixed;
@@ -92,6 +115,14 @@ body {
   margin-top: 9.5%;
   padding-left: 20%;
   font-size: 1.1em; }
+
+.request-wage-overlay {
+  padding: 2%;
+  width: 94%;
+  position: absolute;
+  z-index: 4000;
+  text-align: center;
+  background: white; }
 
 #welcome, #tasks {
   display: flex; }
