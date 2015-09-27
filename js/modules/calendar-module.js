@@ -92,7 +92,7 @@ var Calendar = {
 					</div>\
 					<div class='date-number'>"+d+"</div>\
 					<div class='day-label'>"+dl+"</div>\
-					<div class='day-summary'></div>\
+					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
 					<div class='day-details'></div>\
 				</div>");
 			}
@@ -248,6 +248,7 @@ var Calendar = {
 				type: 		"getUsersEvents"
 			},
 			success: function(response){
+				//onsole.log(response);
 				Calendar.parseUsersEvents(response);
 			}
 		});
@@ -260,6 +261,8 @@ var Calendar = {
 		var p = payload.monthIdentifier + payload.yearIdentifier;
 		var db = Calendar.convertIdToDate(p);
 		var fd = db + "-" + payload.dayIdentifier;
+
+		console.log(fd);
 
 		$.ajax({
 			type: 	"POST",
@@ -307,27 +310,46 @@ var Calendar = {
 
 		_.each(ss, function(item){
 
+			var a = function(ss){
+				return _.pluck(ss, "s_date");
+			}
 
+			var b = a(ss);
 
-			var cId = item.s_date.substr(0, item.s_date.length - 3);
+			var results = _.reduce(b,function(counts,key){ counts[key]++; return counts },
+                  _.object( _.map( _.uniq(b), function(key) { return [key, 0] })))
+
+			var cId = item.s_date.substr(0, item.s_date.length - 2);
 				cId = Calendar.convertDateToId(cId);
 
 			var d = item.s_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
 			$("#" + cId + d + " .day-details").append("<div class='spend-item'>"+item.s_name + " " + item.s_price + "</div>");
-			$("#" + cId + d + " .day-summary").append("<div class='spend-summary'>"+ss.length+" spends</div>");
+			$("#" + cId + d + " .day-summary .spend-summary").html(results[item.s_date] + " spend(s)");
 		});
 		// parse all spends
 		_.each(es, function(item){
-			var cId = item.e_date.substr(0, item.e_date.length - 3);
+
+			var a = function(es){
+				return _.pluck(es, "e_date");
+			}
+
+			var b = a(es);
+
+			var results = _.reduce(b,function(counts,key){ counts[key]++; return counts },
+                  _.object( _.map( _.uniq(b), function(key) { return [key, 0] })))
+
+			var cId = item.e_date.substr(0, item.e_date.length - 2);
 				cId = Calendar.convertDateToId(cId);
 
 			var d = item.e_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
+				console.log(d);
+
 			$("#" + cId + d + " .day-details").append("<div class='event-item'>"+item.e_name + " " + item.e_desc + "</div>");
-			$("#" + cId + d + " .day-summary").append("<div class='event-summary'>"+es.length+" events</div>");
+			$("#" + cId + d + " .day-summary .event-summary").html(results[item.e_date] + " event(s)");
 		});
 
 	},
@@ -340,7 +362,6 @@ var Calendar = {
 
 		if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31) is28th = true;
 
-		console.log(is28th);
 
 		_.each(json, function(obj){
 			if (obj.w_date == current) isMonth = true;

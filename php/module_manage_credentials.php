@@ -229,6 +229,8 @@ class userManager
 
 	public function setUsersEvents($name, $detail, $date)
 	{
+
+		echo $date;
 		global $connect;
 
 		$match = $this->getUserId();
