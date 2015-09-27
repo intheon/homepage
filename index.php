@@ -138,6 +138,7 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/libraries/smoothwheel.js"></script>
 <script type="text/javascript" src="js/libraries/jcarousel.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
+<script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/google.js"></script>
@@ -151,7 +152,7 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/modules/display.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 <script type="text/javascript">
-	loadCalendar("simple");
+	Calendar.initialise();
 </script>
 
 </body>

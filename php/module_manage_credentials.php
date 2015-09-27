@@ -36,6 +36,32 @@ function checkMethod($type)
 			}
 			break;
 
+		case "getUsersEvents":
+			break;
+
+		case "setUsersEvents":
+			if (isset($_POST["name"]) && isset($_POST["detail"]) && isset($_POST["date"]))
+			{
+				$name = $_POST["name"];
+				$detail = $_POST["detail"];
+				$date = $_POST["date"];
+				$userManager->setUsersEvents($name, $detail, $date);
+			}
+			break;
+
+		case "getUsersSpend":
+			break;
+
+		case "setUsersSpend":
+			if (isset($_POST["name"]) && isset($_POST["detail"]) && isset($_POST["date"]))
+			{
+				$name = $_POST["name"];
+				$detail = $_POST["detail"];
+				$date = $_POST["date"];
+				$userManager->setUsersSpend($name, $detail, $date);
+			}
+			break;
+
 		case "signInUser":
 			if (isset($_POST["payload"]))
 			{
@@ -157,9 +183,49 @@ class userManager
 
 		$sql = mysqli_query($connect,"INSERT INTO wages (w_date,w_amount,w_user) VALUES ('$date','$wage','$uid')");
 	
+		mysqli_close($connect);
 
 		echo "done";
 	}
+
+	public function getUsersSpend()
+	{
+
+	}
+
+	public function setUsersSpend($name, $detail, $date)
+	{
+		global $connect;
+
+		$match = $this->getUserId();
+
+		foreach ($match as $uid);
+
+		$sql = mysqli_query($connect,"INSERT INTO cal_spends (s_name, s_price, s_date, s_user) VALUES ('$name', '$detail', '$date', '$uid')");
+
+		mysqli_close($connect);
+	}
+
+	public function getUsersEvents()
+	{
+		
+	}
+
+	public function setUsersEvents($name, $detail, $date)
+	{
+		global $connect;
+
+		$match = $this->getUserId();
+
+		foreach ($match as $uid);
+
+		$sql = mysqli_query($connect,"INSERT INTO cal_events (e_name, e_desc, e_date, e_user) VALUES ('$name', '$detail', '$date', '$uid')");
+	
+		echo "done";
+
+		mysqli_close($connect);
+	}
+
 
 	private function logUserIn($username)
 	{

@@ -108,8 +108,101 @@ var Calendar = {
 
 	},
 
-	presentPopupModal: function(){
-		console.log("modal code here");
+	presentPopupModal: function(event){
+
+		var payload  = {
+		type: 					event.currentTarget.id,
+		yearIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel,
+		monthIdentifier: 		event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel,
+		dayIdentifier: 			(function(){
+									var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
+										dayId = dayId.split(" ");
+										dayId = dayId[1];
+										dayId = dayId.split("-");
+										dayId = dayId[2];
+									return dayId;
+								}(event))
+		};
+
+		$("body").prepend("<div class='ui modal' id='modal'>\
+			<i class='close icon'></i>\
+			<div class='header modal-header'></div>\
+			<div class='modal-content'>\
+				<div class='ui fluid form'>\
+					<div class='fields'></div>\
+				</div>\
+			</div>\
+			<div class='actions'>\
+				<div class='ui inverted black button' id='cancel-modal'>Cancel</div>\
+				<div class='ui inverted orange button' id='add-item-modal'>Add</div>\
+			</div>");
+
+		// can either have a modal for adding spending or a diary event
+		// need to make sure the title, view, and behaviour reflects that
+		var content, title = "";
+
+		switch (payload.type){
+			case "purchase-modal":
+				title = "Add Spend";
+				content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name' class='modal-input-class'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc' class='modal-input-class'></div></div>";
+				break;
+
+			case "diary-modal":
+				title = "Add Diary";
+				content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name' class='modal-input-class'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc' class='modal-input-class'></div></div>";
+				break;
+
+			case "stats-modal":
+				title = "Overview for day";
+				content = "<div id='stats-overview>Some useful stats here</div>";
+				break;
+
+			default:
+				console.log("lol b0rked");
+				break;
+		};
+
+		$(".ui.modal .modal-header").html(title);
+		$(".ui.modal .modal-content .fields").html(content);
+
+		$(".ui.modal .actions .button").click(function(event){
+
+			var type = event.currentTarget.id;
+
+			if (type == "add-item-modal") {	
+
+				var id = $(".modal-form-wrapper")[0].id;
+				var split = id.split("-");
+
+				// TODO VALIDATION
+				var name = $("#" + split[0] +"-item-name").val();
+				var detail = $("#" + split[0] +"-item-desc").val();
+
+				payload.name = name;
+				payload.detail = detail;
+			}
+
+			Calendar.setUsersEvents(payload);
+			// remove modal from dom to stop duplicate values from appearing.
+			Calendar.removeModalFromDom();
+		});
+
+		$("#modal .icon").click(function(){
+			Calendar.removeModalFromDom();
+		});
+		$("#modal .button").click(function(){
+			Calendar.removeModalFromDom();
+		});
+
+		$('.ui.modal').modal('show');
+
+	},
+
+	removeModalFromDom: function(){
+		$("#modal").fadeOut("slow", function(){
+			$("#modal").remove();
+			$(".ui.dimmer.modals").remove()
+		});
 	},
 
 	getUsersWages: function(callback){
@@ -140,6 +233,33 @@ var Calendar = {
 				});
 
 				Calendar.getUsersWages(callback);
+			}
+		});
+	},
+
+	getUsersEvents: function(){
+
+	},
+
+	setUsersEvents: function(payload){
+
+		var type = (payload.type == "purchase-modal") ? "setUsersSpend" : "setUsersEvents";
+
+		var p = payload.monthIdentifier + payload.yearIdentifier;
+		var db = Calendar.convertIdToDate(p);
+		var fd = db + "-" + payload.dayIdentifier;
+
+		$.ajax({
+			type: 	"POST",
+			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			data: 	{
+				type: 		type,
+				name: 		payload.name,
+				detail: 	payload.detail,
+				date: 		fd
+			},
+			success: function(response){
+				console.log(response);
 			}
 		});
 	},
@@ -202,6 +322,30 @@ var Calendar = {
 
 		// add it in
 		$("#" + phrase + " .month-info-container").append("<div class='month-spend'>£"+json.w_amount+"</div>");
+	},
+
+	convertIdToDate: function(date){
+		var y = date.substr(date.length - 4, date.length);
+		var m = date.substr(0, date.length - 4);
+
+		var months = {
+			"January": 1,
+			"February": 2,
+			"March": 3,
+			"April": 4,
+			"May": 5,
+			"June": 6,
+			"July": 7,
+			"August": 8,
+			"September": 9,
+			"October": 10,
+			"November": 11,
+			"December": 12,
+		};
+
+		// converts from id to yyyy-d to be database friendly
+		return y + "-" + months[m];
+
 	},
 
 	convertDateToId: function(date){
