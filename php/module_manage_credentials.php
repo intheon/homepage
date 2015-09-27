@@ -27,6 +27,15 @@ function checkMethod($type)
 			$userManager->getUsersWages();
 			break;
 
+		case "setUsersWages":
+			if (isset($_POST["wage"]) && isset($_POST["date"]))
+			{
+				$wageForThisMonth = $_POST["wage"];
+				$date = $_POST["date"];
+				$userManager->setUsersWages($wageForThisMonth, $date);
+			}
+			break;
+
 		case "signInUser":
 			if (isset($_POST["payload"]))
 			{
@@ -101,7 +110,7 @@ class userManager
 		$this->logUserIn($usr);
 	}
 
-	public function getUsersWages()
+	private function getUserId()
 	{
 		global $connect;
 
@@ -112,6 +121,15 @@ class userManager
 		$userId = mysqli_query($connect, "SELECT u_id FROM users WHERE u_username = '$usr'");
 
 		$match = mysqli_fetch_row($userId);
+
+		return $match;
+	}
+
+	public function getUsersWages()
+	{
+		global $connect;
+
+		$match = $this->getUserId();
 
 		foreach ($match as $vals)
 
@@ -127,6 +145,20 @@ class userManager
 		mysqli_close($connect);
 
 		echo json_encode($json);
+	}
+
+	public function setUsersWages($wage, $date)
+	{
+		global $connect;
+
+		$match = $this->getUserId();
+
+		foreach ($match as $uid);
+
+		$sql = mysqli_query($connect,"INSERT INTO wages (w_date,w_amount,w_user) VALUES ('$date','$wage','$uid')");
+	
+
+		echo "done";
 	}
 
 	private function logUserIn($username)

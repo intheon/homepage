@@ -2,6 +2,10 @@ var Calendar = {
 
 	initialise: function(type){
 		// define some useful metadata
+		var momentBuilder = function(offset){
+			return moment().month(parseInt(moment().format("M") - 1) + offset);
+		};
+
 		var time = {
 			today: 							moment(),
 			todaysDayAsInt: 				parseInt(moment().format("D")),
@@ -14,10 +18,6 @@ var Calendar = {
 			// basically i either want to show lots of months, or one
 			// the flag 'full' builds a lot of moment objects with offsets
 			quantToDisplay: 				(function(){
-											var momentBuilder = function(offset){
-												return moment().month(parseInt(moment().format("M") - 1) + offset);
-											};
-
 											var array = (type == "full") 
 												? 
 												[
@@ -125,8 +125,29 @@ var Calendar = {
 		});
 	},
 
+	setUsersWages: function(callback,wageAmount){
+		$.ajax({
+			type: 	"POST",
+			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			data: 	{
+				type: 		"setUsersWages",
+				wage: 		wageAmount,
+				date: 		Calendar.convertCurrentDateToDbFormat()
+			},
+			success: function(){
+				$(".request-wage-overlay").fadeOut(function(){
+					$(this).remove();
+				});
+
+				Calendar.getUsersWages(callback);
+			}
+		});
+	},
+
 	parseWages: function(payload){
+
 		var json = JSON.parse(payload);
+		var cu = Calendar.convertCurrentDateToDbFormat()
 
 		_.each(json, function(obj){
 			Calendar.associateWithMonth(obj);
@@ -137,23 +158,41 @@ var Calendar = {
 		var json = JSON.parse(payload);
 		var current = Calendar.convertCurrentDateToDbFormat();
 		var isMonth = false;
+		var is28th = false;
 
+		if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31) is28th = true;
+
+		console.log(is28th);
 
 		_.each(json, function(obj){
 			if (obj.w_date == current) isMonth = true;
 		});
 
-		if (!isMonth){
+		if (!isMonth || is28th){
 			var phrase = Calendar.convertDateToId(current);
+
+			var momentBuilder = function(offset){
+				return moment().month(parseInt(moment().format("M") - 1) + offset);
+			};
+
+			var tm = momentBuilder(-1).format("MMMM");
+
 
 			$("#" + phrase).prepend("<div class='request-wage-overlay'>\
 				<div class='wage-request-form'>\
-					<h2>How much did you get paid on 28th August?</h2>\
+					<h2>How much did you get paid on 28th "+tm+"?</h2>\
 					<input type='text' placeholder='Integer' id='wage-request-amount' />\
 					<input type='button' value='Confirm' id='wage-request-confirm'/>\
 				</div>\
 				</div>");
 		}
+
+		$("#wage-request-confirm").click(function(){
+			var am = $("#wage-request-amount").val();
+
+			Calendar.setUsersWages(Calendar.parseWages, am);
+			
+		});
 	},
 
 	associateWithMonth: function(json){
