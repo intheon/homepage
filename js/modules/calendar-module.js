@@ -223,17 +223,13 @@ var Calendar = {
 
 	setUsersWages: function(callback, wageAmount, date){
 
-		console.log(wageAmount);
-		console.log(Calendar.convertCurrentDateToDbFormat());
-
-		/*
 		$.ajax({
 			type: 	"POST",
 			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
 			data: 	{
 				type: 		"setUsersWages",
 				wage: 		wageAmount,
-				date: 		Calendar.convertCurrentDateToDbFormat()
+				date: 		date
 			},
 			success: function(){
 				$(".request-wage-overlay").fadeOut(function(){
@@ -244,7 +240,6 @@ var Calendar = {
 			}
 		});
 
-*/
 	},
 
 	getUsersEvents: function(){
@@ -367,23 +362,31 @@ var Calendar = {
 		var is28th = false;
 
 		if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31) is28th = true;
-
-		_.each(json, function(obj){
+		else
+		{
+			_.each(json, function(obj){
 			if (obj.w_date == current) isMonth = true;
-		});
-
+			});
+		}
 		var momentBuilder = function(offset){ return moment().month(parseInt(moment().format("M") - 1) + offset)};
+
+		var date = "";
 
 		if (!isMonth) 
 		{
 			var tm = momentBuilder(-1).format("MMMM");
-			var date = Calendar.convertCurrentDateToDbFormat();
+				date = Calendar.convertCurrentDateToDbFormat();
 		}
 
 		if (is28th)
 		{
 			var tm = momentBuilder(+0).format("MMMM");
-			var date = Calendar.convertCurrentDateToDbFormat();
+				date = Calendar.convertCurrentDateToDbFormat();
+			var iTo = parseInt(date.substr(date.length-1, date.length)) +1;
+				iTo = iTo.toString();
+
+				date = date.substr(0,5);
+				date += iTo;
 		}
 
 		if (!isMonth || is28th){
@@ -401,7 +404,7 @@ var Calendar = {
 		$("#wage-request-confirm").click(function(){
 			var am = $("#wage-request-amount").val();
 
-			Calendar.setUsersWages(Calendar.parseWages, am);
+			Calendar.setUsersWages(Calendar.parseWages, am, date);
 		});
 	},
 
