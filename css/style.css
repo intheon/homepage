@@ -59,7 +59,7 @@ body {
 
 .user-toolbar {
   width: auto;
-  padding: 1.42857%;
+  padding: 0.83333%;
   background: rgba(0, 0, 0, 0.8);
   color: white;
   text-align: right; }
@@ -137,10 +137,10 @@ body {
   flex: 1; }
 
 .todoSubmit {
-  float: left              !important; }
+  float: left                          !important; }
 
 .one-half {
-  width: 50%               !important; }
+  width: 50%                           !important; }
 
 .resizable-grid {
   position: relative; }

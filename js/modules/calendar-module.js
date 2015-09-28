@@ -355,6 +355,7 @@ var Calendar = {
 	},
 
 	requestWages: function(payload){
+		console.log(payload);
 		var json = JSON.parse(payload);
 		var current = Calendar.convertCurrentDateToDbFormat();
 		var isMonth = false;
@@ -366,6 +367,8 @@ var Calendar = {
 		_.each(json, function(obj){
 			if (obj.w_date == current) isMonth = true;
 		});
+
+		console.log(isMonth);
 
 		if (!isMonth || is28th){
 			var phrase = Calendar.convertDateToId(current);

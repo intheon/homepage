@@ -124,7 +124,7 @@ if (!isset($_SESSION['username']))
 	<!-- END PANEL -->
 
 	<!-- FIXED NAVIGATION -->
-	<div class="ui three item orange inverted menu fixed top">
+	<div class="ui three item orange inverted menu fixed bottom">
 		<a class="active item" id="home_link">Home</a>
 		<a class="item" id="gmail_link">Emails</a>
 		<a class="item" id="news_link">News Feeds</a>
