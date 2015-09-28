@@ -221,7 +221,12 @@ var Calendar = {
 		});
 	},
 
-	setUsersWages: function(callback,wageAmount){
+	setUsersWages: function(callback, wageAmount, date){
+
+		console.log(wageAmount);
+		console.log(Calendar.convertCurrentDateToDbFormat());
+
+		/*
 		$.ajax({
 			type: 	"POST",
 			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
@@ -238,6 +243,8 @@ var Calendar = {
 				Calendar.getUsersWages(callback);
 			}
 		});
+
+*/
 	},
 
 	getUsersEvents: function(){
@@ -277,6 +284,7 @@ var Calendar = {
 				Calendar.getUsersEvents();
 			}
 		});
+
 	},
 
 	parseWages: function(payload){
@@ -346,16 +354,13 @@ var Calendar = {
 			var d = item.e_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
-				console.log(d);
-
 			$("#" + cId + d + " .day-details").append("<div class='event-item'>"+item.e_name + " " + item.e_desc + "</div>");
 			$("#" + cId + d + " .day-summary .event-summary").html(results[item.e_date] + " event(s)");
 		});
-
 	},
 
 	requestWages: function(payload){
-		console.log(payload);
+
 		var json = JSON.parse(payload);
 		var current = Calendar.convertCurrentDateToDbFormat();
 		var isMonth = false;
@@ -363,22 +368,26 @@ var Calendar = {
 
 		if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31) is28th = true;
 
-
 		_.each(json, function(obj){
 			if (obj.w_date == current) isMonth = true;
 		});
 
-		console.log(isMonth);
+		var momentBuilder = function(offset){ return moment().month(parseInt(moment().format("M") - 1) + offset)};
+
+		if (!isMonth) 
+		{
+			var tm = momentBuilder(-1).format("MMMM");
+			var date = Calendar.convertCurrentDateToDbFormat();
+		}
+
+		if (is28th)
+		{
+			var tm = momentBuilder(+0).format("MMMM");
+			var date = Calendar.convertCurrentDateToDbFormat();
+		}
 
 		if (!isMonth || is28th){
 			var phrase = Calendar.convertDateToId(current);
-
-			var momentBuilder = function(offset){
-				return moment().month(parseInt(moment().format("M") - 1) + offset);
-			};
-
-			var tm = momentBuilder(-1).format("MMMM");
-
 
 			$("#" + phrase).prepend("<div class='request-wage-overlay'>\
 				<div class='wage-request-form'>\
@@ -393,7 +402,6 @@ var Calendar = {
 			var am = $("#wage-request-amount").val();
 
 			Calendar.setUsersWages(Calendar.parseWages, am);
-			
 		});
 	},
 
@@ -439,6 +447,10 @@ var Calendar = {
 	},
 
 	convertCurrentDateToDbFormat: function(){
+		return (moment().year() + "-" + (moment().month() + 1)).toString();
+	},
+
+	convertAnyDateToDbFormat: function(){
 		return (moment().year() + "-" + (moment().month() + 1)).toString();
 	},
 	
