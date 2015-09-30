@@ -357,29 +357,47 @@ var Calendar = {
 	requestWages: function(payload){
 
 		var json = JSON.parse(payload);
-		var current = Calendar.convertCurrentDateToDbFormat();
+		var current = "";
 		var isMonth = false;
 		var is28th = false;
+		var momentBuilder = function(offset){ 
+			return moment().month(parseInt(moment().format("M") - 1) + offset)
+		};
+		var paid = function(){ var c = Calendar.convertCurrentDateToDbFormat()
 
-		if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31) is28th = true;
-		else
-		{
 			_.each(json, function(obj){
-			if (obj.w_date == current) isMonth = true;
+				if (obj.w_date == c) return true;
+				else return false;
 			});
-		}
-		var momentBuilder = function(offset){ return moment().month(parseInt(moment().format("M") - 1) + offset)};
+ 		}
 
 		var date = "";
 
-		if (!isMonth) 
-		{
+
+		console.log(json);
+
+		/*
+
+		if (paid){ 
+
+			isMonth = true;
+
+		}
+
+		else if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31){
+
+			is28th = true;
+			current = Calendar.convertAnyDateToDbFormat(0, +2);
+
+		}
+
+
+		if (!isMonth){
 			var tm = momentBuilder(-1).format("MMMM");
 				date = Calendar.convertCurrentDateToDbFormat();
 		}
 
-		if (is28th)
-		{
+		if (is28th){
 			var tm = momentBuilder(+0).format("MMMM");
 				date = Calendar.convertCurrentDateToDbFormat();
 			var iTo = parseInt(date.substr(date.length-1, date.length)) +1;
@@ -387,6 +405,7 @@ var Calendar = {
 
 				date = date.substr(0,5);
 				date += iTo;
+				console.log(date);
 		}
 
 		if (!isMonth || is28th){
@@ -406,6 +425,9 @@ var Calendar = {
 
 			Calendar.setUsersWages(Calendar.parseWages, am, date);
 		});
+
+*/
+
 	},
 
 	associateWithMonth: function(json){
@@ -453,8 +475,11 @@ var Calendar = {
 		return (moment().year() + "-" + (moment().month() + 1)).toString();
 	},
 
-	convertAnyDateToDbFormat: function(){
-		return (moment().year() + "-" + (moment().month() + 1)).toString();
+	convertAnyDateToDbFormat: function(yearOffset, monthOffset){
+		var yo = yearOffset;
+		var mo = monthOffset;
+
+		return (moment().year() + yo) + "-" + (moment().month() + mo).toString();
 	},
 	
 
