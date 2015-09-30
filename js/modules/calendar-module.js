@@ -357,6 +357,56 @@ var Calendar = {
 	requestWages: function(payload){
 
 		var json = JSON.parse(payload);
+
+		// determine whether this month has a record
+
+		var currentDate = Calendar.convertCurrentDateToDbFormat();
+
+		var monthHasRec = function(json){
+			for (i = 0; i < json.length - 1; i++){
+
+				console.log(json[i].w_date);
+				/*
+				if (json[i].w_date == currentDate) return true;
+				else return false;
+				*/
+			};
+		}(json);
+
+		console.log(monthHasRec);
+
+		/*
+
+
+		_.each(json, function(line){
+			if (line.w_date == currentDate){
+				console.log("is this firing?");
+				monthHasRec = true;
+				break;
+			}
+			else {
+				console.log("or this?");
+				monthHasRec = false;
+			}
+		});
+
+		console.log(monthHasRec);
+
+		// determine whether there is a record AND it's the 28th
+
+
+		/*
+		if (thisMonthHasNoRecord){
+			//request money for this month
+		}
+		else if (ifThisMonthHasRecordAndIs28th){
+			// request money for next month
+		}
+		*/
+
+
+
+		/*
 		var current = "";
 		var isMonth = false;
 		var is28th = false;
@@ -373,31 +423,29 @@ var Calendar = {
 
 		var date = "";
 
-
-		console.log(json);
-
-		/*
-
 		if (paid){ 
-
+			 if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31){
+				console.log("this block is actually runnning");
+				is28th = true;
+				current = Calendar.convertAnyDateToDbFormat(0, +2);
+			}
+			console.log("paid block is running");
 			isMonth = true;
-
 		}
 
-		else if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31){
-
-			is28th = true;
-			current = Calendar.convertAnyDateToDbFormat(0, +2);
-
-		}
-
+		console.log(isMonth);
+		console.log(is28th);
 
 		if (!isMonth){
+			console.log("is month is running");
+
 			var tm = momentBuilder(-1).format("MMMM");
 				date = Calendar.convertCurrentDateToDbFormat();
 		}
 
 		if (is28th){
+			console.log("is 28th is running");
+
 			var tm = momentBuilder(+0).format("MMMM");
 				date = Calendar.convertCurrentDateToDbFormat();
 			var iTo = parseInt(date.substr(date.length-1, date.length)) +1;
