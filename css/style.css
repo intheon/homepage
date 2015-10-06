@@ -160,7 +160,11 @@ ul {
   list-style: none;
   font-size: 1.7em; }
 
-.dropdown .item {
+.dropdown-menu {
+  display: none; }
+
+.dropdown-menu div {
+  display: block;
   background: white; }
 
 .nav_item {

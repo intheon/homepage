@@ -258,8 +258,14 @@ ul{
     font-size:1.7em;
 }
 
-.dropdown .item
+.dropdown-menu
 {
+    display:none;
+}
+
+.dropdown-menu div
+{
+    display:block;
     background:white;
 }
 

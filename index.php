@@ -18,6 +18,8 @@ if (!isset($_SESSION['username']))
 	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
 
 	<link rel="stylesheet" type="text/css" href="css/form.css" />
+		<link rel="stylesheet" type="text/css" href="css/semantic.css" />
+	<link rel="stylesheet" type="text/css" href="css/dropdown.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
@@ -55,6 +57,7 @@ if (!isset($_SESSION['username']))
 
 		<div class="user-menu-item">Sign out</div>
 		<div class="user-menu-item">Manage details</div>
+
 	</div>
 
 </div>
@@ -67,13 +70,14 @@ if (!isset($_SESSION['username']))
 
 		<div class="column-3">
 			&nbsp;
-			
+
 			<ul class="navigation-menu">
 				<li class="navigation-item">calendar</li>
 				<li class="navigation-item">todo</li>
 				<li class="navigation-item">bash</li>
 				<li class="navigation-item">emails</li>
 				<li class="navigation-item">news</li>
+
 			</ul>
 		</div>
 
@@ -158,9 +162,10 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
 <script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
 <script type="text/javascript" src="js/libraries/shapeshift.js"></script>
-<script type="text/javascript" src="js/libraries/smoothwheel.js"></script>
 <script type="text/javascript" src="js/libraries/jcarousel.js"></script>
+<script type="text/javascript" src="js/libraries/dropdown.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
+
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>
