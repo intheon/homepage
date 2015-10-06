@@ -22,13 +22,31 @@ if (!isset($_SESSION['username']))
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 
-<body class="smoothWheel">
+<body>
 
 <div class="user-toolbar">
-	<div class="user-info">
-		<?php echo $_SESSION['username']; ?>
-		<i class="user icon"></i>
+
+	<!-- stats n shit -->
+	<div class="stats-toolbar">
+		<div class="ui tiny statistic inverted"><div class="value" id="taskCount">?</div><div class="label">Tasks</div></div>
+		<div class="ui tiny statistic inverted"><div class="value" id="moneyCount">?</div><div class="label">Money</div></div>
+		<div class="ui tiny statistic inverted"><div class="value" id="emailCount">?</div><div class="label">Emails</div></div>
 	</div>
+
+	<!-- user management -->
+	<div class="user-info">
+		<div class="ui dropdown">
+			<i class="dropdown icon"></i>
+			<div class="text">
+		  		<?php echo $_SESSION['username']; ?>
+		  		<i class="user icon"></i>
+			</div>
+			<div class="menu">
+				<div class="item">Sign out</div>
+				<div class="item">Manage details</div>
+			</div>
+		</div>
+</div>
 </div>
 
 	<!-- PANEL ONE -->
@@ -36,43 +54,8 @@ if (!isset($_SESSION['username']))
 		<div class="ui raised segment" id="welcome">
 
 			<div class="flex-item one-half"><div class="padding">
-            	<div class="jcarousel-wrapper">
-                	<div class="jcarousel">
-                    	<ul class="pp">
-                        	<li>
-                        		<h5 class="ui horizontal header divider"><i class="child icon"></i>Welcome Home</h5>
-                        		<div class="greeting">Had a hard day buddy? Why not chill with some lols and a beer!</div>
-                        	</li>
-                        	<li>
-                        	    <h5 class="ui horizontal header divider"><i class="gamepad icon"></i>Interwebs</h5>
-                        		<a href="http://www.shodanhq.com/"><div class="ui animated fade button "><div class="visible content">Shodan!</div><div class="hidden content">Discover!</div></div></a>
-                        		<a href="http://draugr.stumbleupon.com"><div class="ui animated fade button stumble"><div class="visible content">Stumble!</div><div class="hidden content">Interwebs!</div></div></a>
-                        	</li>
-                        	<li>
-                        	    <h5 class="ui horizontal header divider"><i class="play icon"></i>Entertainment</h5>
-                        		<a href="http://netflix.com"><div class="ui animated fade button netflix"><div class="visible content">Netflix!</div><div class="hidden content">Watch!</div></div></a>
-                        		<a href="http://last.fm"><div class="ui animated fade button lastfm"><div class="visible content">Last.fm!</div><div class="hidden content">Listen!</div></div></a>
-                        	</li>
-                        	<li>
-                        		<h5 class="ui horizontal header divider"><i class="steam square icon"></i>Gaming</h5>
-                        		<a href="http://store.steampowered.com/"><div class="ui animated fade button steamButton"><div class="visible content">Steam!</div><div class="hidden content">Play!</div></div></a>
-                        	</li>
-                        	<li>
-                        		<h5 class="ui horizontal header divider"><i class="steam square icon"></i>Development</h5>
-                        		<a href="http://store.steampowered.com/"><div class="ui animated fade button "><div class="visible content">StackOverflow!</div><div class="hidden content">Learn!</div></div></a>
-                        	</li>
-                    	</ul>
-                	</div>
-					<a href="#" class="jcarousel-control-prev">&lsaquo;</a>
-                	<a href="#" class="jcarousel-control-next">&rsaquo;</a>
-					<p class="jcarousel-pagination"></p>
-            	</div>
-            </div></div>
-			<div class="flex-item one-half"><div class="padding">
                 <h5 class="ui horizontal header divider"><i class="bar chart icon"></i>Ongoing</h5>
-                <div class="ui statistic"><div class="value" id="taskCount">?</div><div class="label">Tasks</div></div>
-  				<div class="ui statistic"><div class="value" id="moneyCount">?</div><div class="label">Money</div></div>
-				<div class="ui statistic"><div class="value" id="emailCount">?</div><div class="label">Emails</div></div>
+
   			</div></div>
 
 

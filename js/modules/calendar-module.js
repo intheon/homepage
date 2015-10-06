@@ -569,9 +569,11 @@ var Calendar = {
 	*/
 	// scrolls to the current month for good UX
 	scrollToElement: function(month, year){
+		/*
 		$("html, body").animate({
 			scrollTop: $("#" + month + year).offset().top - 20
 		},1100);
+*/
 	}
 
 };

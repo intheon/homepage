@@ -17,10 +17,19 @@ $padding:                               0.8%;
 $colour1:                               #AA3939;
 $colour2:                               #AA6C39;
 $colour3:                               #FFFFFF;
+$textColour:                            #FFFFFF;
 $trans:                                 rgba(255,255,255,0.3);
 $border-radius-amount:                  7px;    
 $padding:                               2%;
 $transparent-bg:                        rgba(0,0,0,0.8);
+
+%clearfix:after
+{
+    display:            block;
+    clear:              both;
+    content:            "";
+}
+
 
 %center-element
 {
@@ -39,7 +48,7 @@ $transparent-bg:                        rgba(0,0,0,0.8);
     border:                             none;
     border-bottom:                      2px solid lighten($colour1, 50%);
     transition:                         all 0.7s;
-        font-family:                     "Open Sans" !important;
+    font-family:                     "Open Sans" !important;
 }
 
 %input-hover
@@ -80,6 +89,81 @@ body
     background-image:                   -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 }
 
+
+.row
+{
+    @extend                             %clearfix;
+
+    & + &
+    {
+        margin-top:                     $padding;
+    }
+}
+
+[class^="column-"]
+{
+    float:                              left;
+    margin-right:                       $padding;
+    -webkit-box-sizing:                 border-box; 
+    -moz-box-sizing:                    border-box; 
+    box-sizing:                         border-box;
+ 
+    &:last-child 
+    {
+        margin-right:                   0%;
+    }
+}
+
+.column-1
+{   
+    width:                              (100% / 12) - ($padding * 11 / 12);
+}
+.column-2
+{   
+    width:                              (100% / 6) - ($padding * 10 / 12); 
+}
+.column-3
+{   
+    width:                              (100% / 4) - ($padding * 9 / 12); 
+}
+.column-4
+{   
+    width:                              (100% / 3) - ($padding * 8 / 12); 
+}
+.column-5
+{   
+    width:                              (100% / 2.4) - ($padding * 7 / 12); 
+}
+.column-6
+{   
+    width:                              (100% / 2) - ($padding * 6 / 12); 
+}
+.column-7
+{   
+    width:                              (100% / 1.714285714285714) - ($padding * 5 / 12); 
+}
+.column-8
+{   
+    width:                              (100% / 1.5) - ($padding * 4 / 12); 
+}
+.column-9
+{   
+    width:                              (100% / 1.333333333333333) - ($padding * 3 / 12); 
+}
+.column-10
+{   
+    width:                              (100% / 1.2) - ($padding * 2 / 12); 
+}
+.column-11
+{   
+    width:                              (100% / 1.090909090909091) - ($padding * 1 / 12); 
+}
+.column-12
+{   
+    width:                              100%; 
+}
+
+
 .noHeight
 {
     height:                             auto;
@@ -104,16 +188,29 @@ body
 
 .user-toolbar
 {
-    width:                              auto;
-    padding:                            $padding / 2.4;
+    font-size:1.2em;
+    display:flex;
+    padding:                            $padding / 3;
     background:                         $transparent-bg;
     color:                              white;
-    text-align:                         right;
+}
+
+.stats-toolbar div
+{
+
 }
 
 .user-info
 {
-    margin-right:                       $padding;
+    padding-top:1.2%;
+    padding-right:4.4%;
+    flex:1;
+    text-align: right;
+}
+
+.item
+{
+    background:white;
 }
 
 .nav_item
