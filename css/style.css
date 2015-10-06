@@ -147,6 +147,19 @@ body {
   display: flex;
   padding-right: 10px; }
 
+.navigation-menu {
+  position: fixed;
+  top: 13%; }
+
+ul {
+  padding: 0;
+  margin: 0;
+  padding: 0.66667%; }
+
+.navigation-menu li {
+  list-style: none;
+  font-size: 1.7em; }
+
 .dropdown .item {
   background: white; }
 

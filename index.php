@@ -61,65 +61,98 @@ if (!isset($_SESSION['username']))
 </div>
 
 	<!-- PANEL ONE -->
-	<div class="area" id="home">
+	<div class="main-content">
 
-	<div class="ui two column grid">
+	<div class="row">
 
-	
+		<div class="column-3">
+			&nbsp;
+			
+			<ul class="navigation-menu">
+				<li class="navigation-item">calendar</li>
+				<li class="navigation-item">todo</li>
+				<li class="navigation-item">bash</li>
+				<li class="navigation-item">emails</li>
+				<li class="navigation-item">news</li>
+			</ul>
+		</div>
+
+		<div class="column-9">
+			<div class="modal-calendar"></div>
+		</div>
+
 	</div>
 
-		<div id="tasks" class="ui stacked segment">
+	<div class="row">
 
-			<div id="calendar" class="flex-item one-half"><div class="padding">
-			    <h5 class="ui horizontal header divider"><i class="calendar icon"></i>Calendar</h5>
-			    <div class="modal-calendar"></div>
-			    <!--
-			    <div id="messages"></div>
-				<div class="calendar" id="cost-calendar"></div>
-				<div class="information" id="information-panel"></div>
-				-->
-			</div></div>
-
-			<div id="todo" class="flex-item one-half"><div class="padding">
-			    <h5 class="ui horizontal header divider"><i class="checkmark box icon"></i>Tasks</h5>
-			</div></div>
-
+		<div class="column-3">
+			&nbsp;
 		</div>
-		<div id="border" class="ui stacked segment">
+
+		<div class="column-9">
+			<div id="todo"></div>
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="column-3">
+			&nbsp;
+		</div>
+
+		<div class="column-9">
 			<div class="quote feed" id="bash"><h3>Random Bash Quote</h3></div>
 		</div>
+
 	</div>
-	<!-- END PANEL -->
 
-	<!-- PANEL TWO -->
-	<div class="area" id="gmail"><div id="gmailContent" class="ui stacked segment">
-		<h2>Your emails <span class="integer_count"></span></h2>
-		<div id="login_container" class="pre_auth">Please <a href="#" id="login_link">authorise</a> Gmail to use this app.</div>
-	</div></div>
-	<!-- END PANEL -->
+	<div class="row">
 
-	<!-- PANEL THREE -->
-	<div class="area" id="news"><div id="border" class="ui stacked segment">
+		<div class="column-3">
+			&nbsp;
+		</div>
 
- 		<div class="resizable-grid">
-      		<div class="news-item"><header>BBC News</header><div id="bbc" class="ui selection list feed"></div></div>
-      		<div class="news-item"><header>Gamespot</header><div id="gamespot" class="ui selection list feed"></div></div>
-      		<div class="news-item"><header>Clients from Hell</header><div id="clients" class="ui selection list feed"></div></div>
-      		<div class="news-item"><header>Reddit</header><div id="reddit" class="ui selection list feed"></div></div>
-      		<div class="news-item"><header>Preshing on Programming</header><div id="preshing" class="ui selection list feed"></div></div>
-      		<div class="news-item"><header>Coding Horror</header><div id="coding" class="ui selection list feed"></div></div>
-  		</div>
+		<div class="column-9">
+			<div id="gmailContent" class="ui stacked segment">
+				<h2>Your emails <span class="integer_count"></span></h2>
+				<div id="login_container" class="pre_auth">Please <a href="#" id="login_link">authorise</a> Gmail to use this app.</div>
+			</div>
+		</div>
 
-	</div></div>
-	<!-- END PANEL -->
-
-	<!-- FIXED NAVIGATION -->
-	<div class="ui three item orange inverted menu fixed bottom">
-		<a class="active item" id="home_link">Home</a>
-		<a class="item" id="gmail_link">Emails</a>
-		<a class="item" id="news_link">News Feeds</a>
 	</div>
-	<!-- END NAVIGATION -->
+
+	<div class="row">
+
+		<div class="column-3">
+			&nbsp;
+		</div>
+
+		<div class="column-9">
+ 			<div class="resizable-grid">
+      			<div class="news-item"><header>BBC News</header><div id="bbc" class="ui selection list feed"></div></div>
+      			<div class="news-item"><header>Gamespot</header><div id="gamespot" class="ui selection list feed"></div></div>
+      			<div class="news-item"><header>Clients from Hell</header><div id="clients" class="ui selection list feed"></div></div>
+      			<div class="news-item"><header>Reddit</header><div id="reddit" class="ui selection list feed"></div></div>
+      			<div class="news-item"><header>Preshing on Programming</header><div id="preshing" class="ui selection list feed"></div></div>
+      			<div class="news-item"><header>Coding Horror</header><div id="coding" class="ui selection list feed"></div></div>
+  			</div>
+		</div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="column-3">
+			blank
+		</div>
+
+		<div class="column-9">
+			<div class="quote feed" id="bash"><h3>Random Bash Quote</h3></div>
+		</div>
+
+	</div>
+
 
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
