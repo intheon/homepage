@@ -35,7 +35,9 @@ input[type="text"]:focus, button:hover {
 body {
   background: url(../img/bg.jpg);
   background-attachment: fixed;
-  font-family: "Open Sans" !important; }
+  font-family: "Open Sans" !important;
+  padding: 0;
+  margin: 0; }
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -117,13 +119,35 @@ body {
   background: rgba(0, 0, 0, 0.8);
   color: white; }
 
+.user-name {
+  font-size: 2em; }
+
+.stats-item {
+  float: left;
+  margin-right: 10px; }
+
+.stats-item .value {
+  text-align: center;
+  font-size: 3em;
+  color: #e6e6e6; }
+
+.stats-item .label {
+  text-align: center;
+  font-size: 0.8em;
+  color: #cccccc; }
+
 .user-info {
-  padding-top: 1.2%;
-  padding-right: 4.4%;
   flex: 1;
   text-align: right; }
 
-.item {
+.user-menu-item {
+  font-size: 0.8em;
+  color: #cccccc;
+  float: right;
+  display: flex;
+  padding-right: 10px; }
+
+.dropdown .item {
   background: white; }
 
 .nav_item {

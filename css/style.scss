@@ -70,6 +70,8 @@ body
     background:                         url(../img/bg.jpg);
     background-attachment:              fixed;
     font-family:                        "Open Sans" !important;
+    padding:                            0;
+    margin:                             0;
 }
 
 ::-webkit-scrollbar-track
@@ -195,20 +197,50 @@ body
     color:                              white;
 }
 
-.stats-toolbar div
+.user-name
 {
+    font-size:2em;
+}
 
+.stats-toolbar
+{
+}
+
+.stats-item
+{
+    float:left;
+    margin-right:10px;
+}
+
+.stats-item .value
+{
+    text-align:center;
+    font-size:3em;
+    color:darken($textColour,10%);
+}
+.stats-item .label
+{
+    text-align:center;
+    font-size:0.8em;
+        color:darken($textColour,20%);
 }
 
 .user-info
 {
-    padding-top:1.2%;
-    padding-right:4.4%;
     flex:1;
     text-align: right;
 }
 
-.item
+.user-menu-item
+{
+    font-size:0.8em;
+        color:darken($textColour,20%);
+    float:right;
+    display:flex;
+    padding-right:10px;
+}
+
+.dropdown .item
 {
     background:white;
 }

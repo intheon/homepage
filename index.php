@@ -17,7 +17,6 @@ if (!isset($_SESSION['username']))
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
 
-	<link rel="stylesheet" type="text/css" href="css/semantic.css" />
 	<link rel="stylesheet" type="text/css" href="css/form.css" />
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
@@ -28,38 +27,46 @@ if (!isset($_SESSION['username']))
 
 	<!-- stats n shit -->
 	<div class="stats-toolbar">
-		<div class="ui tiny statistic inverted"><div class="value" id="taskCount">?</div><div class="label">Tasks</div></div>
-		<div class="ui tiny statistic inverted"><div class="value" id="moneyCount">?</div><div class="label">Money</div></div>
-		<div class="ui tiny statistic inverted"><div class="value" id="emailCount">?</div><div class="label">Emails</div></div>
+
+		<div class="stats-item">
+			<div class="value" id="taskCount">?</div>
+			<div class="label">Tasks</div>
+		</div>
+
+		<div class="stats-item">
+			<div class="value" id="moneyCount">?</div>
+			<div class="label">Money</div>
+		</div>
+
+		<div class="stats-item">
+			<div class="value" id="emailCount">?</div>
+			<div class="label">Emails</div>
+		</div>
+
 	</div>
 
 	<!-- user management -->
 	<div class="user-info">
-		<div class="ui dropdown">
-			<i class="dropdown icon"></i>
-			<div class="text">
-		  		<?php echo $_SESSION['username']; ?>
-		  		<i class="user icon"></i>
-			</div>
-			<div class="menu">
-				<div class="item">Sign out</div>
-				<div class="item">Manage details</div>
-			</div>
+
+		<div class="user-name">
+			<?php echo $_SESSION['username']; ?>
+			<img src="./img/user.png">
 		</div>
+
+		<div class="user-menu-item">Sign out</div>
+		<div class="user-menu-item">Manage details</div>
+	</div>
+
 </div>
 </div>
 
 	<!-- PANEL ONE -->
 	<div class="area" id="home">
-		<div class="ui raised segment" id="welcome">
 
-			<div class="flex-item one-half"><div class="padding">
-                <h5 class="ui horizontal header divider"><i class="bar chart icon"></i>Ongoing</h5>
+	<div class="ui two column grid">
 
-  			</div></div>
-
-
-		</div>
+	
+	</div>
 
 		<div id="tasks" class="ui stacked segment">
 
