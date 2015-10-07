@@ -66,28 +66,28 @@ if (!isset($_SESSION['username']))
 	<!-- PANEL ONE -->
 	<div class="main-content">
 
-	<div class="row">
+	<div class="row content-area">
 
 		<div class="column-3">
 			&nbsp;
 
 			<ul class="navigation-menu">
-				<li class="navigation-item">calendar</li>
-				<li class="navigation-item">todo</li>
-				<li class="navigation-item">bash</li>
-				<li class="navigation-item">emails</li>
-				<li class="navigation-item">news</li>
+				<li class="navigation-item"><a href="#calendar">Calendar</a></li>
+				<li class="navigation-item"><a href="#todo-container">Todo</a></li>
+				<li class="navigation-item"><a href="#bash">Bash</a></li>
+				<li class="navigation-item"><a href="#gmail">Emails</a></li>
+				<li class="navigation-item"><a href="#news">News</a></li>
 
 			</ul>
 		</div>
 
-		<div class="column-9">
+		<div class="column-9"  id="calendar">
 			<div class="modal-calendar"></div>
 		</div>
 
 	</div>
 
-	<div class="row">
+	<div class="row content-area" id="todo-container">
 
 		<div class="column-3">
 			&nbsp;
@@ -99,7 +99,7 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
-	<div class="row">
+	<div class="row content-area" id="bash">
 
 		<div class="column-3">
 			&nbsp;
@@ -111,7 +111,7 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
-	<div class="row">
+	<div class="row content-area" id="gmail">
 
 		<div class="column-3">
 			&nbsp;
@@ -126,7 +126,7 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
-	<div class="row">
+	<div class="row content-area" id="news">
 
 		<div class="column-3">
 			&nbsp;
@@ -145,18 +145,6 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
-	<div class="row">
-
-		<div class="column-3">
-			blank
-		</div>
-
-		<div class="column-9">
-			<div class="quote feed" id="bash"><h3>Random Bash Quote</h3></div>
-		</div>
-
-	</div>
-
 
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
@@ -165,7 +153,7 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/libraries/jcarousel.js"></script>
 <script type="text/javascript" src="js/libraries/dropdown.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
-
+<script type="text/javascript" src="js/libraries/waypoints.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>

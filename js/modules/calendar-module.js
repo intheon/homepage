@@ -1,3 +1,6 @@
+var rootUrl = "http://localhost/homepage";
+//var rootUrl = "http://intheon.uk/home";
+
 var Calendar = {
 
 	initialise: function(type){
@@ -211,7 +214,7 @@ var Calendar = {
 	getUsersWages: function(callback){
 		$.ajax({
 			type: 	"POST",
-			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			url: 	rootUrl + "/php/module_manage_credentials.php",
 			data: 	{
 				type: 		"getUsersWages",
 			},
@@ -225,7 +228,7 @@ var Calendar = {
 
 		$.ajax({
 			type: 	"POST",
-			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			url: 	rootUrl + "/php/module_manage_credentials.php",
 			data: 	{
 				type: 		"setUsersWages",
 				wage: 		wageAmount,
@@ -245,12 +248,11 @@ var Calendar = {
 	getUsersEvents: function(){
 		$.ajax({
 			type: 	"POST",
-			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			url: 	rootUrl + "/php/module_manage_credentials.php",
 			data: 	{
 				type: 		"getUsersEvents"
 			},
 			success: function(response){
-				//onsole.log(response);
 				Calendar.parseUsersEvents(response);
 			}
 		});
@@ -264,11 +266,9 @@ var Calendar = {
 		var db = Calendar.convertIdToDate(p);
 		var fd = db + "-" + payload.dayIdentifier;
 
-		console.log(fd);
-
 		$.ajax({
 			type: 	"POST",
-			url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+			url: 	rootUrl + "/php/module_manage_credentials.php",
 			data: 	{
 				type: 		type,
 				name: 		payload.name,
@@ -325,8 +325,11 @@ var Calendar = {
 			var cId = item.s_date.substr(0, item.s_date.length - 2);
 				cId = Calendar.convertDateToId(cId);
 
+
 			var d = item.s_date.split("-")[2];
 				d = " .calendar-item-" + d;
+
+				console.log(cId, d);
 
 			$("#" + cId + d + " .day-details").append("<div class='spend-item'>"+item.s_name + " " + item.s_price + "</div>");
 			$("#" + cId + d + " .day-summary .spend-summary").html(results[item.s_date] + " spend(s)");
@@ -365,15 +368,12 @@ var Calendar = {
 		var monthHasRec = function(json){
 			for (i = 0; i < json.length - 1; i++){
 
-				console.log(json[i].w_date);
 				/*
 				if (json[i].w_date == currentDate) return true;
 				else return false;
 				*/
 			};
 		}(json);
-
-		console.log(monthHasRec);
 
 		/*
 
@@ -485,6 +485,7 @@ var Calendar = {
 
 		// add it in
 		$("#" + phrase + " .month-info-container").append("<div class='month-spend'>£"+json.w_amount+"</div>");
+		$("#moneyCount").html(json.w_amount);
 	},
 
 	convertIdToDate: function(date){

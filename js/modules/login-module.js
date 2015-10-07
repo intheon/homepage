@@ -1,3 +1,6 @@
+var rootUrl = "http://localhost/homepage";
+//var rootUrl = "http://intheon.uk/home";
+
 $(document).ready(function(){
 
 	$("#show-register").click(function(){
@@ -36,7 +39,7 @@ function registerDetails(){
 
 	$.ajax({
 		type: 	"POST",
-		url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+		url: 	rootUrl + "/php/module_manage_credentials.php",
 		data: 	{
 			type: 		"registerNewUser",
 			payload: 	JSON.stringify(payload)
@@ -76,7 +79,7 @@ function signIn(){
 	// SUBMIT PAYLOAD TO PHP
 	$.ajax({
 		type: 	"POST",
-		url: 	"http://localhost/homepage/php/module_manage_credentials.php",
+		url: 	rootUrl + "/php/module_manage_credentials.php",
 		data: 	{
 			type: 		"signInUser",
 			payload: 	JSON.stringify(payload)
