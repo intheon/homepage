@@ -9,9 +9,7 @@ $(document).ready(function() {
 
 		var h = $(this).attr("href");
 
-		$('html, body').animate({
-			scrollTop: $( h ).offset().top
-		}, 500);
+		scrollToElement(h);
 
 		window.location.hash = h; 
 
@@ -25,8 +23,26 @@ $(document).ready(function() {
 
 	// to style when page is loaded (it might already have a hash in there)
 
+	if (window.location.hash)
+	{
+		var url = window.location.hash;
+
+		scrollToElement(url);
+
+		$(".nav-link").removeClass("active-nav");
+
+		$(".nav-link[href='"+url+"']").addClass("active-nav");
+	}
+
 
 });
+
+function scrollToElement(el)
+{
+	$('html, body').animate({
+		scrollTop: $( el ).offset().top
+	}, 500);
+}
 
 
 

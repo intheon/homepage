@@ -50,8 +50,10 @@ body {
   background-color: #F90;
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent); }
 
-.row + .row {
-  margin-top: 2%; }
+.row {
+  height: 100vh !important; }
+  .row + .row {
+    margin-top: 2%; }
 
 [class^="column-"] {
   float: left;
@@ -310,7 +312,7 @@ ul {
 
 .calendar-item {
   z-index: 1;
-  width: 8%;
+  width: 19%;
   min-height: 100px;
   padding: 0.5%; }
 

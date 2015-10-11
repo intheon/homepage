@@ -100,6 +100,8 @@ body
     {
         margin-top:                     $padding;
     }
+
+    height:100vh !important;
 }
 
 [class^="column-"]
@@ -502,7 +504,7 @@ button:hover
 .calendar-item
 {
     z-index:                1;
-    width:                  8%;
+    width:                  19%;
     min-height:             100px;
     padding:             0.5%;
 }
