@@ -329,8 +329,6 @@ var Calendar = {
 			var d = item.s_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
-				console.log(cId, d);
-
 			$("#" + cId + d + " .day-details").append("<div class='spend-item'>"+item.s_name + " " + item.s_price + "</div>");
 			$("#" + cId + d + " .day-summary .spend-summary").html(results[item.s_date] + " spend(s)");
 		});

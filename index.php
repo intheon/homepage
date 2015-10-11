@@ -40,10 +40,12 @@ if (!isset($_SESSION['username']))
 			<div class="label">Money</div>
 		</div>
 
+		<!--
 		<div class="stats-item">
 			<div class="value" id="emailCount">?</div>
 			<div class="label">Emails</div>
 		</div>
+		-->
 
 	</div>
 
@@ -72,11 +74,10 @@ if (!isset($_SESSION['username']))
 			&nbsp;
 
 			<ul class="navigation-menu">
-				<li class="navigation-item"><a href="#calendar">Calendar</a></li>
-				<li class="navigation-item"><a href="#todo-container">Todo</a></li>
-				<li class="navigation-item"><a href="#bash">Bash</a></li>
-				<li class="navigation-item"><a href="#gmail">Emails</a></li>
-				<li class="navigation-item"><a href="#news">News</a></li>
+				<li class="navigation-item"><a href="#calendar" class="nav-link">Calendar</a></li>
+				<li class="navigation-item"><a href="#todo-container" class="nav-link">Todo</a></li>
+				<li class="navigation-item"><a href="#gmail" class="nav-link">Emails</a></li>
+				<li class="navigation-item"><a href="#news" class="nav-link">Feeds</a></li>
 
 			</ul>
 		</div>
@@ -99,7 +100,7 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
-	<div class="row content-area" id="bash">
+	<div class="row" id="bash">
 
 		<div class="column-3">
 			&nbsp;
@@ -153,7 +154,6 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/libraries/jcarousel.js"></script>
 <script type="text/javascript" src="js/libraries/dropdown.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
-<script type="text/javascript" src="js/libraries/waypoints.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>
