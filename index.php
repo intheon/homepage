@@ -68,7 +68,7 @@ if (!isset($_SESSION['username']))
 	<!-- PANEL ONE -->
 	<div class="main-content">
 
-	<div class="row content-area">
+	<div class="row">
 
 		<div class="column-3">
 			&nbsp;
@@ -82,7 +82,7 @@ if (!isset($_SESSION['username']))
 			</ul>
 		</div>
 
-		<div class="column-9"  id="calendar">
+		<div class="column-9  content-area"  id="calendar">
 			<div class="modal-calendar"></div>
 		</div>
 
@@ -100,6 +100,7 @@ if (!isset($_SESSION['username']))
 
 	</div>
 
+	<!--
 	<div class="row" id="bash">
 
 		<div class="column-3">
@@ -111,6 +112,7 @@ if (!isset($_SESSION['username']))
 		</div>
 
 	</div>
+	-->
 
 	<div class="row content-area" id="gmail">
 
@@ -151,8 +153,7 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
 <script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
 <script type="text/javascript" src="js/libraries/shapeshift.js"></script>
-<script type="text/javascript" src="js/libraries/jcarousel.js"></script>
-<script type="text/javascript" src="js/libraries/dropdown.js"></script>
+<script type="text/javascript" src="js/libraries/waypoints.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
@@ -165,7 +166,6 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/modules/feeds.js"></script>
 <script type="text/javascript" src="js/modules/todo.js"></script>
 <script type="text/javascript" src="js/modules/calendar-module.js"></script>
-<script type="text/javascript" src="js/modules/display.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
 <script type="text/javascript">
 	Calendar.initialise();

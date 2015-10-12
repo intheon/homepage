@@ -14,7 +14,7 @@ if (!internetStatus)
 }
 else
 {
-	getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
+	//getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
 	getFeed("http://feeds.bbci.co.uk/news/technology/rss.xml","bbc",7);
 	getFeed("http://www.reddit.com/r/skateboarding/.rss","reddit",5);
 	getFeed("http://clientsfromhell.tumblr.com/rss","clients",5);
