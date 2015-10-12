@@ -43,7 +43,7 @@ $(document).ready(function() {
 		$(".nav-link[href='#"+this.element.id+"']").addClass("active-nav");
 
 		window.location.hash = this.element.id; 
-		console.log(this.element.id);
+
 	}, {offset: 0});
 
 

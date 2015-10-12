@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<script type="text/javascript" src="http://localhost/homepage/js/libraries/jquery.js"></script>
+<script type="text/javascript">
+	
+
+$(document).ready(function(){
+	var t = [
+		{
+			date: "2015-6-2",
+			amount: 4
+		},
+		{
+			date: "2015-6-4",
+			amount: 8
+		},
+		{
+			date: "2015-6-2",
+			amount: 2
+		},
+		{
+			date: "2015-5-4",
+			amount: 2
+		}
+	];
+
+	parseThing(t)
+});
+
+function parseThing(thing)
+{
+	var temp = [];
+
+	for (i = 0; i < thing.length; i ++)
+	{
+		var l = thing[i].date;
+		var a = thing[i].amount;
+
+		if (temp.length === 0)
+		{
+			var o = {
+				[l]: a
+			}
+			temp.push(o)
+		}
+		else
+		{
+			//if (thing[i].date)
+		}
+		console.log(temp);
+	}
+}
+</script>
+
+</body>
+</html>

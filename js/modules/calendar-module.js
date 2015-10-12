@@ -297,6 +297,7 @@ var Calendar = {
 		var hs = JSON.parse(payload);
 		var ss = [];
 		var es = [];
+		var temp = [];
 
 		_.each(hs, function(obj){
 			for (keys in obj){
@@ -309,16 +310,46 @@ var Calendar = {
 			}
 		});
 
-		// parse all events
-
+		// parse all spends
 		_.each(ss, function(item){
 
-			var a = function(ss){
+			var allSpends = function(ss){
 				return _.pluck(ss, "s_date");
 			}
 
-			var b = a(ss);
+			var b = allSpends(ss);
 
+			/*
+				console.log(item.s_name);
+				console.log(item.s_price);
+				console.log(item.s_date);
+				*/
+
+			// tally up the number of spends pr day
+
+			if (temp.length === 0)
+			{
+				temp.push([item.s_date, item.s_name, item.s_price]);
+			}
+			else
+			{
+
+			}
+
+			for (i = 0; i < temp.length; i++)
+			{
+				if (temp[i][0] == item.s_date)
+				{
+					console.log(ss);
+					//console.log(item.s_date, item.s_price);
+					//console.log(item.s_price);
+				}
+
+				//console.log(temp[i][0]);
+				//console.log(item.s_date);
+			}
+
+			// this block counts the amount of spends to summarise
 			var results = _.reduce(b,function(counts,key){ counts[key]++; return counts },
                   _.object( _.map( _.uniq(b), function(key) { return [key, 0] })))
 
@@ -329,17 +360,17 @@ var Calendar = {
 			var d = item.s_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
-			$("#" + cId + d + " .day-details").append("<div class='spend-item'>"+item.s_name + " " + item.s_price + "</div>");
-			$("#" + cId + d + " .day-summary .spend-summary").html(results[item.s_date] + " spend(s)");
+			$("#" + cId + d + " .day-details").append("<div class='spend-item'><div class='spend-item-label'>"+item.s_name + "</div><div class='spend-item-amount'>" + item.s_price + "</div></div>");
+			$("#" + cId + d + " .day-summary .spend-summary").html("<i class='gbp icon'></i>(" + results[item.s_date] + ")");
 		});
-		// parse all spends
+		// parse all events
 		_.each(es, function(item){
 
-			var a = function(es){
+			var allEvents = function(es){
 				return _.pluck(es, "e_date");
 			}
 
-			var b = a(es);
+			var b = allEvents(es);
 
 			var results = _.reduce(b,function(counts,key){ counts[key]++; return counts },
                   _.object( _.map( _.uniq(b), function(key) { return [key, 0] })))
@@ -347,11 +378,12 @@ var Calendar = {
 			var cId = item.e_date.substr(0, item.e_date.length - 2);
 				cId = Calendar.convertDateToId(cId);
 
+
 			var d = item.e_date.split("-")[2];
 				d = " .calendar-item-" + d;
 
-			$("#" + cId + d + " .day-details").append("<div class='event-item'>"+item.e_name + " " + item.e_desc + "</div>");
-			$("#" + cId + d + " .day-summary .event-summary").html(results[item.e_date] + " event(s)");
+			$("#" + cId + d + " .day-details").append("<div class='event-item'><div class='event-item-label'>"+item.e_name + "</div><div class='event-item-amount'>" + item.e_desc + "</div></div>");
+			$("#" + cId + d + " .day-summary .event-summary").html(results[item.e_date] + "<i class='checkmark box icon'></i>");
 		});
 	},
 
