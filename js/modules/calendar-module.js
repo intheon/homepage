@@ -253,6 +253,7 @@ var Calendar = {
 				type: 		"getUsersEvents"
 			},
 			success: function(response){
+				//console.log(JSON.parse(response));
 				Calendar.parseUsersEvents(response);
 			}
 		});
@@ -311,6 +312,20 @@ var Calendar = {
 		});
 
 		// parse all spends
+
+		var uniques = ss.reduce(function(m, e) {
+			//console.log(m);
+			//console.log(e);
+	    		if(!m.by_date[e.s_date]) {
+	        		m.by_date[e.s_date] = { s_date: e.s_date, s_price: 0 };
+	        		m.ss.push(m.by_date[e.s_date]);
+	    		}
+	    		m.by_date[e.s_date].s_price += parseInt(e.s_price);
+	    		return m;
+			}, { ss: [ ], by_date: { } });
+
+		console.log(uniques.ss);
+
 		_.each(ss, function(item){
 
 			var allSpends = function(ss){
@@ -318,36 +333,6 @@ var Calendar = {
 			}
 
 			var b = allSpends(ss);
-
-			/*
-				console.log(item.s_name);
-				console.log(item.s_price);
-				console.log(item.s_date);
-				*/
-
-			// tally up the number of spends pr day
-
-			if (temp.length === 0)
-			{
-				temp.push([item.s_date, item.s_name, item.s_price]);
-			}
-			else
-			{
-
-			}
-
-			for (i = 0; i < temp.length; i++)
-			{
-				if (temp[i][0] == item.s_date)
-				{
-					console.log(ss);
-					//console.log(item.s_date, item.s_price);
-					//console.log(item.s_price);
-				}
-
-				//console.log(temp[i][0]);
-				//console.log(item.s_date);
-			}
 
 			// this block counts the amount of spends to summarise
 			var results = _.reduce(b,function(counts,key){ counts[key]++; return counts },

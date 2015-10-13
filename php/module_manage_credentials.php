@@ -224,7 +224,7 @@ class userManager
 
 		mysqli_close($connect);
 
-		echo json_encode($json);
+		echo json_encode($json, JSON_NUMERIC_CHECK);
 	}
 
 	public function setUsersEvents($name, $detail, $date)

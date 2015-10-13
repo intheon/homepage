@@ -6,55 +6,61 @@
 <body>
 
 <script type="text/javascript" src="http://localhost/homepage/js/libraries/jquery.js"></script>
+<script type="text/javascript" src="http://localhost/homepage/js/libraries/underscore.js"></script>
 <script type="text/javascript">
 	
 
 $(document).ready(function(){
-	var t = [
+	var a = [
 		{
 			date: "2015-6-2",
-			amount: 4
+			amount: 10
 		},
 		{
-			date: "2015-6-4",
+			date: "2015-8-1",
 			amount: 8
 		},
 		{
 			date: "2015-6-2",
-			amount: 2
+			amount: 10
 		},
 		{
-			date: "2015-5-4",
-			amount: 2
+			date: "2015-6-2",
+			amount: 10
+		},
+		{
+			date: "2015-5-9",
+			amount: 7
+		},
+		{
+			date: "2015-5-9",
+			amount: 3
+		},
+		{
+			date: "2015-1-8",
+			amount: 11
 		}
 	];
 
-	parseThing(t)
+	// this tallies up duplicate date's amounts
+	// shamefull stolen from
+	// http://stackoverflow.com/questions/24130110/how-can-i-reduce-array-with-non-unique-elements-by-summing-their-second-value-wi
+
+	var b = a.reduce(function(m, e) {
+	    if(!m.by_date[e.date]) {
+	        m.by_date[e.date] = { date: e.date, amount: 0 };
+	        m.a.push(m.by_date[e.date]);
+	    }
+	    m.by_date[e.date].amount += e.amount;
+	    return m;
+	}, { a: [ ], by_date: { } });
+
+	console.log(b.a);
+
 });
 
-function parseThing(thing)
-{
-	var temp = [];
 
-	for (i = 0; i < thing.length; i ++)
-	{
-		var l = thing[i].date;
-		var a = thing[i].amount;
 
-		if (temp.length === 0)
-		{
-			var o = {
-				[l]: a
-			}
-			temp.push(o)
-		}
-		else
-		{
-			//if (thing[i].date)
-		}
-		console.log(temp);
-	}
-}
 </script>
 
 </body>
