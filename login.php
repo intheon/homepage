@@ -22,8 +22,8 @@
 			<section id="login-forms" class="row forms">
 
 				<header 	class="big-header column-12">Howdy, you're not logged in.</header>
-				<input  	class="column-12 center" type="text" placeholder="Username" 	id="login-form-username" /> 
-				<input  	class="column-12 center"  type="text" placeholder="Password" 	id="login-form-password" /> 
+				<input  	class="column-12 center" type="text" placeholder="Username" 		id="login-form-username" /> 
+				<input  	class="column-12 center"  type="password" placeholder="Password" 	id="login-form-password" /> 
 				<button  	class="column-12" id="submit-sign-in">Sign in >>></button> 
 				<button  	class="column-12" id="show-register">Register</button>
 

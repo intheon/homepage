@@ -82,7 +82,7 @@ var LoginModule = {
 		}
 		else
 		{
-			LoginModule.ajaxHandler("POST", "registerUser", payload);
+			LoginModule.ajaxHandler("POST", "registerNewUser", payload);
 		}
 	},
 
@@ -127,7 +127,7 @@ var LoginModule = {
 				break;
 
 			default:
-				LoginModule.createErrorMSG("No data received");
+				LoginModule.createErrorMSG("Computer says no. Something broke. Go outside and play.");
 				break;
 		}
 	}

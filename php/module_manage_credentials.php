@@ -20,7 +20,7 @@ function checkMethod($type)
 		case "registerNewUser":
 			if (isset($_POST["payload"]))
 			{
-				$payload = mysqli_real_escape_string($connect,$_POST["payload"]);
+				$payload = $_POST["payload"];
 				$userManager->registerNewUser($payload);
 			}
 			break;
@@ -91,27 +91,34 @@ class userManager
 			switch ($key)
 			{
 				case "usr":
-				$usr = $val;
+				$usr = mysqli_real_escape_string($connect,$val);
 				break;
 
 				case "pwd":
-				$pwd = $val;
+				$pwd = mysqli_real_escape_string($connect,$val);
 				break;
 
 				case "nm":
-				$nm = $val;
+				$nm = mysqli_real_escape_string($connect,$val);
 				break;
 
 				case "email":
-				$email = $val;
+				$email = mysqli_real_escape_string($connect,$val);
 				break;
 			}
 		}
 
+		$hashed = $this->hashPassword($pwd);
+
 		// insert into db
-		mysqli_query($connect, "INSERT INTO users (u_username, u_password, u_name, u_email) VALUES ('$usr', '$pwd', '$nm', '$email')");
+		mysqli_query($connect, "INSERT INTO users (u_username, u_password, u_name, u_email) VALUES ('$usr', '$hashed', '$nm', '$email')");
 
 		$this->logUserIn($usr);
+	}
+
+	private function hashPassword($plaintext_password)
+	{
+		return password_hash($plaintext_password,PASSWORD_DEFAULT);
 	}
 
 	public function signInUser($payload)
@@ -139,7 +146,6 @@ class userManager
 
 		if ($doesUserExist)
 		{
-			/*
 			// because they exist, need to 
 			// check if password matches existing hash
 			$isPasswordCorrect = $this->checkPassword($usr, $pwd);
@@ -152,7 +158,7 @@ class userManager
 			{
 				echo htmlspecialchars("incorrectpw");
 			}
-			*/
+
 		}
 		else if (!$doesUserExist)
 		{

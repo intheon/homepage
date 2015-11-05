@@ -23,7 +23,7 @@ body {
   border-radius: 7px;
   background: rgba(215, 215, 215, 0.3); }
 
-input[type="text"], button {
+input[type="text"], input[type="password"], button {
   padding: 1.6%;
   border-radius: 7px;
   outline: none;
@@ -33,7 +33,7 @@ input[type="text"], button {
   transition: all 0.7s;
   font-family: "Open Sans" !important; }
 
-input[type="text"]:hover, input[type="text"]:focus, button:hover {
+input[type="text"]:hover, input[type="password"]:hover, input[type="text"]:focus, input[type="password"]:focus, button:hover {
   border-bottom: 2px solid #bd3f3f;
   background: rgba(215, 215, 215, 0.3);
   cursor: -moz-pointer;
