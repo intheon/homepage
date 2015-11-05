@@ -5,12 +5,14 @@ require "db_conf.php";
 // ENTRY POINT
 if (isset($_POST["type"]))
 {
-	$type = $_POST["type"];
+	$type = mysqli_real_escape_string($connect,$_POST["type"]);
 	checkMethod($type);
 }
 
 function checkMethod($type)
 {
+	global $connect;
+
 	$userManager = new userManager;
 
 	switch ($type)
@@ -18,7 +20,7 @@ function checkMethod($type)
 		case "registerNewUser":
 			if (isset($_POST["payload"]))
 			{
-				$payload = $_POST["payload"];
+				$payload = mysqli_real_escape_string($connect,$_POST["payload"]);
 				$userManager->registerNewUser($payload);
 			}
 			break;
@@ -30,8 +32,8 @@ function checkMethod($type)
 		case "setUsersWages":
 			if (isset($_POST["wage"]) && isset($_POST["date"]))
 			{
-				$wageForThisMonth = $_POST["wage"];
-				$date = $_POST["date"];
+				$wageForThisMonth = mysqli_real_escape_string($connect,$_POST["wage"]);
+				$date = mysqli_real_escape_string($connect,$_POST["date"]);
 				$userManager->setUsersWages($wageForThisMonth, $date);
 			}
 			break;
@@ -43,9 +45,9 @@ function checkMethod($type)
 		case "setUsersEvents":
 			if (isset($_POST["name"]) && isset($_POST["detail"]) && isset($_POST["date"]))
 			{
-				$name = $_POST["name"];
-				$detail = $_POST["detail"];
-				$date = $_POST["date"];
+				$name = mysqli_real_escape_string($connect,$_POST["name"]);
+				$detail = mysqli_real_escape_string($connect,$_POST["detail"]);
+				$date = mysqli_real_escape_string($connect,$_POST["date"]);
 				$userManager->setUsersEvents($name, $detail, $date);
 			}
 			break;
@@ -53,9 +55,9 @@ function checkMethod($type)
 		case "setUsersSpend":
 			if (isset($_POST["name"]) && isset($_POST["detail"]) && isset($_POST["date"]))
 			{
-				$name = $_POST["name"];
-				$detail = $_POST["detail"];
-				$date = $_POST["date"];
+				$name = mysqli_real_escape_string($connect,$_POST["name"]);
+				$detail = mysqli_real_escape_string($connect,$_POST["detail"]);
+				$date = mysqli_real_escape_string($connect,$_POST["date"]);
 				$userManager->setUsersSpend($name, $detail, $date);
 			}
 			break;
@@ -118,6 +120,7 @@ class userManager
 
 		$arr = json_decode($payload);
 
+
 		foreach ($arr as $key => $val)
 		{
 			switch ($key)
@@ -131,7 +134,71 @@ class userManager
 				break;
 			}
 		}
-		$this->logUserIn($usr);
+
+		$doesUserExist = $this->checkUsernameExists($usr);
+
+		if ($doesUserExist)
+		{
+			/*
+			// because they exist, need to 
+			// check if password matches existing hash
+			$isPasswordCorrect = $this->checkPassword($usr, $pwd);
+
+			if ($isPasswordCorrect == true)
+			{
+				$this->logUserIn($usr);
+			}
+			else if ($isPasswordCorrect == false)
+			{
+				echo htmlspecialchars("incorrectpw");
+			}
+			*/
+		}
+		else if (!$doesUserExist)
+		{
+			// they need to register instead
+			echo htmlspecialchars("nonexistent");
+		}
+	}
+
+	private function checkUsernameExists($usr)
+	{
+		global $connect;
+
+		$check = mysqli_query($connect,"SELECT u_username FROM users WHERE u_username = '$usr'");
+
+		if ($check->num_rows >= 1)
+		{
+			return true;
+		}
+		else if ($check->num_rows == 0)
+		{
+			return false;
+		}
+	}
+
+	function checkPassword($usr, $pwd)
+	{
+		global $connect;
+
+		$plaintext_password = $pwd;
+
+		$checkPW = mysqli_query($connect,"SELECT u_password FROM users WHERE u_username = '$usr'");
+
+		$var = mysqli_fetch_row($checkPW);
+
+		foreach ($var as $row)
+
+		if (!password_verify($plaintext_password,$row))
+		{
+			return false;
+		}
+
+		if (password_verify($plaintext_password,$row))
+		{
+			return true;
+		}
+
 	}
 
 	private function getUserId()

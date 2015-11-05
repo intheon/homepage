@@ -108,13 +108,14 @@ var LoginModule = {
 
 	parseServerResponse: function(response)
 	{
+		console.log(response);
 		switch (response){
 			case "exists":
 				LoginModule.createErrorMSG("This username already exists");
 				break;
 
 			case "nonexistent":
-				LoginModule.createErrorMSG("This username doesn't exist, please register");
+				LoginModule.createErrorMSG("This username or password doesn't exist. <br /><br /> Please register");
 				break;
 
 			case "incorrectpw":
