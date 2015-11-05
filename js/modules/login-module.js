@@ -4,136 +4,131 @@ var rootUrl = "http://localhost/homepage";
 $(document).ready(function(){
 
 	$("#show-register").click(function(){
-		showRegisterForm()
+		LoginModule.showRegisterForm()
 	});
 
 	$("#register-details").click(function(){
-		registerDetails();
+		LoginModule.registerDetails();
 	});
 
 	$("#submit-sign-in").click(function(){
-		signIn();
+		LoginModule.signIn();
 	});
 
 	$("#login-forms .center").keyup(function(event){
 		if (event.keyCode == 13)
 		{
-			signIn();
+			LoginModule.signIn();
 		}
 	});
+});
 
 
-});	
+var LoginModule = {
 
-function showRegisterForm(){
-	$("#login-forms").fadeOut(function(){
-		$(this).hide(function(){
-			$("#register-forms").fadeIn();
-		})
-	});
-}
-
-function registerDetails(){
-	// TODO FRONT END VALIDATION
-	var payload = {
-		usr: 	$("#register-form-username").val(),
-		pwd: 	$("#register-form-password").val(),
-		nm: 	$("#register-form-name").val(),
-		email: 	$("#register-form-email").val()
-	}
-
-	// SUBMIT PAYLOAD TO PHP
-
-	$.ajax({
-		type: 	"POST",
-		url: 	rootUrl + "/php/module_manage_credentials.php",
-		data: 	{
-			type: 		"registerNewUser",
-			payload: 	JSON.stringify(payload)
-		},
-		success: function(response){
-			switch (response){
-				case "exists":
-					createErrorMSG("This username already exists");
-					break;
-
-				case "nonexistent":
-					createErrorMSG("This username doesn't exist, please register");
-					break;
-
-				case "incorrectpw":
-					createErrorMSG("Incorrect Password");
-					break;
-
-				case "success":
-					window.location = "index.php";
-					break;
-
-				default:
-					createErrorMSG("No data received");
-					break;
-			}
-		}
-	});
-}
-
-function signIn(){
-	var payload = {
-		usr: 	$("#login-form-username").val(),
-		pwd: 	$("#login-form-password").val(),
-	}
-
-	if (!payload.usr || !payload.pwd)
+	ajaxHandler: function(method, type, payload)
 	{
-		showErrorMessage("Please fill out your details!")
-	}
-	else
-	{
-		// SUBMIT PAYLOAD TO PHP
 		$.ajax({
-			type: 	"POST",
+			type: 	method,
 			url: 	rootUrl + "/php/module_manage_credentials.php",
 			data: 	{
-				type: 		"signInUser",
+				type: 		type,
 				payload: 	JSON.stringify(payload)
 			},
 			success: function(response){
-					switch (response){
-						case "success":
-							window.location = "index.php";
-							break;
-
-						default:
-							showErrorMessage("No data received");
-							break;
-					}
+				LoginModule.parseServerResponse(response);
 			}
 		});
+	},
+
+	signIn: function()
+	{
+		var payload = {
+			usr: 	$("#login-form-username").val(),
+			pwd: 	$("#login-form-password").val(),
+		}
+
+		if (!payload.usr || !payload.pwd)
+		{
+			LoginModule.createErrorMSG("Please fill out your details!")
+		}
+		else
+		{
+			LoginModule.ajaxHandler("POST", "signInUser", payload);
+		}
+	},
+
+	showRegisterForm: function()
+	{
+		$("#login-forms").fadeOut(function(){
+			$(this).hide(function(){
+				$("#register-forms").fadeIn();
+			})
+		});
+	},
+
+	registerDetails: function()
+	{
+		var payload = {
+			usr: 	$("#register-form-username").val(),
+			pwd: 	$("#register-form-password").val(),
+			nm: 	$("#register-form-name").val(),
+			email: 	$("#register-form-email").val()
+		}
+
+		if (!payload.usr || !payload.pwd || !payload.nm || !payload.email)
+		{
+			LoginModule.createErrorMSG("Please fill out your details!")
+		}
+		else
+		{
+			LoginModule.ajaxHandler("POST", "registerUser", payload);
+		}
+	},
+
+	createErrorMSG: function(message)
+	{
+		var error = "<div class='information-panel'><div class='information-dismiss'>x</div><div class='information-message'>"+ message +"</div></div>"
+
+		// add it to dom
+		$("body").prepend(error);
+
+		// create handler for close icon
+		$(".information-panel").click(function(){
+			LoginModule.removeFromDom(".information-panel");
+		});
+	},
+
+	removeFromDom: function(what)
+	{
+		$(what).fadeOut(function(){
+			$(this).remove();
+		});
+	},
+
+	parseServerResponse: function(response)
+	{
+		switch (response){
+			case "exists":
+				LoginModule.createErrorMSG("This username already exists");
+				break;
+
+			case "nonexistent":
+				LoginModule.createErrorMSG("This username doesn't exist, please register");
+				break;
+
+			case "incorrectpw":
+				LoginModule.createErrorMSG("Incorrect Password");
+				break;
+
+			case "success":
+				window.location = "index.php";
+				break;
+
+			default:
+				LoginModule.createErrorMSG("No data received");
+				break;
+		}
 	}
 
-}
-
-function showErrorMessage(message)
-{
-	// html
-	var error = "<div class='information-panel'>\
-		<div class='information-dismiss'>x</div>\
-		<div class='information-message'>"+ message +"</div>\
-	</div>"
-
-	// add it to dom
-	$("body").prepend(error);
-
-	// create handler for close icon
-	$(".information-panel").click(function(){
-		removeFromDom(".information-panel");
-	});
-
-}
-
-function removeFromDom(what)
-{
-	$(what).fadeOut(function(){
-		$(this).remove();
-	});
-}
+};
