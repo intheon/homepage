@@ -15,6 +15,13 @@ $(document).ready(function(){
 		signIn();
 	});
 
+	$("#login-forms .center").keyup(function(event){
+		if (event.keyCode == 13)
+		{
+			signIn();
+		}
+	});
+
 
 });	
 
@@ -76,24 +83,57 @@ function signIn(){
 		pwd: 	$("#login-form-password").val(),
 	}
 
-	// SUBMIT PAYLOAD TO PHP
-	$.ajax({
-		type: 	"POST",
-		url: 	rootUrl + "/php/module_manage_credentials.php",
-		data: 	{
-			type: 		"signInUser",
-			payload: 	JSON.stringify(payload)
-		},
-		success: function(response){
-				switch (response){
-					case "success":
-						window.location = "index.php";
-						break;
+	if (!payload.usr || !payload.pwd)
+	{
+		showErrorMessage("Please fill out your details!")
+	}
+	else
+	{
+		// SUBMIT PAYLOAD TO PHP
+		$.ajax({
+			type: 	"POST",
+			url: 	rootUrl + "/php/module_manage_credentials.php",
+			data: 	{
+				type: 		"signInUser",
+				payload: 	JSON.stringify(payload)
+			},
+			success: function(response){
+					switch (response){
+						case "success":
+							window.location = "index.php";
+							break;
 
-					default:
-						createErrorMSG("No data received");
-						break;
-				}
-		}
+						default:
+							showErrorMessage("No data received");
+							break;
+					}
+			}
+		});
+	}
+
+}
+
+function showErrorMessage(message)
+{
+	// html
+	var error = "<div class='information-panel'>\
+		<div class='information-dismiss'>x</div>\
+		<div class='information-message'>"+ message +"</div>\
+	</div>"
+
+	// add it to dom
+	$("body").prepend(error);
+
+	// create handler for close icon
+	$(".information-panel").click(function(){
+		removeFromDom(".information-panel");
+	});
+
+}
+
+function removeFromDom(what)
+{
+	$(what).fadeOut(function(){
+		$(this).remove();
 	});
 }

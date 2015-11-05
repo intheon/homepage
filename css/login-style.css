@@ -7,7 +7,9 @@
 body {
   background: url(../img/bg.jpg);
   background-attachment: fixed;
-  font-family: "Open Sans" !important; }
+  font-family: "Open Sans" !important;
+  margin: 0;
+  padding: 0; }
 
 .center {
   margin-left: auto !important;
@@ -19,21 +21,21 @@ body {
   margin: 3%;
   padding: 3%;
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.3); }
+  background: rgba(215, 215, 215, 0.3); }
 
 input[type="text"], button {
   padding: 1.6%;
   border-radius: 7px;
   outline: none;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(203, 203, 203, 0.4);
   border: none;
-  border-bottom: 2px solid #f8eaea;
+  border-bottom: 2px solid rgba(203, 203, 203, 0.4);
   transition: all 0.7s;
   font-family: "Open Sans" !important; }
 
-input[type="text"]:focus, button:hover {
+input[type="text"]:hover, input[type="text"]:focus, button:hover {
   border-bottom: 2px solid #bd3f3f;
-  background: none;
+  background: rgba(215, 215, 215, 0.3);
   cursor: -moz-pointer;
   cursor: -webkit-pointer;
   cursor: pointer; }
@@ -48,5 +50,32 @@ input[type="text"]:focus, button:hover {
 
 #register-forms {
   display: none; }
+
+.information-panel {
+  position: fixed;
+  width: 82%;
+  display: block;
+  margin: 5%;
+  margin-top: 10%;
+  padding: 4%;
+  background: rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(163, 163, 163, 0.5); }
+
+.information-dismiss {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.8em;
+  opacity: 1;
+  padding: 2%;
+  z-index: 20; }
+
+.information-dismiss:hover {
+  opacity: 0.6;
+  cursor: pointer; }
+
+.information-message {
+  font-size: 1.4em;
+  text-align: center; }
 
 /*# sourceMappingURL=login-style.css.map */
