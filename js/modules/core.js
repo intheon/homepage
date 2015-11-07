@@ -23,14 +23,16 @@ $(document).ready(function() {
 		before: 		function(event){
 			// event is just the number of the panel
 			var integer = event;
-			console.log(integer);
 		}
 	});
 
+	// now, the meat
 
 	// flow
 	// get users metadata
-	// render metadata
+	// if they are new, say hello, and prompt an introduction on how to add plugins
+	// ascertain what plugins are needed
+	// render
 	// bind listeners / create navigation
 
 	/*
