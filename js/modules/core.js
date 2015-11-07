@@ -1,64 +1,68 @@
 // defines global vars
 
+// either | or
+var rootUrl = "http://localhost/new-portfolio";
+//var rootUrl = "http://intheon.uk";
+
+// determine if offline mode should be used - not implemented yet
+var internetStatus = (navigator.onLine ? true : false);
+
 $(document).ready(function() {
+
+	// make the news feeds draggable
 	$(".resizable-grid").shapeshift();
 
-	// to style when links are clicked
-
-	$('.nav-link').click(function(){
-
-		var h = $(this).attr("href");
-
-		scrollToElement(h);
-
-		window.location.hash = h; 
-
-		$(".nav-link").removeClass("active-nav");
-
-		$(".nav-link[href='"+h+"']").addClass("active-nav");
-
-		return false;
-
+	// have the scrollify plugin listen for scroll events
+	$.scrollify({
+		section: 		".full-page-panel",
+		sectionName: 	"name",
+		easing: 		"easeOutExpo",
+		scrollSpeed: 	1000,
+		offset : 		0,
+		scrollbars: 	false,
+		before: 		function(event){
+			// event is just the number of the panel
+			var integer = event;
+			console.log(integer);
+		}
 	});
 
-	// to style when page is loaded (it might already have a hash in there)
 
-	if (window.location.hash)
-	{
-		var url = window.location.hash;
+	// flow
+	// get users metadata
+	// render metadata
+	// bind listeners / create navigation
 
-		scrollToElement(url);
+	/*
 
-		$(".nav-link").removeClass("active-nav");
+	var UserWidgets = {
 
-		$(".nav-link[href='"+url+"']").addClass("active-nav");
-	}
+		ajaxHandler: function(method, type, payload)
+		{
 
-	// initialise the waypoints
+		}
 
-	$(".content-area").waypoint(function(event, direction){
+		getUserId: function()
+		{
+			var usr = $("#user-name-hidden").html();
+			UserWidgets.ajaxHandler
 
-		$(".nav-link").removeClass("active-nav");
+		},
 
-		$(".nav-link[href='#"+this.element.id+"']").addClass("active-nav");
+		getUserProfile: function(id)
+		{
 
-		window.location.hash = this.element.id; 
+		}
+	};
 
-	}, {offset: 0});
+	var NavigationHandler = {
 
+	};
 
+	UserWidgets.getUserId();
+	*/
 });
 
-function scrollToElement(el)
-{
-	$('html, body').animate({
-		scrollTop: $( el ).offset().top
-	}, 500);
-}
-
-
-
-var internetStatus = (navigator.onLine ? true : false);
 
 
 

@@ -113,7 +113,7 @@ var Calendar = {
 			Calendar.presentPopupModal(event);
 		});
 
-		Calendar.scrollToElement(moment().format("MMMM"), moment().format("YYYY"));
+		//Calendar.scrollToElement(moment().format("MMMM"), moment().format("YYYY"));
 
 	},
 
