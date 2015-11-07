@@ -29,7 +29,7 @@
 	<div class="user-toolbar"> <!-- has useful stuff for the user -->
 
 		<!-- user management -->
-		<div class="user-tools">
+		<div class="user-tools row">
 
 			<div class="row">
 				<div class="user-img column-6 float">
@@ -52,48 +52,35 @@
 			<div id="user-name-hidden"><?php echo $_SESSION['username']; ?></div>
 		</div> <!-- end user manager -->
 
-		<div class="statistics-info">
+		<div class="statistics-info row">
 
 			<div class="stat-item column-6">
 				<div class="value">4</div>
-				<div class="label">Dogs</div>
+				<div class="label">Tasks</div>
 			</div>
 			<div class="stat-item column-6">
 				<div class="value">12</div>
-				<div class="label">Pigeons</div>
+				<div class="label">Money</div>
 			</div>
 
 			<div class="stat-item column-6">
 				<div class="value">3</div>
-				<div class="label">Chickens</div>
+				<div class="label">Emails</div>
 			</div>
 			<div class="stat-item column-6">
 				<div class="value">5</div>
-				<div class="label">Dildos</div>
+				<div class="label">News</div>
 			</div>
 		</div>
 
-		<!--
-		<div class="stats-information row">
-
-			<div class="stats-item column-6">
-				<div class="value" id="taskCount">?</div>
-				<div class="label">Tasks</div>
-			</div>
-			<div class="stats-item column-6">
-				<div class="value" id="moneyCount">?</div>
-				<div class="label">Money</div>
-			</div>
-		</div>
-		-->
-
+		
 		<!-- navigation populated with clickable links. this is fixed in the viewport and always appears-->
-		<!--<ul class="navigation-menu">
-			<li class="navigation-item"><a href="#calendar" class="nav-link">Calendar</a></li>
-			<li class="navigation-item"><a href="#todo-container" class="nav-link">Todo</a></li>
-			<li class="navigation-item"><a href="#gmail" class="nav-link">Emails</a></li>
-			<li class="navigation-item"><a href="#news" class="nav-link">Feeds</a></li>
-		</ul> --><!-- end nav -->
+		<div class="navigation row">
+			<div class="navigation-item active-nav">Calendar</div>
+			<div class="navigation-item">Todo</div>
+			<div class="navigation-item">Emails</div>
+			<div class="navigation-item">Feeds</div>
+		</div><!-- end nav -->
 
 	</div> <!-- end user  toolbar -->
 

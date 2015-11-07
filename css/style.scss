@@ -205,6 +205,22 @@ body
     border-bottom:                      1px dotted;
     border-color:                       $transparent-bg;
     text-align:                         center;
+    opacity:                            0.23;
+    transition:                         all 1.4s;
+}
+
+.user-toolbar:hover
+{
+    opacity:                            0.9;
+}
+
+.user-toolbar > .row
+{
+    margin-bottom:                      20%;
+}
+.user-toolbar > .row:last-child
+{
+    margin-bottom:                      0%;
 }
 
 .float
@@ -255,21 +271,29 @@ body
     color:lighten($textColour,40%);
 }
 
-.navigation-menu
+.navigation-item
 {
-
+    padding-top:                        2%;
+    padding-bottom:                        2%;
+    transition:                         all 0.7s;
 }
 
-ul{
-    padding:0;
-    margin:0;
-    padding:                            $padding / 3;
+
+.navigation-item:hover
+{
+    background:                         rgba(255,255,255,0.6) !important;
+    cursor:                             pointer;
 }
 
-.navigation-menu li
+.active-nav
 {
-    list-style: none;
-    font-size:1.7em;
+    background:                         rgba(255,255,255,0.14) !important;
+    font-size:                          1.2em;
+}
+
+.focus-panel
+{
+    opacity:                            0.9;
 }
 
 .dropdown-menu
@@ -576,16 +600,13 @@ button:hover
 a
 {
     transition:             all 1s;
-    color:                  lighten($colour1, 20%) !important;
+    color:                  $colour1;
 }
 
-
-.active-nav
+a:hover
 {
-    color:                  darken($colour1, 10%)  !important;
-    font-size:              1.2em;
+    color:                  $colour1 !important;
 }
-
 
 .modal-overlay
 {
