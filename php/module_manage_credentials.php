@@ -29,6 +29,14 @@ function checkMethod($type)
 			$userManager->getUsersWages();
 			break;
 
+		case "getUserId":
+			if (isset($_POST["getUserId"]))
+			{
+				$payload = $_POST["getUserId"];
+				$blah = $userManager->getUserId($payload);
+			}
+			break;
+
 		case "setUsersWages":
 			if (isset($_POST["wage"]) && isset($_POST["date"]))
 			{
@@ -69,6 +77,8 @@ function checkMethod($type)
 				$userManager->signInUser($payload);
 			}
 			break;
+
+
 
 		default:
 		echo "shit broke y0";

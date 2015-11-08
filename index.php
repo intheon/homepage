@@ -70,10 +70,10 @@ if (!isset($_SESSION['username']))
 
 	<div class="row">
 
-		<div class="column-3">
+		<div class="column-3 responsive-none">
 			&nbsp;
 
-			<ul class="navigation-menu">
+			<ul class="navigation-menu ">
 				<li class="navigation-item"><a href="#calendar" class="nav-link">Calendar</a></li>
 				<li class="navigation-item"><a href="#todo-container" class="nav-link">Todo</a></li>
 				<li class="navigation-item"><a href="#gmail" class="nav-link">Emails</a></li>
@@ -82,7 +82,7 @@ if (!isset($_SESSION['username']))
 			</ul>
 		</div>
 
-		<div class="column-9  content-area"  id="calendar">
+		<div class="column-9  content-area responsive-full"  id="calendar">
 			<div class="modal-calendar"></div>
 		</div>
 

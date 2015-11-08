@@ -35,19 +35,28 @@ $(document).ready(function() {
 	// render
 	// bind listeners / create navigation
 
-	/*
-
-	var UserWidgets = {
+	var UserMan = {
 
 		ajaxHandler: function(method, type, payload)
 		{
-
-		}
+			$.ajax({
+				type: 	method,
+				url: 	rootUrl + "/php/module_manage_credentials.php",
+				data: 	{
+					type: 		type,
+					payload: 	JSON.stringify(payload)
+				},
+				success: function(response){
+					console.log(response);
+					//LoginModule.parseServerResponse(response);
+				}
+			});
+		},
 
 		getUserId: function()
 		{
 			var usr = $("#user-name-hidden").html();
-			UserWidgets.ajaxHandler
+			UserMan.ajaxHandler("GET", "getUserId", usr);
 
 		},
 
@@ -61,8 +70,8 @@ $(document).ready(function() {
 
 	};
 
-	UserWidgets.getUserId();
-	*/
+	UserMan.getUserId();
+
 });
 
 

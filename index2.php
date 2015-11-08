@@ -92,9 +92,9 @@
 		<div class="row full-page-panel">
 
 			<!-- asymmetrical design, keep left hand column blank -->
-			<div class="column-3">&nbsp;</div>
+			<div class="column-3 responsive-none">&nbsp;</div>
 
-			<div class="column-9  content-area"  id="calendar">
+			<div class="column-9  content-area  responsive-full"  id="calendar">
 				<div class="modal-calendar"></div>
 			</div>
 
@@ -164,9 +164,10 @@
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
 <script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
+<script type="text/javascript" src="js/libraries/scroll.js"></script>
+
 <script type="text/javascript" src="js/libraries/shapeshift.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
-<script type="text/javascript" src="js/libraries/scroll.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 <script type="text/javascript" src="js/libraries/form.js"></script>

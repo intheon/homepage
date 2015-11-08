@@ -994,16 +994,34 @@ textarea:focus, input:focus
 }
 
 
-@media screen and (max-width:1020px){
+@media screen and (max-width:944px){
 
-#tasks
-{
-    display:            block !important;
-}
+	.responsive-none
+	{
+		display: none;
+	}
 
-#tasks .one-half
-{
-    width:              auto !important;
-}
+	.responsive-full
+	{
+		width: 100% !important;
+	}
 
+	.user-toolbar {
+	    font-size: 1.2em;
+	    position: fixed;
+	    bottom: 0;
+	    left:0;
+	    height: 13%;
+	    width: 100%;
+	    padding: 1%;
+	    background: rgba(0, 0, 0, 0.1);
+	    color: black;
+	    border-bottom-right-radius: 7px;
+	    border-right: 1px dotted;
+	    border-bottom: 1px dotted;
+	    border-color: rgba(0, 0, 0, 0.1);
+	    text-align: center;
+	    opacity: 0.23;
+	    transition: all 1.4s;
+	}
 }
