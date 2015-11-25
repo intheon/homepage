@@ -37,7 +37,8 @@ $(document).ready(function() {
 
 	var UserMan = {
 
-		ajaxHandler: function(method, type, payload)
+		// because at the end of the day, the server still is king
+ 		ajaxHandler: function(method, type, payload)
 		{
 			$.ajax({
 				type: 	method,
@@ -57,20 +58,41 @@ $(document).ready(function() {
 		{
 			var usr = $("#user-name-hidden").html();
 			UserMan.ajaxHandler("GET", "getUserId", usr);
-
 		},
 
 		getUserProfile: function(id)
 		{
+			var fakePayload = [
+			{
+				name: "Calendar"
+			},
+			{
+				name: "Todo"
+			},
+			{
+				name: "News"
+			}];
 
+			NavigationHandler.addModules(fakePayload);
+			MainContentHandler.addModules(fakePayload);
 		}
 	};
 
 	var NavigationHandler = {
-
+		addModules: function(payload){
+			console.log("omg this works");
+			console.log(payload);
+		};	
 	};
 
-	UserMan.getUserId();
+	var MainContentHandler = {
+		addModules: function(payload){
+			console.log("well hot piss");
+		};
+	};
+
+
+	UserMan.getUserProfile();
 
 });
 
