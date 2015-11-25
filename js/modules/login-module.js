@@ -1,5 +1,5 @@
-var rootUrl = "http://localhost/homepage";
-//var rootUrl = "http://intheon.uk/home";
+var rootDomain = "http://localhost/rest-backend/api";
+//var rootDomain = "http://intheon.uk/home";
 
 $(document).ready(function(){
 
@@ -26,17 +26,22 @@ $(document).ready(function(){
 
 var LoginModule = {
 
-	ajaxHandler: function(method, type, payload)
+	ajaxHandler: function(method, endpoint, payload, callback)
 	{
+	/*
+		@method - whether get, post, put, or delete.
+		@endpoint - where abouts on the api you want to fire the request to.
+		@payload - any data you want to send to the server not included in the url
+		@callback - the function to handle the server response
+	*/
 		$.ajax({
 			type: 	method,
-			url: 	rootUrl + "/php/module_manage_credentials.php",
+			url: 	rootDomain + endpoint,
 			data: 	{
-				type: 		type,
-				payload: 	JSON.stringify(payload)
+				payload: 	payload
 			},
 			success: function(response){
-				LoginModule.parseServerResponse(response);
+				callback(response);
 			}
 		});
 	},
@@ -54,7 +59,7 @@ var LoginModule = {
 		}
 		else
 		{
-			LoginModule.ajaxHandler("POST", "signInUser", payload);
+			LoginModule.ajaxHandler("POST", "/login/" + payload.usr + "/" + payload.pwd, null, LoginModule.parseServerResponse);
 		}
 	},
 
@@ -108,7 +113,7 @@ var LoginModule = {
 
 	parseServerResponse: function(response)
 	{
-		console.log(response);
+		console.log(typeof response);
 		switch (response){
 			case "exists":
 				LoginModule.createErrorMSG("This username already exists");
