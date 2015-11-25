@@ -170,7 +170,6 @@
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
 <script type="text/javascript" src="js/libraries/jquery-ui.js"></script>
 <script type="text/javascript" src="js/libraries/scroll.js"></script>
-
 <script type="text/javascript" src="js/libraries/shapeshift.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
@@ -178,15 +177,8 @@
 <script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/google.js"></script>
 <script type="text/javascript" src="js/libraries/encoding.js"></script>
+
 <script type="text/javascript" src="js/modules/core.js"></script>
-<script type="text/javascript" src="js/modules/gmail.js"></script>
-<script type="text/javascript" src="js/modules/feeds.js"></script>
-<script type="text/javascript" src="js/modules/todo.js"></script>
-<script type="text/javascript" src="js/modules/calendar-module.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=OnLoadCallback"></script>
-<script type="text/javascript">
-	Calendar.initialise();
-</script>
 
 </body>
 </html>
