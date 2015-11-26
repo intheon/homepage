@@ -1,13 +1,11 @@
-<?php 
-	// clever bit of redirect code
-	// php executes before rest of html
-	session_start();
+<?php
 
-	if (!isset($_SESSION['username']))
-	{
-	    header("Location: login.php");
-	    die();
-	}
+if (!isset($_COOKIE["authToken"]))
+{
+	header("Location: login.php");
+	die();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -74,111 +72,29 @@
 		</div>
 
 		
-		<!-- navigation populated with clickable links. this is fixed in the viewport and always appears-->
-		<div class="navigation row" id="navigation-here">
-
-		<!--
-			<div class="navigation-item active-nav">Calendar</div>
-			<div class="navigation-item">Todo</div>
-			<div class="navigation-item">Emails</div>
-			<div class="navigation-item">Feeds</div>
-			-->
+		<div class="navigation row" id="navigation-here"><!-- Navigation links injected here-->
+			
 		</div><!-- end nav -->
 
-	</div> <!-- end user  toolbar -->
+	</div> <!-- end user toolbar -->
 
-
-	<div class="main-content" id="content-here"> <!-- panels (useful user modules) are automatically injected here -->
-
-		<!-- each row has a left and right column -->
-		<!-- this row also has 'full-page-panel' is set 100vh in the css and the scroll plugin is attached to -->
-
-		<!-- this is live content that should be removed
-		<div class="row full-page-panel">-->
-
-			<!-- asymmetrical design, keep left hand column blank -->
-			<!--<div class="column-3 responsive-none">&nbsp;</div>
-
-			<div class="column-9  content-area  responsive-full"  id="calendar">
-				<div class="modal-calendar"></div>
-			</div>
-
-		</div> --><!-- end row -->
-
-		<!--<div class="row full-page-panel" id="todo-container">
-
-			<div class="column-3">&nbsp;</div>
-
-			<div class="column-9">
-				<div id="todo"></div>
-			</div>
-
-		</div> --><!-- end row -->
+	<div class="main-content" id="content-here"> <!-- Widgets injected here -->
 
 	</div> <!-- end main content -->
-
-
-	<!--
-	<div class="row" id="bash">
-
-		<div class="column-3">
-			&nbsp;
-		</div>
-
-		<div class="column-9">
-			<div class="quote feed" id="bash"><h3>Random Bash Quote</h3></div>
-		</div>
-
-	</div>
-
-
-	<div class="row content-area" id="gmail">
-
-		<div class="column-3">
-			&nbsp;
-		</div>
-
-		<div class="column-9">
-			<div id="gmailContent" class="ui stacked segment">
-				<h2>Your emails <span class="integer_count"></span></h2>
-				<div id="login_container" class="pre_auth">Please <a href="#" id="login_link">authorise</a> Gmail to use this app.</div>
-			</div>
-		</div>
-
-	</div>
-
-	<div class="row content-area" id="news">
-
-		<div class="column-3">
-			&nbsp;
-		</div>
-
-		<div class="column-9">
- 			<div class="resizable-grid">
-      			<div class="news-item"><header>BBC News</header><div id="bbc" class="ui selection list feed"></div></div>
-      			<div class="news-item"><header>Gamespot</header><div id="gamespot" class="ui selection list feed"></div></div>
-      			<div class="news-item"><header>Clients from Hell</header><div id="clients" class="ui selection list feed"></div></div>
-      			<div class="news-item"><header>Reddit</header><div id="reddit" class="ui selection list feed"></div></div>
-      			<div class="news-item"><header>Preshing on Programming</header><div id="preshing" class="ui selection list feed"></div></div>
-      			<div class="news-item"><header>Coding Horror</header><div id="coding" class="ui selection list feed"></div></div>
-  			</div>
-		</div>
-	-->
-
 
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="js/libraries/jquery.js"></script>
 <script type="text/javascript" src="js/libraries/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/libraries/scroll.js"></script>
-<script type="text/javascript" src="js/libraries/shapeshift.js"></script>
 <script type="text/javascript" src="js/libraries/semantic.js"></script>
+<script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
-<script type="text/javascript" src="js/libraries/form.js"></script>
-<script type="text/javascript" src="js/libraries/google.js"></script>
-<script type="text/javascript" src="js/libraries/encoding.js"></script>
 
+<!-- The Engine, so to speak -->
 <script type="text/javascript" src="js/modules/core.js"></script>
+
+<!-- other libraries will be added below, depending on user state-->
 
 </body>
 </html>

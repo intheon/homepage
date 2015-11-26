@@ -7,7 +7,7 @@ var internetStatus = (navigator.onLine ? true : false);
 
 var UserManager = {
 
- 	ajaxHandler: function(method, endpoint, payload, callback)
+ 	ajaxHandler: function(method, endpoint, payload, callback, authorisation)
 	{
 	/*
 		Because at the end of the day, the server still is king!
@@ -15,10 +15,14 @@ var UserManager = {
 		@endpoint - where abouts on the api you want to fire the request to.
 		@payload - any data you want to send to the server.
 		@callback - the function to handle the server response
+		@authorisation - our cookie of a token to reidentify the user
 	*/
 		$.ajax({
 			type: 	method,
 			url: 	rootDomain + endpoint,
+			headers:{
+				Authorization: authorisation
+			},
 			data: 	{
 				payload: 	payload
 			},
@@ -30,7 +34,9 @@ var UserManager = {
 
 	getUsersProfile: function()
 	{
-		UserManager.ajaxHandler("GET", "rest-backend/api/user", null, UserManager.parseUsersProfile);
+		//console.log("running");
+		var cookie = JSON.parse($.cookie("authToken"));
+		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + cookie.username, null, UserManager.parseUsersProfile, cookie.token);
 	},
 
 	parseUsersProfile: function(profile)
