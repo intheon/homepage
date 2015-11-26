@@ -49,6 +49,7 @@
 
 <!-- DEPENDENCIES -->
 <script type="text/javascript" src="./js/libraries/jquery.js"></script>
+<script type="text/javascript" src="./js/libraries/jquery.cookie.js"></script>
 <script type="text/javascript" src="./js/modules/login-module.js"></script>
 
 </body>

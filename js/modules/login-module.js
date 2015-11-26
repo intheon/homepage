@@ -113,27 +113,43 @@ var LoginModule = {
 
 	parseServerResponse: function(response)
 	{
-		console.log(typeof response);
-		switch (response){
-			case "exists":
-				LoginModule.createErrorMSG("This username already exists");
-				break;
+		var parsedResponse = JSON.parse(response);
 
-			case "nonexistent":
-				LoginModule.createErrorMSG("This username or password doesn't exist. <br /><br /> Please register");
-				break;
+		if (parsedResponse.messageType == "message")
+		{
+			console.log("a message from the server");
+			console.log("server sez: " +  parsedResponse.messageBody);
+			/*
+			switch (response){
+				case "exists":
+					LoginModule.createErrorMSG("This username already exists");
+					break;
 
-			case "incorrectpw":
-				LoginModule.createErrorMSG("Incorrect Password");
-				break;
+				case "nonexistent":
+					LoginModule.createErrorMSG("This username or password doesn't exist. <br /><br /> Please register");
+					break;
 
-			case "success":
-				window.location = "index.php";
-				break;
+				case "incorrectpw":
+					LoginModule.createErrorMSG("Incorrect Password");
+					break;
 
-			default:
-				LoginModule.createErrorMSG("Computer says no. Something broke. Go outside and play.");
-				break;
+				case "success":
+					window.location = "index.php";
+					break;
+
+				default:
+					LoginModule.createErrorMSG("Computer says no. Something broke. Go outside and play.");
+					break;
+				}
+
+				*/
+		}
+		else if (parsedResponse.messageType == "token")
+		{
+
+			// set a cookie that is due to expire after a day
+			$.cookie("authToken", parsedResponse.messageBody, { expires: 1 });
+
 		}
 	}
 
