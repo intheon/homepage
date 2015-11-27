@@ -26,17 +26,21 @@ $(document).ready(function(){
 
 var LoginModule = {
 
-	ajaxHandler: function(method, endpoint, payload, callback)
+	ajaxHandler: function(method, endpoint, payload, callback, authorisation)
 	{
 	/*
 		@method - whether get, post, put, or delete.
 		@endpoint - where abouts on the api you want to fire the request to.
 		@payload - any data you want to send to the server not included in the url
 		@callback - the function to handle the server response
+		@authorisation - authorisation token to check if user is already logged in
 	*/
 		$.ajax({
 			type: 	method,
 			url: 	rootDomain + endpoint,
+			headers: {
+				Authorization: authorisation
+			},
 			data: 	{
 				payload: 	payload
 			},
@@ -59,7 +63,7 @@ var LoginModule = {
 		}
 		else
 		{
-			LoginModule.ajaxHandler("POST", "/login/" + payload.usr + "/" + payload.pwd, null, LoginModule.parseServerResponse);
+			LoginModule.ajaxHandler("POST", "/login/" + payload.usr + "/" + payload.pwd, null, LoginModule.parseServerResponse, "noToken");
 		}
 	},
 
@@ -139,6 +143,8 @@ var LoginModule = {
 		{
 			// set a cookie that is due to expire after a day
 			$.cookie("authToken", parsedResponse.messageBody, { expires: 1 });
+
+			window.location = "index3.php";
 
 		}
 	}
