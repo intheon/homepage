@@ -28,15 +28,23 @@ var UserManager = {
 			},
 			success: function(response){
 				callback(response);
+			},
+			error: function(response)
+			{
+				console.log("server sez: ", response);
+			},
+			statusCode: function(status)
+			{
+				console.log(status);
 			}
 		});
 	},
 
 	getUsersProfile: function()
 	{
-		//console.log("running");
 		var cookie = JSON.parse($.cookie("authToken"));
-		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + cookie.username, null, UserManager.parseUsersProfile, cookie.token);
+		var cookieString = $.cookie("authToken");
+		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + cookie.username, null, UserManager.parseUsersProfile, cookieString);
 	},
 
 	parseUsersProfile: function(profile)
