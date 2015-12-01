@@ -12,7 +12,7 @@ if (!isset($_COOKIE["authToken"]))
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>Welcome home, <?php echo $_SESSION['username']; ?>!</title>
+	<title>Welcome home, user!</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
 
@@ -34,7 +34,7 @@ if (!isset($_COOKIE["authToken"]))
 					<img src="./img/user.png">
 				</div>
 				<div class="user-name column-6 float">
-					<?php echo $_SESSION['username']; ?>
+					Benjamin
 				</div>
 			</div>
 
@@ -47,7 +47,7 @@ if (!isset($_COOKIE["authToken"]))
 				</div>
 			</div>
 
-			<div id="user-name-hidden"><?php echo $_SESSION['username']; ?></div>
+			<div id="user-name-hidden">Benjamin</div>
 		</div> <!-- end user manager -->
 
 		<div class="statistics-info row">
@@ -73,13 +73,12 @@ if (!isset($_COOKIE["authToken"]))
 
 		
 		<div class="navigation row" id="navigation-here"><!-- Navigation links injected here-->
-			
 		</div><!-- end nav -->
 
 	</div> <!-- end user toolbar -->
 
 	<div class="main-content" id="content-here"> <!-- Widgets injected here -->
-
+	
 	</div> <!-- end main content -->
 
 <!-- DEPENDENCIES -->
@@ -98,3 +97,4 @@ if (!isset($_COOKIE["authToken"]))
 
 </body>
 </html>
+

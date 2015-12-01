@@ -5,6 +5,7 @@ var rootDomain = "http://localhost/";
 // determine if offline mode should be used - not implemented yet
 var internetStatus = (navigator.onLine ? true : false);
 
+// My own little plugin to interact with the rest api
 var UserManager = {
 
  	ajaxHandler: function(method, endpoint, payload, callback, authorisation)
@@ -18,7 +19,7 @@ var UserManager = {
 		@authorisation - our cookie of a token to reidentify the user
 	*/
 		$.ajax({
-			type: 	method,
+			type: 	method, 
 			url: 	rootDomain + endpoint,
 			headers:{
 				Authorization: authorisation
@@ -32,6 +33,7 @@ var UserManager = {
 			error: function(response)
 			{
 				console.log("server sez: ", response);
+				if (response.status == 401) window.location = "login.php";
 			},
 			statusCode: function(status)
 			{
@@ -40,41 +42,70 @@ var UserManager = {
 		});
 	},
 
-	getUsersProfile: function()
+	usersAuth: function()
 	{
 		var cookie = JSON.parse($.cookie("authToken"));
 		var cookieString = $.cookie("authToken");
-		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + cookie.username, null, UserManager.parseUsersProfile, cookieString);
+
+		return {
+			cookie: cookie,
+			cookieString: cookieString
+		}
+	},
+
+	getUsersProfile: function()
+	{
+		var auth = UserManager.usersAuth();
+		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, UserManager.parseUsersProfile, auth.cookieString);
 	},
 
 	parseUsersProfile: function(profile)
 	{
-		console.log(profile);
+		var asObj = JSON.parse(profile);
+		for (item in asObj) UserManager.loadWidget(asObj[item]);
+	},
+
+	loadWidget: function(widgetInformation, numItems, counter)
+	{
+		// load main content panels
+		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget'><div class='column-3'>&nbsp;</div><div class='column-9 content-area'></div></div>");
+		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage" + widgetInformation.widgetPath);
+
+		// load navigation
+		$("#navigation-here").append("<div class='navigation-item'>"+ widgetInformation.widgetName+ "</div>");
+
+		// make the panels scrollable
+		UserManager.applyScrollify();
+	},
+
+	applyScrollify: function()
+	{
+		$.scrollify({
+			section: 		".full-page-panel",
+			sectionName: 	"name",
+			easing: 		"easeOutExpo",
+			scrollSpeed: 	1000,
+			offset : 		0,
+			scrollbars: 	false,
+			before: 		function(event){
+				// event is just the number of the panel
+				var integer = event;
+			}
+		});
 	}
 
 }
 
+// GO!
 $(document).ready(function() {
 
+	// all requests are authenticated by the api (tokenAuth.php is middleware which runs on each request)
 	UserManager.getUsersProfile();
 
 });
 
-
-	/* todo... enabled scrollify 
-	// have the scrollify plugin listen for scroll events
-	$.scrollify({
-		section: 		".full-page-panel",
-		sectionName: 	"name",
-		easing: 		"easeOutExpo",
-		scrollSpeed: 	1000,
-		offset : 		0,
-		scrollbars: 	false,
-		before: 		function(event){
-			// event is just the number of the panel
-			var integer = event;
-		}
-	});
+	
+	/*
 
 	// now, the meat
 
