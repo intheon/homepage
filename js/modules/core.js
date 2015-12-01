@@ -47,6 +47,9 @@ var UserManager = {
 		var cookie = JSON.parse($.cookie("authToken"));
 		var cookieString = $.cookie("authToken");
 
+		document.title = "Welcome home, " + cookie.username;
+		$("#userName").html(cookie.username);
+
 		return {
 			cookie: cookie,
 			cookieString: cookieString
@@ -68,7 +71,7 @@ var UserManager = {
 	loadWidget: function(widgetInformation, numItems, counter)
 	{
 		// load main content panels
-		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget'><div class='column-3'>&nbsp;</div><div class='column-9 content-area'></div></div>");
+		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget' data-widget="+widgetInformation.widgetName+"><div class='column-3'>&nbsp;</div><div class='column-9 content-area'></div></div>");
 		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage" + widgetInformation.widgetPath);
 
 		// load navigation
@@ -82,7 +85,7 @@ var UserManager = {
 	{
 		$.scrollify({
 			section: 		".full-page-panel",
-			sectionName: 	"name",
+			sectionName: 	"widget",
 			easing: 		"easeOutExpo",
 			scrollSpeed: 	1000,
 			offset : 		0,

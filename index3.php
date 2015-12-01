@@ -12,7 +12,7 @@ if (!isset($_COOKIE["authToken"]))
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>Welcome home, user!</title>
+	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
 
@@ -33,8 +33,7 @@ if (!isset($_COOKIE["authToken"]))
 				<div class="user-img column-6 float">
 					<img src="./img/user.png">
 				</div>
-				<div class="user-name column-6 float">
-					Benjamin
+				<div class="user-name column-6 float" id="userName">
 				</div>
 			</div>
 
