@@ -45,6 +45,7 @@ var LoginModule = {
 				payload: 	payload
 			},
 			success: function(response){
+				console.log(response);
 				callback(response);
 			}
 		});
@@ -91,7 +92,7 @@ var LoginModule = {
 		}
 		else
 		{
-			LoginModule.ajaxHandler("POST", "registerNewUser", payload);
+			LoginModule.ajaxHandler("POST", "/user/register", payload, LoginModule.parseServerResponse, "noToken");
 		}
 	},
 

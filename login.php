@@ -33,7 +33,7 @@
 
 				<header 	class="big-header column-12">Enter your details to register</header>
 				<input  	class="column-12 center" type="text" placeholder="Username" 	id="register-form-username" /> 
-				<input  	class="column-12 center" type="text" placeholder="Password" 	id="register-form-password" />
+				<input  	class="column-12 center" type="password" placeholder="Password" 	id="register-form-password" />
 				<input  	class="column-12 center" type="text" placeholder="Name" 		id="register-form-name" /> 
 				<input  	class="column-12 center" type="text" placeholder="Email" 		id="register-form-email" /> 
 				<button  	class="column-12"  id="register-details">Sign in >>></button> 
