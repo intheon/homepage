@@ -28,6 +28,7 @@ var UserManager = {
 				payload: 	payload
 			},
 			success: function(response){
+				//console.log(response);
 				callback(response);
 			},
 			error: function(response)
@@ -64,8 +65,12 @@ var UserManager = {
 
 	parseUsersProfile: function(profile)
 	{
-		var asObj = JSON.parse(profile);
-		for (item in asObj) UserManager.loadWidget(asObj[item]);
+		if (profile == "nowidgets") UserManager.introduction()
+		else
+		{
+			var asObj = JSON.parse(profile);
+			for (item in asObj) UserManager.loadWidget(asObj[item]);
+		}
 	},
 
 	loadWidget: function(widgetInformation, numItems, counter)
@@ -95,7 +100,41 @@ var UserManager = {
 				var integer = event;
 			}
 		});
+	},
+
+	introduction: function()
+	{
+		var info = UserManager.usersAuth();
+		UserManager.createModal(info);
+	},
+
+	createModal: function(info)
+	{
+		var username = info.cookie.username;
+
+		$("body").prepend("<div class='ui modal' id='modal'>\
+			<i class='close icon'></i>\
+			<div class='header modal-header'>Howdy, "+ username +"</div>\
+			<div class='modal-content'>\
+				<h4>Widgets are the things that make this site useful. Select some to start: </h4>\
+				<div class='widget-selector'>\
+					<div class='widget-selector-item'>Todo</div>\
+					<div class='widget-selector-item'>Money Calendar</div>\
+					<div class='widget-selector-item'>News Feeds</div>\
+					<div class='widget-selector-item'>Gmail</div>\
+					<div class='widget-selector-item'>Last.fm plugin</div>\
+					<div class='widget-selector-item'>Random YouTube video</div>\
+				</div>\
+			<div class='actions'>\
+				<div class='ui inverted orange button' id='add-item-modal'>Cool</div>\
+			</div>\
+		</div>");
+
+		$('.ui.modal').modal('show');
 	}
+
+
+
 
 }
 
