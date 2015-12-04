@@ -28,7 +28,7 @@ var UserManager = {
 				payload: 	payload
 			},
 			success: function(response){
-				//console.log(response);
+				console.log(response);
 				callback(response);
 			},
 			error: function(response)
@@ -105,33 +105,48 @@ var UserManager = {
 	introduction: function()
 	{
 		var info = UserManager.usersAuth();
-		UserManager.createModal(info);
-	},
-
-	createModal: function(info)
-	{
 		var username = info.cookie.username;
-
-		$("body").prepend("<div class='ui modal' id='modal'>\
-			<i class='close icon'></i>\
-			<div class='header modal-header'>Howdy, "+ username +"</div>\
-			<div class='modal-content'>\
-				<h4>Widgets are the things that make this site useful. Select some to start: </h4>\
-				<div class='widget-selector'>\
+		var modalHeader = "Howdy," + username;
+		var availableWidgets = UserManager.getWidgetManifest();
+		console.log(availableWidgets);
+		var modalContent = "<div class='widget-selector'>\
+					<div class='widget-header'>Widgets are the things that make this site useful. Select some to start: </div>\
 					<div class='widget-selector-item'>Todo</div>\
 					<div class='widget-selector-item'>Money Calendar</div>\
 					<div class='widget-selector-item'>News Feeds</div>\
 					<div class='widget-selector-item'>Gmail</div>\
 					<div class='widget-selector-item'>Last.fm plugin</div>\
 					<div class='widget-selector-item'>Random YouTube video</div>\
-				</div>\
+				</div>"
+
+		UserManager.createModal(info, modalHeader, modalContent);
+	},
+
+	createModal: function(info, modalHeader, modalContent)
+	{
+
+		$("body").prepend("<div class='ui modal' id='modal'>\
+			<i class='close icon'></i>\
+			<div class='header modal-header'>" + modalHeader + "</div>\
+			<div class='modal-content'>" + modalContent +"</div>\
 			<div class='actions'>\
-				<div class='ui inverted orange button' id='add-item-modal'>Cool</div>\
+				<div class='ui green button' id='add-item-modal'>Cool</div>\
 			</div>\
 		</div>");
 
 		$('.ui.modal').modal('show');
+	},
+
+	getWidgetManifest: function()
+	{
+		$.getJSON(rootDomain + "/homepage/widgets/manifest.js", function(json){
+			console.log("running");
+			console.log(json);
+			return json;
+		});
 	}
+
+
 
 
 
