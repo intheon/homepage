@@ -73,6 +73,8 @@ var UserManager = {
 		}
 	},
 
+	/////fugiohjkiuytsduio
+
 	loadWidget: function(widgetInformation, numItems, counter)
 	{
 		// load main content panels
