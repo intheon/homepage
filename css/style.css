@@ -715,9 +715,17 @@ textarea:focus, input:focus {
   border-bottom: 1px solid rgba(39, 41, 43, 0.15); }
 
 .widget-selector-item {
-  padding: 1%;
-  margin: 1%;
-  background: #f8ecea; }
+  display: flex;
+  padding: 1%; }
+
+.widget-desc {
+  padding: 0.3%; }
+
+.widget-selector-item:nth-child(even) {
+  background: #efefef; }
+
+.widget-selector-item:nth-child(odd) {
+  background: #E7E7E7; }
 
 @media screen and (max-width: 944px) {
   .responsive-none {

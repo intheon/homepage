@@ -1012,9 +1012,30 @@ textarea:focus, input:focus
 
 .widget-selector-item
 {
-    padding:            1%;
-    margin:             1%;
-    background:         lighten($colour1, 50%);
+    display:flex;
+   padding:            1%;
+
+}
+
+.widget-name
+{
+
+}
+
+.widget-desc
+{
+   padding:            0.3%;
+
+}
+
+.widget-selector-item:nth-child(even)
+{
+    background:         #efefef;
+}
+
+.widget-selector-item:nth-child(odd)
+{
+    background:         #E7E7E7;
 }
 
 @media screen and (max-width:944px){

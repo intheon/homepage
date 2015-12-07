@@ -126,7 +126,7 @@ var UserManager = {
 			for (item = 0; item < parsed.length; item++)
 			{
 
-				modalContent+= "<div class='widget-selector-item'><div class='widget-name ui toggle checkbox'><input type='checkbox' name='public' tabindex='0' class='hidden'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc'>"+ parsed[item].w_desc +"</div></div>"
+				modalContent+= "<div class='widget-selector-item row'><div class='widget-name ui toggle checkbox column-4'><input type='checkbox' name='public' tabindex='0' class='hidden'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc column-6'>"+ parsed[item].w_desc +"</div></div>"
 			}
 
 			modalContent+= "</div>";
