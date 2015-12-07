@@ -1,5 +1,4 @@
-{
-	widgets: [
+{"widgets": [
 		{
 			name: "Todo",
 			path: "/Todo/index.html",

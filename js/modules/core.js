@@ -28,7 +28,6 @@ var UserManager = {
 				payload: 	payload
 			},
 			success: function(response){
-				console.log(response);
 				callback(response);
 			},
 			error: function(response)
@@ -61,6 +60,12 @@ var UserManager = {
 	{
 		var auth = UserManager.usersAuth();
 		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, UserManager.parseUsersProfile, auth.cookieString);
+	},
+
+	getUsersWidgets: function(wCallback)
+	{
+		var auth = UserManager.usersAuth();
+		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, wCallback, auth.cookieString);
 	},
 
 	parseUsersProfile: function(profile)
@@ -104,29 +109,39 @@ var UserManager = {
 		});
 	},
 
-	introduction: function()
+	introduction: function(returned)
 	{
-		var info = UserManager.usersAuth();
-		var username = info.cookie.username;
-		var modalHeader = "Howdy," + username;
-		var availableWidgets = UserManager.getWidgetManifest();
-		console.log(availableWidgets);
-		var modalContent = "<div class='widget-selector'>\
-					<div class='widget-header'>Widgets are the things that make this site useful. Select some to start: </div>\
-					<div class='widget-selector-item'>Todo</div>\
-					<div class='widget-selector-item'>Money Calendar</div>\
-					<div class='widget-selector-item'>News Feeds</div>\
-					<div class='widget-selector-item'>Gmail</div>\
-					<div class='widget-selector-item'>Last.fm plugin</div>\
-					<div class='widget-selector-item'>Random YouTube video</div>\
-				</div>"
+		var auth = UserManager.usersAuth();
+		if (!returned)
+		{
+			UserManager.ajaxHandler("GET", "rest-backend/api/widget", null, UserManager.introduction, auth.cookieString);
+		}
+		else
+		{
+			var username = auth.cookie.username;
+			var modalHeader = "Howdy," + username;
+			var parsed = JSON.parse(returned);
+			var modalContent = "<div class='widget-selector'><div class='widget-header'>Widgets are the things that make this site useful. Select some to start: </div>";
 
-		UserManager.createModal(info, modalHeader, modalContent);
+			for (item = 0; item < parsed.length; item++)
+			{
+
+				modalContent+= "<div class='widget-selector-item'><div class='widget-name ui toggle checkbox'><input type='checkbox' name='public' tabindex='0' class='hidden'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc'>"+ parsed[item].w_desc +"</div></div>"
+			}
+
+			modalContent+= "</div>";
+
+			UserManager.createModal(auth, modalHeader, modalContent);
+		}
+	},
+
+	convertJSONtoHTML: function(arrayOfJSON, label)
+	{
+		var html = "<div class='widget-selector-item' >"+ label +"</div>";
 	},
 
 	createModal: function(info, modalHeader, modalContent)
 	{
-
 		$("body").prepend("<div class='ui modal' id='modal'>\
 			<i class='close icon'></i>\
 			<div class='header modal-header'>" + modalHeader + "</div>\
@@ -136,21 +151,9 @@ var UserManager = {
 			</div>\
 		</div>");
 
+		$('.ui.checkbox').checkbox();
 		$('.ui.modal').modal('show');
 	},
-
-	getWidgetManifest: function()
-	{
-		$.getJSON(rootDomain + "/homepage/widgets/manifest.js", function(json){
-			console.log("running");
-			console.log(json);
-			return json;
-		});
-	}
-
-
-
-
 
 
 }
