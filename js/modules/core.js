@@ -119,28 +119,23 @@ var UserManager = {
 		else
 		{
 			var username = auth.cookie.username;
-			var modalHeader = "Howdy," + username;
+			var modalHeader = "Howdy, " + username + "!";
 			var parsed = JSON.parse(returned);
-			var modalContent = "<div class='widget-selector'><div class='widget-header'>Widgets are the things that make this site useful. Select some to start: </div>";
+			var modalContent = "<div class='widget-selector'><div class='widget-header'>Widgets are the things that give the site extra spice. Select some to start: </div>";
 
 			for (item = 0; item < parsed.length; item++)
 			{
 
-				modalContent+= "<div class='widget-selector-item row'><div class='widget-name ui toggle checkbox column-4'><input type='checkbox' name='public' tabindex='0' class='hidden'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc column-6'>"+ parsed[item].w_desc +"</div></div>"
+				modalContent+= "<div class='widget-selector-item row'><div class='widget-name ui toggle checkbox column-4'><input type='checkbox' name='public' tabindex='0' class='hidden' id='"+parsed[item].w_name+"Widget'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc column-6'>"+ parsed[item].w_desc +"</div></div>"
 			}
 
 			modalContent+= "</div>";
 
-			UserManager.createModal(auth, modalHeader, modalContent);
+			UserManager.createModal(auth, modalHeader, modalContent, UserManager.firstWidgets);
 		}
 	},
 
-	convertJSONtoHTML: function(arrayOfJSON, label)
-	{
-		var html = "<div class='widget-selector-item' >"+ label +"</div>";
-	},
-
-	createModal: function(info, modalHeader, modalContent)
+	createModal: function(info, modalHeader, modalContent, eventListenerConfig)
 	{
 		$("body").prepend("<div class='ui modal' id='modal'>\
 			<i class='close icon'></i>\
@@ -150,10 +145,24 @@ var UserManager = {
 				<div class='ui green button' id='add-item-modal'>Cool</div>\
 			</div>\
 		</div>");
-
 		$('.ui.checkbox').checkbox();
 		$('.ui.modal').modal('show');
+		eventListenerConfig();
 	},
+
+	firstWidgets: function()
+	{
+		$("#add-item-modal").click(function(){
+			var states = [];
+			$(".ui.checkbox input").each(function(){
+				var $this = $(this);
+				if ($this.is(":checked")) states.push($this.context.id);
+			});
+
+			console.log(states);
+		});
+	}
+
 
 
 }
