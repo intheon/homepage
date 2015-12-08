@@ -56,10 +56,10 @@ var UserManager = {
 		}
 	},
 
-	getUsersProfile: function()
+	getUsersProfile: function(pCallback)
 	{
 		var auth = UserManager.usersAuth();
-		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, UserManager.parseUsersProfile, auth.cookieString);
+		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, pCallback, auth.cookieString);
 	},
 
 	getUsersWidgets: function(wCallback)
@@ -68,18 +68,11 @@ var UserManager = {
 		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, wCallback, auth.cookieString);
 	},
 
-	confirmUsersWidgets: function(widgetCodes)
-	{
-		var auth = UserManager.usersAuth();
-		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, getUsersProfile, auth.cookieString);
-	},
-
 	parseUsersProfile: function(profile)
 	{
 		if (profile == "nowidgets") UserManager.introduction()
 		else
 		{
-			console.log("you are here");
 			var asObj = JSON.parse(profile);
 			for (item in asObj) UserManager.loadWidget(asObj[item]);
 		}
@@ -91,7 +84,7 @@ var UserManager = {
 	{
 		// load main content panels
 		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget' data-widget="+widgetInformation.widgetName+"><div class='column-3'>&nbsp;</div><div class='column-9 content-area'></div></div>");
-		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage" + widgetInformation.widgetPath);
+		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage/widgets/" + widgetInformation.widgetPath);
 
 		// load navigation
 		$("#navigation-here").append("<div class='navigation-item'>"+ widgetInformation.widgetName+ "</div>");
@@ -164,6 +157,8 @@ var UserManager = {
 
 			// find out the id's of the widgets the user chose to add
 			var states = [];
+			var track = 0;
+
 			$(".ui.checkbox input").each(function(){
 				var $this = $(this);
 				if ($this.is(":checked")) states.push($this.context.dataset.widgetId);
@@ -171,29 +166,23 @@ var UserManager = {
 
 			// create a blank state for each of them using the api
 			var auth = UserManager.usersAuth();
+			var count = 0;
+			var num = states.length;
 
 			for (statePointer = 0; statePointer < states.length; statePointer++)
 			{
-				UserManager.ajaxHandler("POST", "rest-backend/api/state", null, function(){}, auth.cookieString);
+				var payload = {
+					"userId" : auth.cookie.userId,
+					"widgetId" : states[statePointer]
+				};
+				$.when(UserManager.ajaxHandler("POST", "rest-backend/api/state", payload, function(){}, auth.cookieString)).then(function(){
+					count++;
+					if (count === num) UserManager.getUsersProfile(UserManager.parseUsersProfile);
+				});;
 			}
 
 		});
-	},
-
-	testing: function(payload)
-	{
-		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, UserManager.testing2, auth.cookieString);
-	},
-
-	testing: function(payload)
-	{
-		console.log("holy fuckballs");
-		console.log(payload);
 	}
-
-
-
-
 
 }
 
@@ -201,7 +190,7 @@ var UserManager = {
 $(document).ready(function() {
 
 	// all requests are authenticated by the api (tokenAuth.php is middleware which runs on each request)
-	UserManager.getUsersProfile();
+	UserManager.getUsersProfile(UserManager.parseUsersProfile);
 
 });
 
