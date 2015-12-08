@@ -68,11 +68,18 @@ var UserManager = {
 		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, wCallback, auth.cookieString);
 	},
 
+	confirmUsersWidgets: function(widgetCodes)
+	{
+		var auth = UserManager.usersAuth();
+		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, getUsersProfile, auth.cookieString);
+	},
+
 	parseUsersProfile: function(profile)
 	{
 		if (profile == "nowidgets") UserManager.introduction()
 		else
 		{
+			console.log("you are here");
 			var asObj = JSON.parse(profile);
 			for (item in asObj) UserManager.loadWidget(asObj[item]);
 		}
@@ -125,8 +132,7 @@ var UserManager = {
 
 			for (item = 0; item < parsed.length; item++)
 			{
-
-				modalContent+= "<div class='widget-selector-item row'><div class='widget-name ui toggle checkbox column-4'><input type='checkbox' name='public' tabindex='0' class='hidden' id='"+parsed[item].w_name+"Widget'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc column-6'>"+ parsed[item].w_desc +"</div></div>"
+				modalContent+= "<div class='widget-selector-item row'><div class='widget-name ui toggle checkbox column-4'><input type='checkbox' name='public' tabindex='0' class='hidden' id='"+parsed[item].w_codeName+"Widget' data-widget-id='"+parsed[item].w_id+"'><label>"+parsed[item].w_name+"</label></div><div class='widget-desc column-6'>"+ parsed[item].w_desc +"</div></div>"
 			}
 
 			modalContent+= "</div>";
@@ -147,21 +153,45 @@ var UserManager = {
 		</div>");
 		$('.ui.checkbox').checkbox();
 		$('.ui.modal').modal('show');
+
+		// this is a callback - it will be named something else! look at the caller!
 		eventListenerConfig();
 	},
 
 	firstWidgets: function()
 	{
 		$("#add-item-modal").click(function(){
+
+			// find out the id's of the widgets the user chose to add
 			var states = [];
 			$(".ui.checkbox input").each(function(){
 				var $this = $(this);
-				if ($this.is(":checked")) states.push($this.context.id);
+				if ($this.is(":checked")) states.push($this.context.dataset.widgetId);
 			});
 
-			console.log(states);
+			// create a blank state for each of them using the api
+			var auth = UserManager.usersAuth();
+
+			for (statePointer = 0; statePointer < states.length; statePointer++)
+			{
+				UserManager.ajaxHandler("POST", "rest-backend/api/state", null, function(){}, auth.cookieString);
+			}
+
 		});
+	},
+
+	testing: function(payload)
+	{
+		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, UserManager.testing2, auth.cookieString);
+	},
+
+	testing: function(payload)
+	{
+		console.log("holy fuckballs");
+		console.log(payload);
 	}
+
+
 
 
 
