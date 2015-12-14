@@ -1004,17 +1004,17 @@ textarea:focus, input:focus
 {
     margin-left:        1%;
     margin-right:       1%;
-    padding-bottom:      1%;
+    padding-bottom:     1%;
     margin-bottom:      1%;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
-    border-bottom: 1px solid rgba(39, 41, 43, .15);
+    box-shadow:         0 1px 2px 0 rgba(0, 0, 0, .05);
+    border-bottom:      1px solid rgba(39, 41, 43, .15);
 
 }
 
 .widget-selector-item
 {
-    display:flex;
-   padding:            1%;
+   display:             flex;
+   padding:             1%;
 
 }
 
@@ -1042,6 +1042,53 @@ textarea:focus, input:focus
 .widget-selector-item:nth-child(odd)
 {
     background:         #E7E7E7;
+}
+
+#outstandingTodosContent
+{
+    height:             200px !important;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+.todo-list
+{
+
+}
+
+.todo-list-item
+{
+    font-size:            1em !important;
+}
+.todo-list-item:first-child
+{
+    font-size:            1.6em !important;
+}
+.todo-list-item:nth-child(2)
+{
+    font-size:            1.5em !important;
+}
+.todo-list-item:nth-child(3)
+{
+    font-size:            1.4em !important;
+}
+
+.todo-list-item:nth-child(4)
+{
+    font-size:            1.3em !important;
+}
+
+.todo-list-item:nth-child(5)
+{
+    font-size:            1.2em !important;
+}
+.todo-list-item:nth-child(6)
+{
+    font-size:            1.1em !important;
+}
+.todo-list-item:nth-child(7)
+{
+    font-size:            1em !important;
 }
 
 @media screen and (max-width:944px){

@@ -22,7 +22,24 @@
 		parseJSON: function()
 		{
 			var meta = JSON.parse(Todo.metadata());
-			console.log(meta);
+
+			var descending = meta.items.reverse();
+
+			$("#outstandingTodos").append("<div class='ui animated floated relaxed list row' id='outstandingTodosContent'></div>");
+
+			for (item in descending)
+			{
+				var	date = descending[item].date.substr(0,descending[item].date.length-29);
+
+				$("#outstandingTodosContent").append("<div class='item todo-list-item' data-number='"+item+"'><div class='content'><div class='header'>"+descending[item].itemName+"</div><div class='smallText'>"+date+"</div></div></div>");
+			}
+
+			$("#outstandingTodosContent").scroll(function(event){
+				$("body").preventDefault();
+			});
+
+
+
 		}
 	};
 
