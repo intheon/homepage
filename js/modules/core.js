@@ -62,12 +62,6 @@ var UserManager = {
 		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, pCallback, auth.cookieString);
 	},
 
-	getUsersWidgets: function(wCallback)
-	{
-		var auth = UserManager.usersAuth();
-		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, wCallback, auth.cookieString);
-	},
-
 	parseUsersProfile: function(profile)
 	{
 		if (profile == "nowidgets") UserManager.introduction()
@@ -78,13 +72,16 @@ var UserManager = {
 		}
 	},
 
-	/////fugiohjkiuytsduio
-
-	loadWidget: function(widgetInformation, numItems, counter)
+	loadWidget: function(widgetInformation)
 	{
 		// load main content panels
-		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget' data-widget="+widgetInformation.widgetName+"><div class='column-3'>&nbsp;</div><div class='column-9 content-area'></div></div>");
-		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage/widgets/" + widgetInformation.widgetPath);
+		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget' data-widget="+widgetInformation.widgetName+">\
+				<div class='column-3'>&nbsp;\
+					<div class='widget-data-area' id='"+widgetInformation.widgetCodeName+"-widget-data'>"+widgetInformation.widgetData+"</div>\
+				</div>\
+				<div class='column-9 content-area'></div>\
+			</div>");
+		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage/widgets" + widgetInformation.widgetPath);
 
 		// load navigation
 		$("#navigation-here").append("<div class='navigation-item'>"+ widgetInformation.widgetName+ "</div>");

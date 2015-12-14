@@ -718,6 +718,9 @@ textarea:focus, input:focus {
   display: flex;
   padding: 1%; }
 
+.widget-data-area {
+  display: none; }
+
 .widget-desc {
   padding: 0.3%; }
 

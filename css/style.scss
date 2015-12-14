@@ -92,6 +92,7 @@ body
 }
 
 
+
 .row
 {
     @extend                             %clearfix;
@@ -1015,6 +1016,11 @@ textarea:focus, input:focus
     display:flex;
    padding:            1%;
 
+}
+
+.widget-data-area
+{
+    display:            none;
 }
 
 .widget-name

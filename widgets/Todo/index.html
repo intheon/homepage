@@ -9,3 +9,26 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+	var Todo = {
+
+		metadata: function()
+		{
+			return $("#todo-widget-data")[0].innerHTML;
+		},
+
+		parseJSON: function()
+		{
+			var meta = JSON.parse(Todo.metadata());
+			console.log(meta);
+		}
+	};
+
+	$(document).ready(function(){
+		Todo.parseJSON();
+	});
+
+
+</script>
