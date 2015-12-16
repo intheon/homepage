@@ -45,11 +45,9 @@ if (!isset($_COOKIE["authToken"]))
 					View profile
 				</div>
 			</div>
-
-			<div id="user-name-hidden">Benjamin</div>
 		</div> <!-- end user manager -->
 
-		<div class="statistics-info row">
+		<div class="statistics-info row"> <!-- Summary of widgets injected here -->
 
 			<div class="stat-item column-6">
 				<div class="value">4</div>
@@ -68,7 +66,7 @@ if (!isset($_COOKIE["authToken"]))
 				<div class="value">5</div>
 				<div class="label">News</div>
 			</div>
-		</div>
+		</div><!-- end summary -->
 
 		
 		<div class="navigation row" id="navigation-here"><!-- Navigation links injected here-->

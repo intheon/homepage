@@ -62,6 +62,12 @@ var UserManager = {
 		UserManager.ajaxHandler("GET", "rest-backend/api/user/" + auth.cookie.username, null, pCallback, auth.cookieString);
 	},
 
+	getUsersWidgets: function(wCallback)
+	{
+		var auth = UserManager.usersAuth();
+		UserManager.ajaxHandler("GET", "rest-backend/api/widget" + auth.cookie.username, null, wCallback, auth.cookieString);
+	},
+
 	parseUsersProfile: function(profile)
 	{
 		if (profile == "nowidgets") UserManager.introduction()
@@ -74,14 +80,22 @@ var UserManager = {
 
 	loadWidget: function(widgetInformation)
 	{
-		// load main content panels
-		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetName+"-widget' data-widget="+widgetInformation.widgetName+">\
-				<div class='column-3'>&nbsp;\
-					<div class='widget-data-area' id='"+widgetInformation.widgetCodeName+"-widget-data'>"+widgetInformation.widgetData+"</div>\
-				</div>\
+		var wd = widgetInformation.widgetData;
+
+		// create a skeleton for each widget
+		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetCodeName+"-widget' data-widget="+widgetInformation.widgetCodeName+">\
+				<div class='column-3'>&nbsp;</div>\
 				<div class='column-9 content-area'></div>\
 			</div>");
-		$("#" + widgetInformation.widgetName + "-widget .content-area").load("../homepage/widgets" + widgetInformation.widgetPath);
+
+		// inject the template html
+		$("#" + widgetInformation.widgetCodeName + "-widget .content-area").load("../homepage/widgets" + widgetInformation.widgetPath, function(){
+			// add the json to localstorage
+			var stored = UserManager.addToLocalStorage(widgetInformation.widgetCodeName, wd);
+
+			// dynamically call the initialisation method located in the template's own code to render the widget data
+			window[widgetInformation.widgetName].init(stored);
+		});
 
 		// load navigation
 		$("#navigation-here").append("<div class='navigation-item'>"+ widgetInformation.widgetName+ "</div>");
@@ -179,6 +193,13 @@ var UserManager = {
 			}
 
 		});
+	},
+
+	addToLocalStorage: function(identifier, data)
+	{
+		localStorage.setItem(identifier, data);
+
+		return localStorage.getItem(identifier);
 	}
 
 }
