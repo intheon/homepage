@@ -1,0 +1,82 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot");
+  src: url("../css/fonts/Open-Sans-regular/Open-Sans-regular.eot?#iefix") format("embedded-opentype"), local("Open Sans"), local("Open-Sans-regular"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff2") format("woff2"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.woff") format("woff"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.ttf") format("truetype"), url("../css/fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans") format("svg"); }
+body {
+  background: url(../img/bg.jpg);
+  background-attachment: fixed;
+  font-family: "Open Sans" !important;
+  margin: 0;
+  padding: 0; }
+
+.center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: inline-block !important;
+  text-align: center; }
+
+.panel {
+  margin: 3%;
+  padding: 3%;
+  border-radius: 7px;
+  background: rgba(215, 215, 215, 0.3); }
+
+input[type="text"], input[type="password"], button {
+  padding: 1.6%;
+  border-radius: 7px;
+  outline: none;
+  background: rgba(203, 203, 203, 0.4);
+  border: none;
+  border-bottom: 2px solid rgba(203, 203, 203, 0.4);
+  transition: all 0.7s;
+  font-family: "Open Sans" !important; }
+
+input[type="text"]:hover, input[type="password"]:hover, input[type="text"]:focus, input[type="password"]:focus, button:hover {
+  border-bottom: 2px solid #bd3f3f;
+  background: rgba(215, 215, 215, 0.3);
+  cursor: -moz-pointer;
+  cursor: -webkit-pointer;
+  cursor: pointer; }
+
+.forms * {
+  font-size: 1.2em;
+  margin-bottom: 3%;
+  color: #000000; }
+
+.big-header {
+  font-size: 2em; }
+
+#register-forms {
+  display: none; }
+
+.information-panel {
+  position: fixed;
+  width: 82%;
+  display: block;
+  margin: 5%;
+  margin-top: 10%;
+  padding: 4%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(163, 163, 163, 0.4);
+  border-radius: 7px; }
+
+.information-dismiss {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.6em;
+  opacity: 1;
+  padding: 2%;
+  z-index: 20; }
+
+.information-dismiss:hover {
+  opacity: 0.6;
+  cursor: pointer; }
+
+.information-message {
+  font-size: 1.4em;
+  text-align: center; }
+
+/*# sourceMappingURL=login-style.css.map */

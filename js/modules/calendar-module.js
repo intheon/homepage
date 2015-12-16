@@ -1,10 +1,780 @@
+var rootUrl = "http://localhost/homepage";
+//var rootUrl = "http://intheon.uk/home";
+
+var Calendar = {
+
+	initialise: function(type)
+	{
+		// define some useful metadata
+		var momentBuilder = function(offset)
+		{
+			return moment().month(parseInt(moment().format("M") - 1) + offset);
+		};
+
+		var time = {
+			today: moment(),
+			todaysDayAsInt: parseInt(moment().format("D")),
+			thisMonthAsInt: parseInt(moment().format("M")),
+			thisYearAsInt: parseInt(moment().format("YYYY")),
+			thisMonthAsObj: moment(this.thisMonthAsInt, "M"),
+			thisMonthAsPhrase: moment().format("MMMM"),
+			thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
+			// this one is a little crazy
+			// basically i either want to show lots of months, or one
+			// the flag 'full' builds a lot of moment objects with offsets
+			quantToDisplay: (function()
+			{
+				var array = (type == "full") ? [
+					momentBuilder(-2),
+					momentBuilder(-1),
+					momentBuilder(+0),
+					momentBuilder(+1),
+					momentBuilder(+2),
+					momentBuilder(+3),
+					momentBuilder(+4),
+					momentBuilder(+5)
+				] : [
+					momentBuilder(+0)
+				];
+				return array;
+			})(type)
+		};
+
+		// UX stuff
+		if (type == "complex") scrollToElement();
+
+		// finally build it
+		this.renderCalFrame(time);
+		this.getUsersWages(Calendar.parseWages);
+		this.getUsersWages(Calendar.requestWages);
+		this.getUsersEvents(null);
+		//this.getUsersWages(Calendar.requestWages);
+	},
+
+	renderCalFrame: function(time)
+	{
+
+		_.each(time.quantToDisplay, function(arrItem)
+		{
+			// temp object for time | all it is is shorthand
+			var t = {
+				year: arrItem.format("YYYY"),
+				month: arrItem.format("MMMM"),
+				mLower: arrItem.format("MMMM").toLowerCase(),
+				dInM: arrItem.daysInMonth(),
+				id: (arrItem.format("MMMM")) + (arrItem.format("YYYY"))
+			};
+
+			// render the month
+			$(".modal-calendar").append("<div class='ui raised segment'>\
+				<div class='month-section' id='" + t.id + "' data-month-label='" + t.month + "' data-year-label='" + t.year + "'>\
+					<div class='month-labels'>\
+						<h3 class='month-label'>" + t.month + "</h3>\
+						<div class='month-info-container'></div>\
+					</div>\
+					<div class='month-section-body " + t.mLower + "Calendar'></div>\
+					<div class='month-section-footnotes'></div>\
+				</div></div>");
+
+			// render the days within the month
+			for (d = 1; d < t.dInM; d++)
+			{
+				var dl = moment().date(d).format("dd");
+				$("#" + t.id + " .month-section-body").append("<div class='calendar-item calendar-item-" + d + "'>\
+					<div class='ui dropdown'>\
+						<i class='dropdown icon'></i>\
+						<div class='menu'>\
+							<div class='item show-modal' id='purchase-modal'>\
+								<i class='money icon'></i>New Purchase\
+							</div>\
+							<div class='item show-modal' id='diary-modal'>\
+								<i class='calendar icon'></i>New Diary entry\
+							</div>\
+							<div class='item show-modal' id='stats-modal'>\
+								<i class='tasks icon'></i>Statistics\
+							</div>\
+						</div>\
+					</div>\
+					<div class='date-number'>" + d + "</div>\
+					<div class='day-label'>" + dl + "</div>\
+					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
+					<div class='day-details'></div>\
+				</div>");
+			}
+
+		});
+
+		// register dropdown handler
+		$('.ui.dropdown').dropdown();
+
+		// instill modal when clicked
+		$(".dropdown .item").click(function(event)
+		{
+			Calendar.presentPopupModal(event);
+		});
+
+		//Calendar.scrollToElement(moment().format("MMMM"), moment().format("YYYY"));
+
+	},
+
+	presentPopupModal: function(event)
+	{
+
+		var payload = {
+			type: event.currentTarget.id,
+			yearIdentifier: event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.yearLabel,
+			monthIdentifier: event.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement.dataset.monthLabel,
+			dayIdentifier: (function()
+			{
+				var dayId = event.currentTarget.parentNode.parentElement.parentElement.className;
+				dayId = dayId.split(" ");
+				dayId = dayId[1];
+				dayId = dayId.split("-");
+				dayId = dayId[2];
+				return dayId;
+			}(event))
+		};
+
+		$("body").prepend("<div class='ui modal' id='modal'>\
+			<i class='close icon'></i>\
+			<div class='header modal-header'></div>\
+			<div class='modal-content'>\
+				<div class='ui fluid form'>\
+					<div class='fields'></div>\
+				</div>\
+			</div>\
+			<div class='actions'>\
+				<div class='ui inverted black button' id='cancel-modal'>Cancel</div>\
+				<div class='ui inverted orange button' id='add-item-modal'>Add</div>\
+			</div>");
+
+		// can either have a modal for adding spending or a diary event
+		// need to make sure the title, view, and behaviour reflects that
+		var content, title = "";
+
+		switch (payload.type)
+		{
+			case "purchase-modal":
+				title = "Add Spend";
+				content = "<div id='spending-field' class='modal-form-wrapper'><div class='field modal-field'><label>Thing bought</label><input type='text' placeholder='Label' id='spending-item-name' class='modal-input-class'></div><div class='field modal-field'><label>Cost</label><input type='text' placeholder='Price' id='spending-item-desc' class='modal-input-class'></div></div>";
+				break;
+
+			case "diary-modal":
+				title = "Add Diary";
+				content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name' class='modal-input-class'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc' class='modal-input-class'></div></div>";
+				break;
+
+			case "stats-modal":
+				title = "Overview for day";
+				content = "<div id='stats-overview>Some useful stats here</div>";
+				break;
+
+			default:
+				console.log("lol b0rked");
+				break;
+		};
+
+		$(".ui.modal .modal-header").html(title);
+		$(".ui.modal .modal-content .fields").html(content);
+
+		$(".ui.modal .actions .button").click(function(event)
+		{
+
+			var type = event.currentTarget.id;
+
+			if (type == "add-item-modal")
+			{
+
+				var id = $(".modal-form-wrapper")[0].id;
+				var split = id.split("-");
+
+				// TODO VALIDATION
+				var name = $("#" + split[0] + "-item-name").val();
+				var detail = $("#" + split[0] + "-item-desc").val();
+
+				payload.name = name;
+				payload.detail = detail;
+			}
+
+			Calendar.setUsersEvents(payload);
+			// remove modal from dom to stop duplicate values from appearing.
+			Calendar.removeModalFromDom();
+		});
+
+		$("#modal .icon").click(function()
+		{
+			Calendar.removeModalFromDom();
+		});
+		$("#modal .button").click(function()
+		{
+			Calendar.removeModalFromDom();
+		});
+
+		$('.ui.modal').modal('show');
+
+	},
+
+	removeModalFromDom: function()
+	{
+		$("#modal").fadeOut("slow", function()
+		{
+			$("#modal").remove();
+			$(".ui.dimmer.modals").remove()
+		});
+	},
+
+	getUsersWages: function(callback)
+	{
+		$.ajax(
+		{
+			type: "POST",
+			url: rootUrl + "/php/module_manage_credentials.php",
+			data:
+			{
+				type: "getUsersWages",
+			},
+			success: function(response)
+			{
+				callback(response);
+			}
+		});
+	},
+
+	setUsersWages: function(callback, wageAmount, date)
+	{
+		$.ajax(
+		{
+			type: "POST",
+			url: rootUrl + "/php/module_manage_credentials.php",
+			data:
+			{
+				type: "setUsersWages",
+				wage: wageAmount,
+				date: date
+			},
+			success: function()
+			{
+				$(".request-wage-overlay").fadeOut(function()
+				{
+					$(this).remove();
+				});
+
+				Calendar.getUsersWages(callback);
+			}
+		});
+
+	},
+
+	getUsersEvents: function()
+	{
+		$.ajax(
+		{
+			type: "POST",
+			url: rootUrl + "/php/module_manage_credentials.php",
+			data:
+			{
+				type: "getUsersEvents"
+			},
+			success: function(response)
+			{
+				//console.log(JSON.parse(response));
+				Calendar.parseUsersEvents(response);
+			}
+		});
+	},
+
+	setUsersEvents: function(payload)
+	{
+
+		var type = (payload.type == "purchase-modal") ? "setUsersSpend" : "setUsersEvents";
+
+		var p = payload.monthIdentifier + payload.yearIdentifier;
+		var db = Calendar.convertIdToDate(p);
+		var fd = db + "-" + payload.dayIdentifier;
+
+		$.ajax(
+		{
+			type: "POST",
+			url: rootUrl + "/php/module_manage_credentials.php",
+			data:
+			{
+				type: type,
+				name: payload.name,
+				detail: payload.detail,
+				date: fd
+			},
+			success: function()
+			{
+				Calendar.getUsersEvents();
+			}
+		});
+
+	},
+
+	parseWages: function(payload)
+	{
+
+		var json = JSON.parse(payload);
+		var cu = Calendar.convertCurrentDateToDbFormat()
+
+		_.each(json, function(obj)
+		{
+			Calendar.associateWithMonth(obj);
+		});
+	},
+
+	parseUsersEvents: function(payload)
+	{
+		// need to either parse events or spends.
+		var hs = JSON.parse(payload);
+		var ss = [];
+		var es = [];
+
+		// determine whether its events or spends
+		_.each(hs, function(obj)
+		{
+			for (keys in obj)
+			{
+				if (keys == "s_name")
+				{
+					ss.push(obj);
+				}
+				else if (keys == "e_name")
+				{
+					es.push(obj);
+				}
+			}
+		});
+
+		// SPENDS
+
+		// merge and tally up all the spends into a total
+		// access the array by calling 'uniques.ss'
+		var uniqueSpendsByDay = ss.reduce(function(m, e)
+		{
+			if (!m.by_date[e.s_date])
+			{
+				m.by_date[e.s_date] = {
+					s_date: e.s_date,
+					s_price: 0,
+					s_quant: 0,
+					s_month: ""
+				};
+				m.ss.push(m.by_date[e.s_date]);
+			}
+			m.by_date[e.s_date].s_price += parseInt(e.s_price);
+			m.by_date[e.s_date].s_quant += parseInt(1);
+			m.by_date[e.s_date].s_month = Calendar.convertDateToId(e.s_date);
+			return m;
+		},
+		{
+			ss: [],
+			by_date:
+			{}
+		});
+
+
+		// from the uniqueDay result, tally up all the results for the month
+		var uniqueSpendsByMonth = uniqueSpendsByDay.ss.reduce(function(m, e)
+		{
+			if (!m.by_date[e.s_month])
+			{
+				m.by_date[e.s_month] = {
+					s_month: e.s_month,
+					s_price: 0,
+					s_quant: 0
+				};
+				m.uniqueSpendsByDay.push(m.by_date[e.s_month]);
+			}
+			m.by_date[e.s_month].s_price += parseInt(e.s_price);
+			m.by_date[e.s_month].s_quant += parseInt(1);
+			return m;
+		},
+		{
+			uniqueSpendsByDay: [],
+			by_date:
+			{}
+		});
+
+		// add the day items to the calendar
+		_.each(uniqueSpendsByDay.ss, function(item)
+		{
+
+			// convert into the form MMMMMMMMMYYYY (eg September2015)
+			var cId = item.s_date.substr(0, item.s_date.length - 2);
+			cId = Calendar.convertDateToId(cId);
+
+			// convert into the class identifier .calender-item-12
+			var d = item.s_date.split("-")[2];
+			d = " .calendar-item-" + d;
+
+			$("#" + cId + d + " .day-details").append("<div class='spend-item'><div class='spend-item-label'>" + item.s_name + "</div><div class='spend-item-amount'>" + item.s_price + "</div><div class='spend-item-total'>" + item.s_quant + "</div></div>");
+			$("#" + cId + d + " .day-summary .spend-summary").html("<i class='gbp icon'></i>"+ item.s_price +" (" + item.s_quant + ")");
+
+		});
+
+		_.each(uniqueSpendsByMonth.uniqueSpendsByDay, function(item)
+		{
+			var current = Calendar.convertCurrentDateToId();
+
+			if (item.s_month == current)
+			{
+				var start = $("#moneyCount").html();
+				var remains = parseInt(start - item.s_price);
+
+				$("#moneyCount").html(remains);
+				$("#" + current + " .month-info-container").append("<div class='month-spend-total'> Spent - £"+ item.s_price + "</div><div class='month-spend-remains'> Remains - £"+ remains + "</div><div class='month-spends-quantity'> Items - " + item.s_quant +"</div>");
+			}
+		});
+
+
+		/*
+
+		_.each(ss, function(item)
+		{
+		console.log(item);
+			var allSpends = function(ss)
+			{
+				return _.pluck(ss, "s_date");
+			}
+
+			var b = allSpends(ss);
+
+			// this block counts the amount of spends to summarise
+			var results = _.reduce(b, function(counts, key)
+				{
+					counts[key]++;
+					return counts
+				},
+				_.object(_.map(_.uniq(b), function(key)
+				{
+					return [key, 0]
+				})))
+
+			var cId = item.s_date.substr(0, item.s_date.length - 2);
+			cId = Calendar.convertDateToId(cId);
+
+			var d = item.s_date.split("-")[2];
+			d = " .calendar-item-" + d;
+
+			$("#" + cId + d + " .day-details").append("<div class='spend-item'><div class='spend-item-label'>" + item.s_name + "</div><div class='spend-item-amount'>" + item.s_price + "</div></div>");
+			$("#" + cId + d + " .day-summary .spend-summary").html("<i class='gbp icon'></i>(" + results[item.s_date] + ")");
+		});
+*/
+		// parse all events
+		_.each(es, function(item)
+		{
+
+			var allEvents = function(es)
+			{
+				return _.pluck(es, "e_date");
+			}
+
+			var b = allEvents(es);
+
+			var results = _.reduce(b, function(counts, key)
+				{
+					counts[key]++;
+					return counts
+				},
+				_.object(_.map(_.uniq(b), function(key)
+				{
+					return [key, 0]
+				})))
+
+			var cId = item.e_date.substr(0, item.e_date.length - 2);
+			cId = Calendar.convertDateToId(cId);
+
+			var d = item.e_date.split("-")[2];
+			d = " .calendar-item-" + d;
+
+			$("#" + cId + d + " .day-details").append("<div class='event-item'><div class='event-item-label'>" + item.e_name + "</div><div class='event-item-amount'>" + item.e_desc + "</div></div>");
+			$("#" + cId + d + " .day-summary .event-summary").html(results[item.e_date] + "<i class='checkmark box icon'></i>");
+		});
+	},
+
+	requestWages: function(payload)
+	{
+
+		var json = JSON.parse(payload);
+
+		// determine whether this month has a record
+
+		var currentDate = Calendar.convertCurrentDateToDbFormat();
+
+		var monthHasRec = function(json)
+		{
+			for (i = 0; i < json.length - 1; i++)
+			{
+
+				/*
+				if (json[i].w_date == currentDate) return true;
+				else return false;
+				*/
+			};
+		}(json);
+
+		/*
+
+
+		_.each(json, function(line){
+			if (line.w_date == currentDate){
+				console.log("is this firing?");
+				monthHasRec = true;
+				break;
+			}
+			else {
+				console.log("or this?");
+				monthHasRec = false;
+			}
+		});
+
+		console.log(monthHasRec);
+
+		// determine whether there is a record AND it's the 28th
+
+
+		/*
+		if (thisMonthHasNoRecord){
+			//request money for this month
+		}
+		else if (ifThisMonthHasRecordAndIs28th){
+			// request money for next month
+		}
+		*/
+
+
+
+		/*
+		var current = "";
+		var isMonth = false;
+		var is28th = false;
+		var momentBuilder = function(offset){ 
+			return moment().month(parseInt(moment().format("M") - 1) + offset)
+		};
+		var paid = function(){ var c = Calendar.convertCurrentDateToDbFormat()
+
+			_.each(json, function(obj){
+				if (obj.w_date == c) return true;
+				else return false;
+			});
+ 		}
+
+		var date = "";
+
+		if (paid){ 
+			 if (moment().date() == 28 || moment().date() == 29 || moment().date() == 30 || moment().date() == 31){
+				console.log("this block is actually runnning");
+				is28th = true;
+				current = Calendar.convertAnyDateToDbFormat(0, +2);
+			}
+			console.log("paid block is running");
+			isMonth = true;
+		}
+
+		console.log(isMonth);
+		console.log(is28th);
+
+		if (!isMonth){
+			console.log("is month is running");
+
+			var tm = momentBuilder(-1).format("MMMM");
+				date = Calendar.convertCurrentDateToDbFormat();
+		}
+
+		if (is28th){
+			console.log("is 28th is running");
+
+			var tm = momentBuilder(+0).format("MMMM");
+				date = Calendar.convertCurrentDateToDbFormat();
+			var iTo = parseInt(date.substr(date.length-1, date.length)) +1;
+				iTo = iTo.toString();
+
+				date = date.substr(0,5);
+				date += iTo;
+				console.log(date);
+		}
+
+		if (!isMonth || is28th){
+			var phrase = Calendar.convertDateToId(current);
+
+			$("#" + phrase).prepend("<div class='request-wage-overlay'>\
+				<div class='wage-request-form'>\
+					<h2>How much did you get paid on 28th "+tm+"?</h2>\
+					<input type='text' placeholder='Integer' id='wage-request-amount' />\
+					<input type='button' value='Confirm' id='wage-request-confirm'/>\
+				</div>\
+				</div>");
+		}
+
+		$("#wage-request-confirm").click(function(){
+			var am = $("#wage-request-amount").val();
+
+			Calendar.setUsersWages(Calendar.parseWages, am, date);
+		});
+
+*/
+
+	},
+
+	associateWithMonth: function(json)
+	{
+		// w_date is in the format yyyy-m
+		// the id of the element is 'September-2015', so need to do some trickery
+		var phrase = Calendar.convertDateToId(json.w_date);
+
+		// add it in
+		$("#" + phrase + " .month-info-container").append("<div class='month-spend-start'>Paid - £" + json.w_amount + "</div>");
+		$("#moneyCount").html(json.w_amount);
+	},
+
+	convertIdToDate: function(date)
+	{
+		var y = date.substr(date.length - 4, date.length);
+		var m = date.substr(0, date.length - 4);
+
+		var months = {
+			"January": 1,
+			"February": 2,
+			"March": 3,
+			"April": 4,
+			"May": 5,
+			"June": 6,
+			"July": 7,
+			"August": 8,
+			"September": 9,
+			"October": 10,
+			"November": 11,
+			"December": 12,
+		};
+
+		// converts from id to yyyy-d to be database friendly
+		return y + "-" + months[m];
+
+	},
+
+	convertDateToId: function(date)
+	{
+		var year = date.split("-")[0];
+		var month = date.split("-")[1];
+		// the -1 is because moment counts from 0
+		var mAsObj = moment().month(month - 1).format("MMMM");
+		return (mAsObj + year).toString();
+	},
+
+	convertCurrentDateToDbFormat: function()
+	{
+		return (moment().year() + "-" + (moment().month() + 1)).toString();
+	},
+
+	convertCurrentDateToId: function()
+	{
+		return (moment().format("MMMM")) + (moment().format("YYYY"));
+	},
+
+	convertAnyDateToDbFormat: function(yearOffset, monthOffset)
+	{
+		var yo = yearOffset;
+		var mo = monthOffset;
+
+		return (moment().year() + yo) + "-" + (moment().month() + mo).toString();
+	},
+
+
+	/*
+	}
+
+	// for each month
+	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
+	{
+		// shorthand vars
+		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
+		var month			= globalTime.quantToDisplay[loop].format("MMMM");
+		var monthLowercase 	= globalTime.quantToDisplay[loop].format("MMMM").toLowerCase();
+		var daysInThisMonth = globalTime.quantToDisplay[loop].daysInMonth();
+
+		$(".modal-calendar").append("<div class='ui raised segment'><div class='month-section' data-month-number='"+globalTime.quantToDisplay[loop]._i+"' data-month-label='"+month+"' data-year-label='"+year+"'><h3>"+month+"</h3><div class='month-section-body "+monthLowercase+"Calendar'></div><div class='month-section-footnotes'></div></div></div>");
+		
+		// for each day in the month
+		for (var cellLoop = 1; cellLoop <= daysInThisMonth; cellLoop++)
+		{
+			var day = moment(cellLoop,"D");
+				day = day.format("dd");
+			$("."+monthLowercase+"Calendar").append("<div class='calendar-item calendar-item-"+cellLoop+"'><div class='ui dropdown'><i class='dropdown icon'></i><div class='menu'><div class='item show-modal' id='purchase-modal'><i class='money icon'></i>New Purchase</div><div class='item show-modal' id='diary-modal'><i class='calendar icon'></i>New Diary entry</div><div class='item show-modal' id='stats-modal'><i class='tasks icon'></i>Statistics</div></div></div><div class='date-number'>"+cellLoop+"</div><div class='day-label'>"+day+"</div></div>");
+		}
+	}
+
+	// register dropdown handler
+	$('.ui.dropdown').dropdown();
+
+	// instill modal when clicked
+	$(".dropdown .item").click(function(event){
+		createModals(event);
+	});
+
+	// now that our calendar is drawn, populate it with data
+	assignData(globalTime);
+
+
+	*/
+	// scrolls to the current month for good UX
+	scrollToElement: function(month, year)
+	{
+
+		$("html, body").animate(
+		{
+			scrollTop: $("#" + month + year).offset().top - 20
+		}, 1100);
+
+	}
+
+};
+
+
+
+/*
 $(document).ready(function(){
 	// globalTime is blank and global and 
 	// will contain a crap ton of stuff
 	var globalTime 		= {};
 	var globalData 		= {};
 
+	var Calendar = {
+
+		initialise: function(type)
+		{
+			var time = 
+			{
+				today: 							moment(),
+				todaysDayAsInt: 				parseInt(moment().format("D")),
+				thisMonthAsInt: 				parseInt(moment().format("M")),
+				thisYearAsInt: 					parseInt(moment().format("YYYY")),
+				thisMonthAsObj:   				moment(this.thisMonthAsInt,"M"),
+				thisMonthAsPhrase: 				moment().format("MMMM"),
+				thisMonthAsPhraseLower: 		moment().format("MMMM").toLowerCase(),
+				quantToDisplay: 				(function(){
+													var array = (type == "full") ? [moment((parseInt(moment().format("M")) - 2),"M"), moment((parseInt(moment().format("M")) - 1),"M"), moment((parseInt(moment().format("M"))),"M"), moment((parseInt(moment().format("M")) + 1),"M"), moment((parseInt(moment().format("M")) + 2),"M"), moment((parseInt(moment().format("M")) + 3),"M"), moment((parseInt(moment().format("M")) + 4),"M"), moment((parseInt(moment().format("M")) + 5),"M")] : [moment((parseInt(moment().format("M"))),"M")];
+													return array;
+												})(type)
+			};
+
+			return time;
+		},
+
+		render: function(type)
+		{
+			console.log(type);
+			//console.log(Calendar.initialise());
+		}
+
+	};
+
+
+	//Calendar.render();
 });
+
+/*
+
 
 function loadCalendar(type)
 {
@@ -42,8 +812,6 @@ function drawCalendars(globalTime)
 	// for each month
 	for (var loop = 0; loop < globalTime.quantToDisplay.length; loop++)
 	{
-		console.log("is this even looping?");
-
 		// shorthand vars
 		var year 			= globalTime.quantToDisplay[loop].format("YYYY");
 		var month			= globalTime.quantToDisplay[loop].format("MMMM");
@@ -203,11 +971,7 @@ function assignData(globalTime)
 	// our raw data to play with
 	var jsonData = {};
 	// our request payload to the server
-	/*
-	var payload = {
-		files: [{filename: "history.json", propName: "history"}, {filename: "notes.json", propName: "notes"}, {filename: "spend.json", propName: "spend"}]
-	};
-	*/
+
 	var payload = {
 		files: [{filename: "complex.json", propName: "historical"}]
 	};
@@ -464,3 +1228,4 @@ function returnMatchingDay(year, month, day)
 	}
 }
 
+*/

@@ -1,5 +1,8 @@
 // to control the view, modification, and addition of things to do
 
+var rootUrl = "http://localhost/homepage";
+//var rootUrl = "http://intheon.uk/home";
+
 // simple. initialisation.
 $(document).ready(function(){
 	loadTodoList();
@@ -84,7 +87,7 @@ function sendToInterwebs(jsonItem,method)
 {
 	$.ajax({
 		type				: "POST",
-		url                 : "./php/module_file_manager.php",
+		url                 : rootUrl + "/php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "todo.json", 
@@ -105,7 +108,7 @@ function retrieveFromInterwebs()
 {
 	$.ajax({
 		type				: "POST",
-		url                 : "./php/module_file_manager.php",
+		url                 : rootUrl + "/php/module_file_manager.php",
 		data 				: 
 		{
 			filename        : "todo.json",

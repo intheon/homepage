@@ -1,0 +1,156 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../css/fonts/Open-Sans-regular/Open-Sans-regular.eot');
+  src: url('../css/fonts/Open-Sans-regular/Open-Sans-regular.eot?#iefix') format('embedded-opentype'),
+       local('Open Sans'),
+       local('Open-Sans-regular'),
+       url('../css/fonts/Open-Sans-regular/Open-Sans-regular.woff2') format('woff2'),
+       url('../css/fonts/Open-Sans-regular/Open-Sans-regular.woff') format('woff'),
+       url('../css/fonts/Open-Sans-regular/Open-Sans-regular.ttf') format('truetype'),
+       url('../css/fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans') format('svg');
+}
+
+body
+{
+    background:                         url(../img/bg.jpg);
+    background-attachment:              fixed;
+    font-family:                        "Open Sans" !important;
+    margin: 							0;
+    padding: 							0;
+}
+
+$bigPadding:                            3%;
+$padding:                               0.8%;
+$colour1:                               #AA3939;
+$colour2:                               #AA6C39;
+$colour3:                               #FFFFFF;
+$trans:                                 rgba(215,215,215,0.3);
+$trans2:                                rgba(203,203,203,0.4);
+$border-radius-amount:                  7px;        
+
+%center-element
+{
+    margin-left:                        auto !important;
+    margin-right:                       auto !important;
+    display:                            inline-block !important;
+    text-align:                         center;
+}
+
+.center
+{
+    @extend                             %center-element;
+}
+
+.panel
+{
+    margin:                             $bigPadding;
+    padding:                            $bigPadding;
+    border-radius:                      $border-radius-amount;
+    background:                         $trans;
+}
+
+%input-default
+{
+    padding:                            $padding * 2;
+    border-radius:                      $border-radius-amount;
+    outline:                            none;
+    background:                         $trans2;
+    border:                             none;
+    border-bottom:                      2px solid $trans2;
+    transition:                         all 0.7s;
+        font-family:                        "Open Sans" !important;
+}
+%input-hover
+{
+    border-bottom:                      2px solid lighten($colour1, 5%);
+    background:                         $trans;
+    cursor:                             -moz-pointer;
+    cursor:                             -webkit-pointer;
+    cursor:                             pointer;
+}
+
+.forms
+{
+
+}
+.forms *
+{
+    font-size:                          1.2em;
+    margin-bottom:                     $bigPadding;
+    color:                              #000000;
+
+}
+
+input[type="text"], input[type="password"]
+{
+    @extend                             %input-default;
+}
+
+input[type="text"]:hover, input[type="password"]:hover
+{
+    @extend                             %input-hover;
+}
+
+input[type="text"]:focus, input[type="password"]:focus
+{
+    @extend                             %input-hover;
+}
+
+
+button
+{
+    @extend                             %input-default;
+}
+
+button:hover
+{
+    @extend                             %input-hover;
+}
+
+.big-header
+{
+    font-size:                           2em;
+}
+
+#register-forms
+{
+    display:                             none;
+}
+
+.information-panel
+{
+	position: 							fixed;
+	width: 								82%;
+	display: 							block;
+	margin: 							5%;
+	margin-top: 						10%;
+	padding: 							4%;
+	background: 						rgba(255,255,255,0.9);
+	border: 							1px solid rgba(163,163,163,0.4);
+	border-radius: 						$border-radius-amount;
+}
+
+.information-dismiss
+{
+	position: 							absolute;
+	top: 								0;
+	right: 								0;
+	font-size: 							1.6em;
+	opacity: 							1;
+	padding: 							2%;
+	z-index: 							20;
+}
+
+.information-dismiss:hover
+{
+	opacity: 							0.6;
+	cursor: 							pointer;
+}
+
+.information-message
+{
+	font-size: 							1.4em;
+	text-align: 						center;
+}

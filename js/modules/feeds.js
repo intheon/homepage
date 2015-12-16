@@ -1,5 +1,8 @@
 // the feed engine
 
+var rootUrl = "http://localhost/homepage";
+//var rootUrl = "http://intheon.uk/home";
+
 // params for this function are:
 // - url
 // - id of element to be inserted into
@@ -11,7 +14,7 @@ if (!internetStatus)
 }
 else
 {
-	getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
+	//getFeed("http://feeds.sydv.net/latest-bash-quotes","bash",1);
 	getFeed("http://feeds.bbci.co.uk/news/technology/rss.xml","bbc",7);
 	getFeed("http://www.reddit.com/r/skateboarding/.rss","reddit",5);
 	getFeed("http://clientsfromhell.tumblr.com/rss","clients",5);
@@ -26,7 +29,7 @@ else
 function getFeed(websiteUrl,tag,limit)
 {
 	$.ajax({
-		url: "./php/module_get_feed.php",
+		url: rootUrl + "/php/module_get_feed.php",
 		type: "POST",
 		data: {
 			website: websiteUrl,
@@ -49,7 +52,9 @@ Object.observe(xmlResponses,function(changes){
 // this just parses whatevers in the object
 function detectChanges(changes)
 {
+	
 	var obj = JSON.parse(xmlResponses[changes[0].name]);
+
 
 	if (changes[0].name == "bash")
 	{
