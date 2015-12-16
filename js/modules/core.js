@@ -74,14 +74,13 @@ var UserManager = {
 		else
 		{
 			var asObj = JSON.parse(profile);
-			for (item in asObj) UserManager.loadWidget(asObj[item]);
+			for (var item in asObj) UserManager.loadWidget(asObj[item]);
 		}
 	},
 
 	loadWidget: function(widgetInformation)
 	{
 		var wd = widgetInformation.widgetData;
-
 		// create a skeleton for each widget
 		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetCodeName+"-widget' data-widget="+widgetInformation.widgetCodeName+">\
 				<div class='column-3'>&nbsp;</div>\

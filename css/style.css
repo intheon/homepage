@@ -759,6 +759,24 @@ textarea:focus, input:focus {
 .todo-list-item:nth-child(7) {
   font-size: 1em !important; }
 
+.in-form {
+  position: absolute !important;
+  width: 94%  !important; }
+
+.in-form-submit {
+  transition: all 2.7s;
+  position: absolute;
+  padding: .8em;
+  background: #00AA72;
+  color: white;
+  opacity: 0 !important; }
+
+.opaque {
+  opacity: 1 !important; }
+
+.nudge {
+  padding-left: 1em; }
+
 @media screen and (max-width: 944px) {
   .responsive-none {
     display: none; }

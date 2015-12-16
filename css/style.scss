@@ -17,6 +17,7 @@ $padding:                               0.8%;
 $colour1:                               #AA4B39;
 $colour2:                               #FF9800;
 $colour3:                               #FFFFFF;
+$green:                                 #00AA72;
 $textColour:                            #000000;
 $trans:                                 rgba(255,255,255,0.3);
 $border-radius-amount:                  7px;    
@@ -538,6 +539,7 @@ button:hover
     margin-right:           3% !important;
     min-width:              46%
 }
+
 .modal-textarea textarea
 {
     float:                   left;
@@ -1047,8 +1049,8 @@ textarea:focus, input:focus
 #outstandingTodosContent
 {
     height:             200px !important;
-    overflow-y:scroll;
-    overflow-x:hidden;
+    overflow-y:         scroll;
+    overflow-x:         hidden;
 }
 
 .todo-list
@@ -1090,6 +1092,33 @@ textarea:focus, input:focus
 {
     font-size:            1em !important;
 }
+
+.in-form
+{
+    position:               absolute !important;
+    width:                  94%  !important;       
+}
+.in-form-submit
+{
+    transition:             all 2.7s;
+    position:               absolute;
+    padding:                .8em;
+    background:             $green;
+    color:                  white;
+    opacity:                0 !important;
+
+}
+
+.opaque
+{
+    opacity:                1 !important;
+}
+
+.nudge
+{
+    padding-left:           1em;
+}
+
 
 @media screen and (max-width:944px){
 

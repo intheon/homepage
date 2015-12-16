@@ -1,11 +1,9 @@
 <?php
-
-if (!isset($_COOKIE["authToken"]))
-{
-	header("Location: login.php");
-	die();
-}
-
+	if (!isset($_COOKIE["authToken"]))
+	{
+		header("Location: login.php");
+		die();
+	}
 ?>
 
 <!DOCTYPE html>

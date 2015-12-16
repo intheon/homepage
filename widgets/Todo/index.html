@@ -1,16 +1,11 @@
-<div class='ui form'>
-	<div class='inline fields pp'>
+<div class='ui medium form'>
+	<div class='fields'>
 		<div id='outstandingTodos'></div>
 		<div class='field'>
-			<input placeholder='Add new' type='text' id='todoInput' class='big-form'>
-		</div>
-		<div class='field'>
-			<div class='ui positive button' id='todoSubmit'>Submit</div>
+			<input placeholder='Add new' type='text' id='todoInput' class="in-form">
 		</div>
 	</div>
 </div>
-
-<div>
 
 <script type="text/javascript">
 	
@@ -18,8 +13,41 @@
 
 		init: function(todos)
 		{
+			Todo.createFormListeners();
 			console.log("you called the init method from Todo");
 			console.log("heres the data ", todos);
+		},
+
+		createFormListeners: function()
+		{
+			// makes the form submit button look pretty
+			Todo.makeNewTodoFieldClickable();
+		},
+
+		makeNewTodoFieldClickable: function()
+		{
+			$(".in-form").click(function(){
+				var who = $(this)[0].id;
+				
+				$("#" + who).keyup(function(){
+					var val = $("#" + who).val();
+					if (val) Todo.showSubmit(who);
+					else if (!val) Todo.hideSubmit();
+				});
+			});
+		},
+
+		showSubmit: function(who)
+		{
+			$(".in-form-submit").remove();
+			$("#" + who).append("<div class='in-form-submit'>Submit</div>");
+
+			$(".in-form-submit").addClass("opaque");
+		},
+
+		hideSubmit: function()
+		{
+			console.log("hide");
 		}
 	};
 </script>
