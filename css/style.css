@@ -764,18 +764,19 @@ textarea:focus, input:focus {
   width: 94%  !important; }
 
 .in-form-submit {
-  transition: all 2.7s;
+  transition: 0.5s all;
+  right: 0;
   position: absolute;
+  margin-right: -100px;
+  padding-right: 0%;
   padding: .8em;
   background: #00AA72;
-  color: white;
-  opacity: 0 !important; }
-
-.opaque {
-  opacity: 1 !important; }
+  color: white; }
 
 .nudge {
-  padding-left: 1em; }
+  transition: 1s all;
+  margin-right: 0%;
+  padding-right: 15%; }
 
 @media screen and (max-width: 944px) {
   .responsive-none {

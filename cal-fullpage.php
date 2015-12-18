@@ -1,13 +1,3 @@
-<?php 
-session_start();
-
-if (!isset($_SESSION['username']))
-{
-    header("Location: login.php");
-    die();
-}
-
-?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" class="noHeight">
@@ -23,12 +13,6 @@ if (!isset($_SESSION['username']))
 
 <body>
 
-<div class="user-toolbar">
-	<div class="user-info">
-		<?php echo $_SESSION['username']; ?>
-		<i class="user icon"></i>
-	</div>
-</div>
 
 <div class="modal-calendar"></div> <!-- this is where the meat is -->
 
@@ -42,7 +26,7 @@ if (!isset($_SESSION['username']))
 <script type="text/javascript" src="js/modules/interaction.js"></script>
 <script type="text/javascript" src="js/modules/calendar-module.js"></script>
 <script type="text/javascript">
-	Calendar.initialise("full");
+	Calendar.initialise("ee");
 </script>
 
 </body>
