@@ -97,19 +97,15 @@
 	{
 		var rand = Math.floor(Math.random() * 3) + 1;
 		var rand2 = Math.floor(Math.random() * 3) + 1;
-		var rand3 = Math.floor(Math.random() * 3) + 1;
 
 		var noteColour = "note-colour-" + rand;
 		var noteRotate = "note-rotation-" + rand2;
 		var pinPosition = "pin-location-" + rand2;
 
-
 		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div></div>";
 		
 		$(content).hide().appendTo($("#outstandingTodos")).fadeIn();
 
-
-		console.log(content, timestamp);
 	}
 
 };
