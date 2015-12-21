@@ -1046,51 +1046,36 @@ textarea:focus, input:focus
     background:         #E7E7E7;
 }
 
-#outstandingTodosContent
-{
-    height:             200px !important;
-    overflow-y:         scroll;
-    overflow-x:         hidden;
-}
+
 
 .todo-list
 {
-
+    width:                  100%;
+    padding-top:             7%;
 }
 
 .todo-list-item
 {
-    font-size:            1em !important;
-}
-.todo-list-item:first-child
-{
-    font-size:            1.6em !important;
-}
-.todo-list-item:nth-child(2)
-{
-    font-size:            1.5em !important;
-}
-.todo-list-item:nth-child(3)
-{
-    font-size:            1.4em !important;
+    float:                  left;
+    padding-right:          2%;
+    padding-bottom:         2%;
+    margin-right:           2%;
+    margin-bottom:          2%;
+    font-size:              1em !important;
+    width:                  13%;
 }
 
-.todo-list-item:nth-child(4)
+.todo-content
 {
-    font-size:            1.3em !important;
+        word-wrap: break-word;
+
+    margin-bottom:          1%;
 }
 
-.todo-list-item:nth-child(5)
+.todo-timestamp
 {
-    font-size:            1.2em !important;
-}
-.todo-list-item:nth-child(6)
-{
-    font-size:            1.1em !important;
-}
-.todo-list-item:nth-child(7)
-{
-    font-size:            1em !important;
+    font-size:              0.8em;
+    opacity:                0.8;
 }
 
 .in-form
@@ -1112,7 +1097,7 @@ textarea:focus, input:focus
 
 .nudge
 {
-    transition:             1s all;
+    transition:             0.6s all;
     margin-right:           0%;
     padding-right:          15%;
 }
