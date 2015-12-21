@@ -877,9 +877,21 @@ input[type="text"]
     height:             32px;
     width:              2px;
     position:           absolute;
-    left:               50%;
     top:                -16px;
     z-index:            1;
+}
+
+.pin-location-1
+{
+	left: 				42%;
+}
+.pin-location-2
+{
+	left: 				50.1%;
+}
+.pin-location-3
+{
+	left: 				58%;
 }
 .pin:after 
 {
