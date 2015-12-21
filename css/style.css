@@ -565,20 +565,37 @@ input[type="text"]
   font-size: 0.9em;
   float: left; }
 
-.note {
+.note-base {
   position: relative;
-  font-family: 'Kalam', cursive;
+  float: left;
+  box-sizing: border-box; }
+
+.note-colour-1 {
+  background-color: #FFEF9C; }
+
+.note-colour-2 {
+  background-color: #FFF68B; }
+
+.note-colour-3 {
+  background-color: #FFE7C9; }
+
+.note-rotation-1 {
   -webkit-transform: rotate(-6deg);
   -o-transform: rotate(-6deg);
   -moz-transform: rotate(-6deg);
-  transform: rotate(-6deg);
-  float: left;
-  box-sizing: border-box;
-  padding: 2% !important;
-  padding-top: 1% !important;
-  margin: 2% !important;
-  background-color: #FFEF9C;
-  max-height: 30px !important; }
+  transform: rotate(-6deg); }
+
+.note-rotation-2 {
+  -webkit-transform: rotate(-1deg);
+  -o-transform: rotate(-1deg);
+  -moz-transform: rotate(-1deg);
+  transform: rotate(-1deg); }
+
+.note-rotation-3 {
+  -webkit-transform: rotate(1deg);
+  -o-transform: rotate(1deg);
+  -moz-transform: rotate(1deg);
+  transform: rotate(1deg); }
 
 .pin {
   background-color: #aaa;
@@ -730,18 +747,21 @@ textarea:focus, input:focus {
 .widget-selector-item:nth-child(odd) {
   background: #E7E7E7; }
 
+#todoInput {
+  margin-top: 1%; }
+
 .todo-list {
   width: 100%;
   padding-top: 7%; }
 
 .todo-list-item {
   float: left;
-  padding-right: 2%;
-  padding-bottom: 2%;
+  padding: 1%;
   margin-right: 2%;
   margin-bottom: 2%;
   font-size: 1em !important;
-  width: 13%; }
+  width: 13%;
+  box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.1); }
 
 .todo-content {
   word-wrap: break-word;
@@ -759,9 +779,10 @@ textarea:focus, input:focus {
   transition: 0.5s all;
   right: 0;
   position: absolute;
+  margin-top: 1%;
   margin-right: -100px;
   padding-right: 0%;
-  padding: .8em;
+  padding: .789em;
   background: #00AA72;
   color: white; }
 
