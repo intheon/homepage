@@ -579,6 +579,9 @@ input[type="text"]
 .note-colour-3 {
   background-color: #FFE7C9; }
 
+.note-colour-4 {
+  background-color: #FFE09C; }
+
 .note-rotation-1 {
   -webkit-transform: rotate(-6deg);
   -o-transform: rotate(-6deg);
@@ -596,6 +599,21 @@ input[type="text"]
   -o-transform: rotate(1deg);
   -moz-transform: rotate(1deg);
   transform: rotate(1deg); }
+
+.note-delete {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-family: monospace;
+  font-size: 0.8em;
+  transform: translate(10px, -30px) rotate(-90deg);
+  margin-left: 1%;
+  margin-top: -5%;
+  opacity: 0.3; }
+
+.note-delete:hover {
+  opacity: 1;
+  cursor: pointer; }
 
 .pin {
   background-color: #aaa;

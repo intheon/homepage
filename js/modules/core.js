@@ -80,7 +80,16 @@ var UserManager = {
 
 	loadWidget: function(widgetInformation)
 	{
-		var wd = widgetInformation.widgetData;
+		var wd = {
+				primaryKey: widgetInformation.widgetId,
+				widgetName: widgetInformation.widgetName,
+				stateId: widgetInformation.stateId,
+				widgetCodeName: widgetInformation.widgetCodeName,
+				jsonData: widgetInformation.widgetData
+			};
+
+			wd = JSON.stringify(wd)
+		
 		// create a skeleton for each widget
 		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetCodeName+"-widget' data-widget="+widgetInformation.widgetCodeName+">\
 				<div class='column-3'>&nbsp;</div>\
@@ -199,7 +208,47 @@ var UserManager = {
 		localStorage.setItem(identifier, data);
 
 		return localStorage.getItem(identifier);
-	}
+	},
+
+	returnUserPrimary: function()
+	{
+		// returns the primary key of the currently logged in user from the cookie
+		var userId = UserManager.usersAuth();
+			userId = JSON.parse(userId.cookieString)
+			userId = userId.userId;
+
+		return userId;
+	},
+
+	returnWidgetPrimary: function(codeName)
+	{
+		// finds the value in localStorage and returns the primary key associated with it
+		var store = localStorage.getItem(codeName);
+			store = JSON.parse(store);
+			store = store.primaryKey;
+
+		return store;
+	},
+
+	returnStatePrimary: function(codeName)
+	{
+		// finds the value in localStorage and returns the primary key associated with it
+		var store = localStorage.getItem(codeName);
+			store = JSON.parse(store);
+			store = store.stateId;
+
+		return store;
+	},
+
+	returnStateData: function(codeName)
+	{
+		// finds the value in localStorage and returns the primary key associated with it
+		var store = localStorage.getItem(codeName);
+			store = JSON.parse(store);
+			store = store.jsonData;
+
+		return store;
+	},
 
 }
 

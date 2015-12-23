@@ -16,7 +16,12 @@
 
 	init: function(todos)
 	{
+		// so users can add new stuff
 		Todo.createFormListeners();
+
+		// so users can see their existing stuff
+		Todo.parseExisting(todos);
+
 	},
 
 	createFormListeners: function()
@@ -100,13 +105,15 @@
 
 	generateTodo: function()
 	{
-
 		var tString = $("#todoInput").val();
 		var timeStamp = Todo.generateTimestamp();
-			timeStamp = timeStamp.substr(0, timeStamp.length - 29);
+		var timeStampTrimmed = timeStamp.substr(0, timeStamp.length - 29);
 
-		// UserManager.updateWidget(payload);
-		Todo.addToFrontEnd(tString, timeStamp);
+		// add it immediately client side
+		Todo.addToFrontEnd(tString, timeStampTrimmed);
+
+		// add it in the background so it persists upon browser refresh
+		Todo.addToBackEnd(tString, timeStamp);
 
 	},
 
@@ -117,7 +124,7 @@
 
 	addToFrontEnd: function(content, timestamp)
 	{
-		var rand = Math.floor(Math.random() * 3) + 1;
+		var rand = Math.floor(Math.random() * 4) + 1;
 		var rand2 = Math.floor(Math.random() * 3) + 1;
 
 		var noteColour = "note-colour-" + rand;
@@ -125,10 +132,70 @@
 		var pinPosition = "pin-location-" + rand2;
 
 		// create a sticky note
-		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div></div>";
+		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div><div class='note-delete'>delete</div></div>";
 		
 		// add it to the dom
 		$(content).hide().appendTo($("#outstandingTodos")).fadeIn();
+	},
+
+	addToBackEnd: function(content, timestamp)
+	{
+		// to update a state we need the stateId, userId, and widgetId to ensure we've got the right one
+
+		// primary key of state we need to update in db
+		var stateId = UserManager.returnStatePrimary("todo");
+
+		// the current data
+		var stateData = UserManager.returnStateData("todo");
+
+		// a new block with the new data appended
+		var latestJson = Todo.appendNewTodo(content, timestamp, stateData);
+
+		// payload is the standard phrase
+		var payload = latestJson;
+
+		// authentication
+		var auth = UserManager.usersAuth();
+
+		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, payload, Todo.updateState, auth.cookieString);
+
+	},
+
+	updateState: function(message)
+	{
+		console.log(message);
+	},
+
+	appendNewTodo: function(newContent, newTimestamp, existingContent)
+	{
+		var latest = existingContent.substr(0, existingContent.length - 2);
+			latest = latest + ',{"itemName":"' + newContent + '", "date":"'+ newTimestamp +'"}]}';
+
+		return latest;
+	},
+
+	parseExisting: function(todos)
+	{
+		// todos are a massive string with all their metadata
+		var tData = JSON.parse(todos);
+
+		// loop through each todo in todoData and cram that through the front end function
+		var tItems = JSON.parse(tData.jsonData);
+
+		for (singleItem in tItems)
+		{
+			for (individuals in tItems[singleItem])
+			{
+				// make a little easier to read
+				var content = tItems[singleItem][individuals].itemName;
+				var timestamp = tItems[singleItem][individuals].date;
+					timestamp = timestamp.substr(0, timestamp.length - 29);
+
+				// go!
+				Todo.addToFrontEnd(content, timestamp)
+			}
+
+		}
 
 	}
 
