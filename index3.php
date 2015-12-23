@@ -85,10 +85,8 @@
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
 
-<!-- The Engine, so to speak -->
+<!-- The Engine! -->
 <script type="text/javascript" src="js/modules/core.js"></script>
-
-<!-- other libraries will be added below, depending on user state-->
 
 </body>
 </html>

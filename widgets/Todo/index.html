@@ -29,22 +29,26 @@
 	{
 		$(".in-form").click(function(){
 
-			var who = $(this)[0].id;
-			
-			$("#" + who).keyup(function(event){
-
-				// grab the current val
-				var val = $("#" + who).val();
-
-				// show/hide submit
-				if (val.length >= 1) Todo.showSubmit(who);
-				else Todo.hideSubmit();
-
-			});
-
+			Todo.listenForKeyboard();
 
 		});
 	},
+
+	listenForKeyboard: function()
+	{
+		$("#todoInput").unbind("keyup").keyup(function(event){
+
+			var who = "#todoInput";
+			// grab the current val
+			var val = $(who).val();
+
+			// show/hide submit
+			if (val.length === 1) Todo.showSubmit(who);
+			else if (val.length === 0) Todo.hideSubmit();
+
+		});
+	},
+
 
 	showSubmit: function(who)
 	{
@@ -52,15 +56,24 @@
 		{
 			var submitButton = "<div class='in-form-submit'>Submit</div>";
 
-			$(submitButton).hide().appendTo($("#" + who).parent()).fadeIn().addClass("nudge");
+			$(submitButton).hide().appendTo($(who).parent()).fadeIn().addClass("nudge");
 
 			$(".in-form-submit").click(function(){
 				Todo.generateTodo();
+				Todo.hideSubmit();
 			});
 
-			$("#todoInput").keyup(function(event){
+			$("#todoInput").keypress(function(event){
 				// add event listener so you can hit enter
-				if (event.keyCode == 13) Todo.generateTodo();
+				if (event.keyCode == 13) 
+				{
+					if (!$("#todoInput").val()) return false;
+					else
+					{
+						Todo.generateTodo();
+						Todo.hideSubmit();
+					}
+				}
 			});
 		}
 		Todo.isSubmitShown = true;
@@ -71,19 +84,28 @@
 	{
 		if (Todo.isSubmitShown)
 		{
-			$(".in-form-submit").removeClass("nudge");
 			Todo.isSubmitShown = false;
+			$(".in-form-submit").removeClass("nudge");
+			Todo.resetFormState();
+			Todo.listenForKeyboard();
 		}
+	},
+
+	resetFormState: function()
+	{
+		// reset the forms and listeners to their initial state
+		$("#todoInput").val("");
+		$("#todoInput").unbind("keyup")
 	},
 
 	generateTodo: function()
 	{
+
 		var tString = $("#todoInput").val();
 		var timeStamp = Todo.generateTimestamp();
 			timeStamp = timeStamp.substr(0, timeStamp.length - 29);
 
 		// UserManager.updateWidget(payload);
-
 		Todo.addToFrontEnd(tString, timeStamp);
 
 	},
@@ -102,8 +124,10 @@
 		var noteRotate = "note-rotation-" + rand2;
 		var pinPosition = "pin-location-" + rand2;
 
+		// create a sticky note
 		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div></div>";
 		
+		// add it to the dom
 		$(content).hide().appendTo($("#outstandingTodos")).fadeIn();
 
 	}
