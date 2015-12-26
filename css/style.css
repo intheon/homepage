@@ -109,7 +109,7 @@ body {
   margin-top: 0.1% !important; }
 
 .full-page-panel {
-  height: 100vh !important; }
+  height: 99vh !important; }
 
 .menu {
   position: fixed;
@@ -776,18 +776,47 @@ textarea:focus, input:focus {
 #todoInput {
   margin-top: 1%; }
 
+.show-more-todos {
+  position: absolute;
+  margin-top: 30%;
+  right: 0;
+  font-family: monospace;
+  font-size: 1.28em;
+  transform: translate(10px, -30px) rotate(-90deg);
+  opacity: 0.8; }
+
+.show-more-todos:hover {
+  opacity: 0.3;
+  cursor: pointer; }
+
 .todo-list {
-  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: auto;
+  /* default value */
+  flex-grow: 1;
+  flex-flow: row wrap;
   padding-top: 7%; }
+
+.parent {
+  display: none; }
+
+.shown {
+  display: block !important; }
 
 .todo-list-item {
   float: left;
   padding: 1%;
   margin-right: 2%;
+  margin-left: 2%;
   margin-bottom: 2%;
   font-size: 1em !important;
-  width: 13%;
-  box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.1); }
+  max-width: 200px;
+  flex-width: 4;
+  box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.1);
+  flex-basis: auto;
+  /* default value */
+  flex-grow: 5; }
 
 .todo-content {
   word-wrap: break-word;
@@ -819,7 +848,7 @@ textarea:focus, input:focus {
 
 @media screen and (max-width: 1004px) {
   .todo-list {
-    padding-top: 11%; }
+    padding-top: 8%; }
 
   .responsive-none {
     display: none; }
@@ -844,5 +873,11 @@ textarea:focus, input:focus {
     text-align: center;
     opacity: 0.23;
     transition: all 1.4s; } }
+@media screen and (max-width: 700px) {
+  .todo-list {
+    padding-top: 12% !important; } }
+@media screen and (max-width: 550px) {
+  .todo-list {
+    padding-top: 18% !important; } }
 
 /*# sourceMappingURL=style.css.map */

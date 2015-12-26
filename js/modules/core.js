@@ -78,6 +78,14 @@ var UserManager = {
 		}
 	},
 
+	createStatistic: function(label, value)
+	{
+		$(".statistics-info").append("<div class='stat-item column-6'>\
+				<div class='value'>"+value+"</div>\
+				<div class='label'>"+label+"</div>\
+			</div>")
+	},
+
 	loadWidget: function(widgetInformation)
 	{
 		var wd = {

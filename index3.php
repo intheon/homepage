@@ -48,10 +48,6 @@
 		<div class="statistics-info row"> <!-- Summary of widgets injected here -->
 
 			<div class="stat-item column-6">
-				<div class="value">4</div>
-				<div class="label">Tasks</div>
-			</div>
-			<div class="stat-item column-6">
 				<div class="value">12</div>
 				<div class="label">Money</div>
 			</div>

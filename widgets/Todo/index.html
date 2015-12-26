@@ -3,7 +3,9 @@
 		<div class='field' class='ui two stackable'>
 			<input placeholder='Add new' type='text' id='todoInput' class="in-form">
 		</div>
-		<div id='outstandingTodos' class='todo-list'></div>
+		<div class='scrollable'>
+			<div id='outstandingTodos' class='todo-list'></div>
+		</div>
 	</div>
 </div>
 
@@ -122,7 +124,7 @@
 		return new Date().toString();
 	},
 
-	addToFrontEnd: function(content, timestamp)
+	addToFrontEnd: function(content, timestamp, maxTodos)
 	{
 		var rand = Math.floor(Math.random() * 4) + 1;
 		var rand2 = Math.floor(Math.random() * 3) + 1;
@@ -133,9 +135,45 @@
 
 		// create a sticky note
 		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div><div class='note-delete'>delete</div></div>";
-		
+
 		// add it to the dom
 		$(content).hide().appendTo($("#outstandingTodos")).fadeIn();
+
+		Todo.numTodos++;
+
+		// once the max has been reached, ensure panels are made
+		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
+
+	},
+
+	makeResponsive: function()
+	{
+		// so it doesnt look retarded on small screens (ie laptop)
+		var $children = $('.todo-list-item');
+
+		for(var i = 0, l = $children.length; i < l; i += 10) {
+		    $children.slice(i, i+10).wrapAll('<div class="parent"></div>');
+		}
+
+		$(".parent:first-child").addClass("shown");
+
+		$(".scrollable").prepend("<div class='show-more-todos'>Show More</div>");
+
+		$(".show-more-todos").click(function(){
+
+
+			if ($(".shown").next().length == 0) 
+			{
+	        	$(".shown").removeClass("shown").siblings(":nth-child(1)").addClass("shown");
+	   		}
+	    	else 
+	    	{
+	        	$(".shown").removeClass("shown").next().addClass("shown");
+	    	}
+
+
+		});
+
 	},
 
 	addToBackEnd: function(content, timestamp)
@@ -182,6 +220,12 @@
 		// loop through each todo in todoData and cram that through the front end function
 		var tItems = JSON.parse(tData.jsonData);
 
+		// our integer quantity of xisting todos
+		var maxTodos = tItems.items.length;
+
+		// create a nice stat for it
+		UserManager.createStatistic("Tasks", maxTodos);
+
 		for (singleItem in tItems)
 		{
 			for (individuals in tItems[singleItem])
@@ -192,7 +236,7 @@
 					timestamp = timestamp.substr(0, timestamp.length - 29);
 
 				// go!
-				Todo.addToFrontEnd(content, timestamp)
+				Todo.addToFrontEnd(content, timestamp, maxTodos);
 			}
 
 		}
