@@ -776,6 +776,10 @@ textarea:focus, input:focus {
 #todoInput {
   margin-top: 1%; }
 
+.scrollable {
+  margin-top: 10%;
+  width: 92.5%; }
+
 .show-more-todos {
   position: absolute;
   margin-top: 30%;
@@ -790,13 +794,10 @@ textarea:focus, input:focus {
   cursor: pointer; }
 
 .todo-list {
-  display: flex;
-  flex-wrap: wrap;
-  flex-basis: auto;
-  /* default value */
-  flex-grow: 1;
-  flex-flow: row wrap;
-  padding-top: 7%; }
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 60%;
+  z-index: 5000; }
 
 .parent {
   display: none; }
@@ -847,9 +848,6 @@ textarea:focus, input:focus {
   padding-right: 15%; }
 
 @media screen and (max-width: 1004px) {
-  .todo-list {
-    padding-top: 8%; }
-
   .responsive-none {
     display: none; }
 
@@ -873,11 +871,5 @@ textarea:focus, input:focus {
     text-align: center;
     opacity: 0.23;
     transition: all 1.4s; } }
-@media screen and (max-width: 700px) {
-  .todo-list {
-    padding-top: 12% !important; } }
-@media screen and (max-width: 550px) {
-  .todo-list {
-    padding-top: 18% !important; } }
 
 /*# sourceMappingURL=style.css.map */

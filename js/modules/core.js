@@ -120,20 +120,25 @@ var UserManager = {
 		UserManager.applyScrollify();
 	},
 
-	applyScrollify: function()
+	applyScrollify: function(destroy)
 	{
-		$.scrollify({
-			section: 		".full-page-panel",
-			sectionName: 	"widget",
-			easing: 		"easeOutExpo",
-			scrollSpeed: 	1000,
-			offset : 		0,
-			scrollbars: 	false,
-			before: 		function(event){
-				// event is just the number of the panel
-				var integer = event;
-			}
-		});
+		if (destroy) $.scrollify.disable();
+		else
+		{
+			$.scrollify({
+				section: 		".full-page-panel",
+				sectionName: 	"widget",
+				easing: 		"easeOutExpo",
+				scrollSpeed: 	1000,
+				scrollbars: 	false,
+				before: 		function(event){
+					// event is just the number of the panel
+					//var integer = event;
+				}
+			});
+			$.scrollify.enable();
+		}
+
 	},
 
 	introduction: function(returned)

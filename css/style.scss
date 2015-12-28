@@ -1118,7 +1118,8 @@ textarea:focus, input:focus
 
 .scrollable
 {
-
+    margin-top:             10%;
+    width:92.5%;
 }
 
 .show-more-todos
@@ -1140,12 +1141,10 @@ textarea:focus, input:focus
 
 .todo-list
 {
-    display:                flex;
-    flex-wrap: wrap;
-    flex-basis: auto; /* default value */
-  flex-grow: 1;
-  flex-flow: row wrap;
-    padding-top:            7%;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    height: 60%;
+    z-index:5000;
 }
 
 .parent
@@ -1212,10 +1211,7 @@ textarea:focus, input:focus
 
 @media screen and (max-width:1004px){
 
-    .todo-list
-    {
-        padding-top:        8%;
-    }
+
 
 	.responsive-none
 	{
@@ -1248,18 +1244,12 @@ textarea:focus, input:focus
 }
 
 
-@media screen and (max-width:700px){
+@media (max-width:700px){
 
-    .todo-list
-    {
-        padding-top:        12% !important;
-    }
+
 }
 
-@media screen and (max-width:550px){
+@media (max-width:550px){
 
-    .todo-list
-    {
-        padding-top:        18% !important;
-    }
+
 }

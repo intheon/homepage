@@ -4,7 +4,8 @@
 			<input placeholder='Add new' type='text' id='todoInput' class="in-form">
 		</div>
 		<div class='scrollable'>
-			<div id='outstandingTodos' class='todo-list'></div>
+			<div id='outstandingTodos' class='todo-list ui divided very relaxed list'>
+			</div>
 		</div>
 	</div>
 </div>
@@ -126,6 +127,17 @@
 
 	addToFrontEnd: function(content, timestamp, maxTodos)
 	{
+
+		Todo.numTodos++;
+
+		var todoContent = "<div class='item'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+content+"</div><div class='smallText'>"+timestamp+"</div></div></div>";
+
+		$(todoContent).appendTo($("#outstandingTodos"));
+
+		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
+
+
+		/*
 		var rand = Math.floor(Math.random() * 4) + 1;
 		var rand2 = Math.floor(Math.random() * 3) + 1;
 
@@ -143,36 +155,25 @@
 
 		// once the max has been reached, ensure panels are made
 		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
+		*/
 
 	},
 
 	makeResponsive: function()
 	{
-		// so it doesnt look retarded on small screens (ie laptop)
-		var $children = $('.todo-list-item');
+		var height = window.innerHeight;
+			height += -20;
 
-		for(var i = 0, l = $children.length; i < l; i += 10) {
-		    $children.slice(i, i+10).wrapAll('<div class="parent"></div>');
-		}
+		$(".scrollable").css("height", height);
 
-		$(".parent:first-child").addClass("shown");
+		$("#outstandingTodos")
+			.mouseenter(function(){
+				UserManager.applyScrollify("destroy");
+			})
+			.mouseleave(function(){
+				UserManager.applyScrollify();
+			});
 
-		$(".scrollable").prepend("<div class='show-more-todos'>Show More</div>");
-
-		$(".show-more-todos").click(function(){
-
-
-			if ($(".shown").next().length == 0) 
-			{
-	        	$(".shown").removeClass("shown").siblings(":nth-child(1)").addClass("shown");
-	   		}
-	    	else 
-	    	{
-	        	$(".shown").removeClass("shown").next().addClass("shown");
-	    	}
-
-
-		});
 
 	},
 
