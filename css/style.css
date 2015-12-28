@@ -799,25 +799,8 @@ textarea:focus, input:focus {
   height: 60%;
   z-index: 5000; }
 
-.parent {
-  display: none; }
-
-.shown {
-  display: block !important; }
-
-.todo-list-item {
-  float: left;
-  padding: 1%;
-  margin-right: 2%;
-  margin-left: 2%;
-  margin-bottom: 2%;
-  font-size: 1em !important;
-  max-width: 200px;
-  flex-width: 4;
-  box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.1);
-  flex-basis: auto;
-  /* default value */
-  flex-grow: 5; }
+.todo-list .item:first-child {
+  font-size: 1.8em; }
 
 .todo-content {
   word-wrap: break-word;

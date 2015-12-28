@@ -130,39 +130,20 @@
 
 		Todo.numTodos++;
 
+		// create a nice stat for it
+		UserManager.createStatistic("Tasks", Todo.numTodos);
+
 		var todoContent = "<div class='item'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+content+"</div><div class='smallText'>"+timestamp+"</div></div></div>";
 
-		$(todoContent).appendTo($("#outstandingTodos"));
+		$(todoContent).prependTo($("#outstandingTodos"));
 
 		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
-
-
-		/*
-		var rand = Math.floor(Math.random() * 4) + 1;
-		var rand2 = Math.floor(Math.random() * 3) + 1;
-
-		var noteColour = "note-colour-" + rand;
-		var noteRotate = "note-rotation-" + rand2;
-		var pinPosition = "pin-location-" + rand2;
-
-		// create a sticky note
-		var content = "<div class='todo-list-item note-base "+noteColour+" "+noteRotate+"'><i class='pin "+pinPosition+"'></i><div class='todo-content'>"+ content +"</div><div class='todo-timestamp'>"+ timestamp +"</div><div class='note-delete'>delete</div></div>";
-
-		// add it to the dom
-		$(content).hide().appendTo($("#outstandingTodos")).fadeIn();
-
-		Todo.numTodos++;
-
-		// once the max has been reached, ensure panels are made
-		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
-		*/
 
 	},
 
 	makeResponsive: function()
 	{
 		var height = window.innerHeight;
-			height += -20;
 
 		$(".scrollable").css("height", height);
 
@@ -223,9 +204,6 @@
 
 		// our integer quantity of xisting todos
 		var maxTodos = tItems.items.length;
-
-		// create a nice stat for it
-		UserManager.createStatistic("Tasks", maxTodos);
 
 		for (singleItem in tItems)
 		{

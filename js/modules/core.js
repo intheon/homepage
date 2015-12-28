@@ -80,10 +80,19 @@ var UserManager = {
 
 	createStatistic: function(label, value)
 	{
-		$(".statistics-info").append("<div class='stat-item column-6'>\
+		// create the bastard initially
+		if ($("#" + label + "Stat").length === 0)
+		{
+			$(".statistics-info").append("<div class='stat-item column-6' id='"+label+"Stat'>\
 				<div class='value'>"+value+"</div>\
 				<div class='label'>"+label+"</div>\
 			</div>")
+		}
+		else // then just update its value
+		{
+			$("#" + label + "Stat .value").html(value);
+		}
+
 	},
 
 	loadWidget: function(widgetInformation)
