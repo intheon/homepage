@@ -116,7 +116,13 @@
 		Todo.addToFrontEnd(tString, timeStampTrimmed);
 
 		// add it in the background so it persists upon browser refresh
-		Todo.addToBackEnd(tString, timeStamp);
+
+		var content = {
+			content : tString,
+			timestamp : timeStamp
+		};
+
+		Todo.interactWithBackEnd(content, "add");
 
 	},
 
@@ -127,17 +133,24 @@
 
 	addToFrontEnd: function(content, timestamp, maxTodos)
 	{
-
 		Todo.numTodos++;
 
 		// create a nice stat for it
 		UserManager.createStatistic("Tasks", Todo.numTodos);
 
-		var todoContent = "<div class='item'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+content+"</div><div class='smallText'>"+timestamp+"</div></div></div>";
+		var todoContent = "<div class='item' id='TodoNum"+Todo.numTodos+"'><i class='thumb tack icon'></i><div class='content'><div class='header'>"+content+"</div><div class='smallText'>"+timestamp+"</div></div></div>";
 
 		$(todoContent).prependTo($("#outstandingTodos"));
 
-		if (Todo.numTodos == maxTodos) Todo.makeResponsive();
+		// allow them to be deleted
+		Todo.allowDelete(Todo.numTodos);
+
+		// only want this firing once
+		if (Todo.numTodos == maxTodos)
+		{
+			// so a scroll panel can exist within a scroll panel and not conflict
+			Todo.makeResponsive();
+		}
 
 	},
 
@@ -154,25 +167,57 @@
 			.mouseleave(function(){
 				UserManager.applyScrollify();
 			});
-
-
 	},
 
-	addToBackEnd: function(content, timestamp)
+	allowDelete: function(whichTodo)
+	{
+		$("#TodoNum" + whichTodo + " .thumb.tack.icon").click(function(e){
+
+			// firstly, remove the blasted thing.
+			$("#TodoNum" + whichTodo).remove();
+
+			// decrease the stat counter
+			UserManager.decrementStatistic("Tasks");
+
+			// now get all the remainders
+			var remains = $("#outstandingTodos .item");
+
+			// convert into json
+			var json = Todo.convertToJSON(remains);
+
+			// plonk that mofo in the db
+			Todo.interactWithBackEnd(json, "delete");
+
+
+		});
+	},
+
+	interactWithBackEnd: function(content, operation)
 	{
 		// to update a state we need the stateId, userId, and widgetId to ensure we've got the right one
 
 		// primary key of state we need to update in db
 		var stateId = UserManager.returnStatePrimary("todo");
 
-		// the current data
-		var stateData = UserManager.returnStateData("todo");
+		if (operation == "add")
+		{
+			// the current data
+			var stateData = UserManager.returnStateData("todo");
 
-		// a new block with the new data appended
-		var latestJson = Todo.appendNewTodo(content, timestamp, stateData);
+			// a new block with the new data appended
+			var latestJson = Todo.appendNewTodo(content, stateData);
 
-		// payload is the standard phrase
-		var payload = latestJson;
+			// payload is the standard phrase
+			var payload = latestJson;
+		}
+
+		else if (operation == "delete")
+		{
+			content.items.reverse();
+			
+			var payload = JSON.stringify(content);
+
+		}
 
 		// authentication
 		var auth = UserManager.usersAuth();
@@ -186,10 +231,36 @@
 		console.log(message);
 	},
 
-	appendNewTodo: function(newContent, newTimestamp, existingContent)
+	convertToJSON: function(jqueryElements)
+	{
+		var json = {
+			items : []
+		};
+
+		$.each(jqueryElements, function(item){
+			var fullTodo = jqueryElements[item];
+
+			var metaData = $(fullTodo).children()[1];
+
+			var children = $(metaData).children();
+
+			var text = children[0].innerText;
+
+			var timestamp = children[1].innerText;
+
+			json.items.push({
+				itemName: text,
+				date: timestamp
+			});
+		});
+
+		return json;
+	},
+
+	appendNewTodo: function(newContent, existingContent)
 	{
 		var latest = existingContent.substr(0, existingContent.length - 2);
-			latest = latest + ',{"itemName":"' + newContent + '", "date":"'+ newTimestamp +'"}]}';
+			latest = latest + ',{"itemName":"' + newContent.content + '", "date":"'+ newContent.timestamp +'"}]}';
 
 		return latest;
 	},

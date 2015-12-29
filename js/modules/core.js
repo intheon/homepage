@@ -95,6 +95,16 @@ var UserManager = {
 
 	},
 
+	decrementStatistic: function(label)
+	{
+		var current = $("#" + label + "Stat .value")[0].innerText;
+
+			current--;
+
+			if (current >= 0) $("#" + label + "Stat .value")[0].innerText = current;
+
+	},
+
 	loadWidget: function(widgetInformation)
 	{
 		var wd = {
