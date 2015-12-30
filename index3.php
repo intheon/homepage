@@ -37,29 +37,16 @@
 
 			<div class="row">
 				<div class="user-menu-item column-6 float">
-					Sign out
+				 	Profile
 				</div>
 				<div class="user-menu-item column-6 float">
-					View profile
+					Sign out
 				</div>
 			</div>
 		</div> <!-- end user manager -->
 
 		<div class="statistics-info row"> <!-- Summary of widgets injected here -->
 
-			<div class="stat-item column-6">
-				<div class="value">12</div>
-				<div class="label">Money</div>
-			</div>
-
-			<div class="stat-item column-6">
-				<div class="value">3</div>
-				<div class="label">Emails</div>
-			</div>
-			<div class="stat-item column-6">
-				<div class="value">5</div>
-				<div class="label">News</div>
-			</div>
 		</div><!-- end summary -->
 
 		

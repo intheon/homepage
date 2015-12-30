@@ -171,6 +171,21 @@ body
 }
 
 
+.full-width
+{
+    width:                              100%;
+}
+
+.maj-width
+{
+    width:                              74.5%;
+}
+
+.min-width
+{
+    width:                              23.5%;
+}
+
 .noHeight
 {
     height:                             auto;
@@ -551,25 +566,30 @@ button:hover
 .calendar-item
 {
     z-index:                1;
-    width:                  19%;
+    width:                  11%;
     min-height:             100px;
     padding:             0.5%;
-}
-
-.modal-calendar .calendar-item
-{
     display:                inline-block;
 }
+
+.month-section
+{
+    display:                inline;
+}
+
 .calendar-month
 {
     margin:                 0%;
     position:               relative;
 }
-.calendar-item:nth-child(even) 
+.month-section:nth-child(odd) .calendar-item:nth-child(even) 
 {
     background-color:       rgba(0,0,0,0.03)
 }
-
+.month-section:nth-child(even) .calendar-item:nth-child(odd) 
+{
+    background-color:       rgba(0,0,0,0.03)
+}
 .date-number
 {
     color:                  #000000;
@@ -1147,7 +1167,7 @@ textarea:focus, input:focus
 {
     overflow-y:scroll;
     overflow-x:hidden;
-    height: 60%;
+    height: 84%;
     z-index:5000;
 }
 
@@ -1197,7 +1217,11 @@ textarea:focus, input:focus
 
     .scrollable
     {
-        margin-top:            9%;
+        margin-top:                  9%;
+    }
+    .todo-list
+    {
+        height:                     74%;
     }
 
 
@@ -1238,6 +1262,11 @@ textarea:focus, input:focus
         {
             margin-top:            11%;
         }
+
+     .todo-list
+    {
+        height: 70%;
+    }
 
 }
 

@@ -1,12 +1,99 @@
-<h2>this is the calendar</h2>
+<div class="calendar-body"></div>
 
 <script type="text/javascript">
 	
-	var Calendar = {
+var Calendar = {
 
-		init: function(calendars)
-		{
-		}
-	};
-	
+	// super useful global metadata will be used throughout
+	today: 					moment(),
+	todaysDayAsInt: 		parseInt(moment().format("D")),
+	thisMonthAsInt: 		parseInt(moment().format("M")),
+	thisYearAsInt: 			parseInt(moment().format("YYYY")),
+	thisMonthAsObj: 		moment(this.thisMonthAsInt, "M"),
+	thisMonthAsPhrase: 		moment().format("MMMM"),
+	thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
+	quantToDisplay: 		[],
+		
+
+	init: function(existingData)
+	{
+
+		// self execute
+		Calendar.quantToDisplay = (function(){
+									var array = [
+										Calendar.buildAMoment(-2),
+										Calendar.buildAMoment(-1),
+										Calendar.buildAMoment(+0),
+										Calendar.buildAMoment(+1),
+										Calendar.buildAMoment(+2),
+										Calendar.buildAMoment(+3),
+										Calendar.buildAMoment(+4),
+										Calendar.buildAMoment(+5)
+									];
+									return array;
+		})();
+
+
+		Calendar.generateCalendar(Calendar.quantToDisplay, existingData);
+
+	},
+
+	buildAMoment: function(offset)
+	{
+		return moment().month(parseInt(moment().format("M") - 1) + offset);
+	},
+
+	generateCalendar: function(months, existingData)
+	{
+		Calendar.renderCells(months);
+
+		// now parse the damn data
+		//Calendar.parseUserData(existingData);
+	},
+
+	renderCells: function(months)
+	{
+		$.each(months, function(month){
+
+			var inMonth = months[month].daysInMonth();
+			var nameMonth = months[month].format("MMMM").toLowerCase();
+
+			$(".calendar-body").append("<div class='month-section' id='month-"+nameMonth+"'></div>")
+
+			for (var i = 1; i <= inMonth; i++)
+			{
+				$("#month-" + nameMonth).append("<div class='calendar-item calendar-item-"+ i +"'>\
+					<div class='ui dropdown'>\
+						<i class='dropdown icon'></i>\
+						<div class='menu'>\
+							<div class='item show-modal' id='purchase-modal'>\
+								<i class='money icon'></i>New Purchase\
+							</div>\
+							<div class='item show-modal' id='diary-modal'>\
+								<i class='calendar icon'></i>New Diary entry\
+							</div>\
+							<div class='item show-modal' id='stats-modal'>\
+								<i class='tasks icon'></i>Statistics\
+							</div>\
+						</div>\
+					</div>\
+					<div class='date-number'>" + i + "</div>\
+					<div class='day-label'>" + i + "</div>\
+					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
+					<div class='day-details'></div>\
+					</div>");
+			}
+		});
+
+		Calendar.attachListeners();
+	},
+
+	attachListeners: function()
+	{
+		// register dropdown handler
+		$('.ui.dropdown').dropdown();
+	}
+
+}
+
 </script>
