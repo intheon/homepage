@@ -80,6 +80,8 @@
 <script type="text/javascript" src="js/libraries/form.js"></script>
 <script type="text/javascript" src="js/libraries/underscore.js"></script>
 <script type="text/javascript" src="js/libraries/moment.js"></script>
+<script type="text/javascript" src="js/libraries/linkify.min.js"></script>
+<script type="text/javascript" src="js/libraries/linkify-jquery.js"></script>
 
 <!-- The Engine! -->
 <script type="text/javascript" src="js/modules/core.js"></script>

@@ -133,7 +133,22 @@ var UserManager = {
 		});
 
 		// load navigation
-		$("#navigation-here").append("<div class='navigation-item'>"+ widgetInformation.widgetName+ "</div>");
+		$("#navigation-here").append("<div class='navigation-item' id='" + widgetInformation.widgetName + "-navigation'>"+ widgetInformation.widgetName+ "</div>");
+
+		$(".navigation-item:first-child").addClass("active-nav");
+		
+		$("#" + widgetInformation.widgetName + "-navigation").click(function(){
+
+				$(".navigation-item").removeClass("active-nav");
+				$("#" + widgetInformation.widgetName + "-navigation").addClass("active-nav");
+
+				var ident = widgetInformation.widgetName.toLowerCase();
+
+				console.log(ident);
+
+				$.scrollify.move("#" + ident);
+
+		});
 
 		// make the panels scrollable
 		UserManager.applyScrollify();

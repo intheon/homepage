@@ -77,17 +77,20 @@ body
 
 ::-webkit-scrollbar-track
 {
+    border-radius:                      4px;
     -webkit-box-shadow:                 inset 0 0 6px rgba(0,0,0,0.3);
     background-color:                   #F5F5F5;
 }
 
 ::-webkit-scrollbar
 {
+    border-radius:                      4px;
     width:                              10px;
 }
 
 ::-webkit-scrollbar-thumb
 {
+    border-radius:                      4px;
     background-color:                   #F90;    
     background-image:                   -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 }
@@ -1118,8 +1121,9 @@ textarea:focus, input:focus
 
 .scrollable
 {
-    margin-top:             10%;
-    width:92.5%;
+   margin-left:            -0.68%;
+    margin-top:            5%;
+    width:                  99.11%;
 }
 
 .show-more-todos
@@ -1167,7 +1171,7 @@ textarea:focus, input:focus
 .in-form
 {
     position:               absolute !important;
-    width:                  94%  !important;       
+    width:                  99%  !important;       
 }
 .in-form-submit
 {
@@ -1191,6 +1195,10 @@ textarea:focus, input:focus
 
 @media screen and (max-width:1004px){
 
+    .scrollable
+    {
+        margin-top:            9%;
+    }
 
 
 	.responsive-none
@@ -1226,10 +1234,19 @@ textarea:focus, input:focus
 
 @media (max-width:700px){
 
+    .scrollable
+        {
+            margin-top:            11%;
+        }
 
 }
 
 @media (max-width:550px){
+
+    .scrollable
+        {
+            margin-top:            14%;
+        }
 
 
 }

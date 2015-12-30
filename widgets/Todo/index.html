@@ -167,6 +167,10 @@
 			.mouseleave(function(){
 				UserManager.applyScrollify();
 			});
+
+		$('.header').linkify({
+    		target: "_blank"
+		});
 	},
 
 	allowDelete: function(whichTodo)
