@@ -1,4 +1,4 @@
-<div class="calendar-body"></div>
+<div class="calendar-body ui stackable grid"></div>
 
 <script type="text/javascript">
 	
@@ -45,20 +45,19 @@ var Calendar = {
 
 	generateCalendar: function(months, existingData)
 	{
-		Calendar.renderCells(months);
+		Calendar.renderCells(months, existingData);
 
-		// now parse the damn data
-		//Calendar.parseUserData(existingData);
 	},
 
-	renderCells: function(months)
+	renderCells: function(months, existingData)
 	{
 		$.each(months, function(month){
 
 			var inMonth = months[month].daysInMonth();
+			var nameMonthFull = months[month].format("MMMM");
 			var nameMonth = months[month].format("MMMM").toLowerCase();
 
-			$(".calendar-body").append("<div class='month-section' id='month-"+nameMonth+"'></div>")
+			$(".calendar-body").append("<div class='ui two wide column month-label'>"+nameMonthFull+"</div><div class='month-section ui fourteen wide column ' id='month-"+nameMonth+"'></div>")
 
 			for (var i = 1; i <= inMonth; i++)
 			{
@@ -81,18 +80,57 @@ var Calendar = {
 					<div class='day-label'>" + i + "</div>\
 					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
 					<div class='day-details'></div>\
-					</div>");
+				</div>");
 			}
 		});
 
+
 		Calendar.attachListeners();
+		Calendar.makeResponsive();
+		Calendar.parseUserData(existingData);
+
 	},
 
 	attachListeners: function()
 	{
 		// register dropdown handler
 		$('.ui.dropdown').dropdown();
+
+	},
+
+	makeResponsive: function()
+	{
+		var height = window.innerHeight;
+
+		$(".calendar-body").css("height", height);
+
+		$(".calendar-body")
+			.mouseenter(function(){
+				UserManager.applyScrollify("destroy");
+			})
+			.mouseleave(function(){
+				UserManager.applyScrollify();
+			});
+		//console.log(height);
+	},
+
+	parseUserData: function(existingData)
+	{
+		var fullProfile = JSON.parse(existingData);
+		var widgetData = JSON.parse(fullProfile.jsonData);
+
+		if (widgetData.items.length === 0)
+		{
+			$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
+					<header>When do you get paid?</header>\
+				</div>")
+			// this runs true - collect the date 
+		}
+
+
+
 	}
+
 
 }
 

@@ -49,7 +49,7 @@ $transparent-bg:                        rgba(0,0,0,0.1);
     border:                             none;
     border-bottom:                      2px solid lighten($colour1, 50%);
     transition:                         all 0.7s;
-    font-family:                     "Open Sans" !important;
+    font-family:                        "Open Sans" !important;
 }
 
 %input-hover
@@ -94,7 +94,6 @@ body
     background-color:                   #F90;    
     background-image:                   -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent)
 }
-
 
 
 .row
@@ -204,7 +203,7 @@ body
 
 .full-page-panel
 {
-    height:                             99vh !important;
+    height:                             100vh !important;
 }
 
 .menu
@@ -227,6 +226,7 @@ body
     text-align:                         center;
     opacity:                            0.23;
     transition:                         all 1.4s;
+    z-index:6000;
 }
 
 .user-toolbar:hover
@@ -282,17 +282,18 @@ body
 
 .stat-item .value
 {
-    font-size:2em;
-    color: lighten($textColour,10%);
+    font-size:                          2em;
+    color:                              lighten($textColour,10%);
 }
 .stat-item .label
 {
-    font-size:0.8em;
-    color:lighten($textColour,40%);
+    font-size:                          0.8em;
+    color:                              lighten($textColour,40%);
 }
 
 .navigation-item
 {
+
     padding-top:                        2%;
     padding-bottom:                        2%;
     transition:                         all 0.7s;
@@ -323,8 +324,8 @@ body
 
 .dropdown-menu div
 {
-    display:block;
-    background:white;
+    display:                            block;
+    background:                         white;
 }
 
 .nav_item
@@ -384,14 +385,10 @@ body
     padding:                            1%;
 }
 
-.month-labels
-{
-    display:            flex;
-}
-
 .month-label
 {
-
+    position:relative;
+    box-sizing: border-box;
 }
 
 .month-spend
@@ -481,23 +478,23 @@ body
 
 .news-item .item
 {
-    color:                  #000000 !important;
-    margin:                 0% !important;
-    padding:                0% !important;
-    padding:                3px !important;
-    margin-top:             3px !important;
-    margin-bottom:          3px !important;
-    font-size:              1.05em !important;
+    color:                              #000000 !important;
+    margin:                             0% !important;
+    padding:                            0% !important;
+    padding:                            3px !important;
+    margin-top:                         3px !important;
+    margin-bottom:                      3px !important;
+    font-size:                          1.05em !important;
 }
 .padding
 {
-    margin-right:           10px;
-    margin-left:            10px;
+    margin-right:                       10px;
+    margin-left:                        10px;
 }
 .pp
 {
-    padding:                15px;
-    padding-top:            5px !important;
+    padding:                            15px;
+    padding-top:                        5px !important;
 }
 
 #user-name-hidden
@@ -563,6 +560,12 @@ button:hover
     float:                   left;
 }
 
+.calendar-body
+{
+    overflow-x: scroll;
+    z-index:4000;
+}
+
 .calendar-item
 {
     z-index:                1;
@@ -582,14 +585,12 @@ button:hover
     margin:                 0%;
     position:               relative;
 }
-.month-section:nth-child(odd) .calendar-item:nth-child(even) 
-{
-    background-color:       rgba(0,0,0,0.03)
-}
 .month-section:nth-child(even) .calendar-item:nth-child(odd) 
 {
     background-color:       rgba(0,0,0,0.03)
 }
+
+
 .date-number
 {
     color:                  #000000;
@@ -1224,7 +1225,6 @@ textarea:focus, input:focus
         height:                     74%;
     }
 
-
 	.responsive-none
 	{
 		display: none;
@@ -1257,6 +1257,13 @@ textarea:focus, input:focus
 
 
 @media (max-width:700px){
+
+
+    .content-area
+    {
+        margin-top: -5% !important;
+    }
+
 
     .scrollable
         {

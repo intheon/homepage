@@ -56,6 +56,15 @@ var UserManager = {
 		}
 	},
 
+	signOut: function()
+	{
+		var result = $.removeCookie("authToken");
+		console.log(result);
+
+		if (result) window.location = "login.php";
+	},
+
+
 	getUsersProfile: function(pCallback)
 	{
 		var auth = UserManager.usersAuth();
@@ -115,12 +124,14 @@ var UserManager = {
 				jsonData: widgetInformation.widgetData
 			};
 
+		// ensure that theres some parsable json for empty states
+		if (!wd.jsonData) wd.jsonData = '{"items":[]}';
+
 			wd = JSON.stringify(wd)
-		
 		// create a skeleton for each widget
-		$("#content-here").append("<div class='row full-page-panel' id='"+widgetInformation.widgetCodeName+"-widget' data-widget="+widgetInformation.widgetCodeName+">\
-				<div class='column-3'>&nbsp;</div>\
-				<div class='column-9 content-area'></div>\
+		$("#content-here").append("<div class='row full-page-panel ui stackable 2 column grid' id='"+widgetInformation.widgetCodeName+"-widget' data-widget="+widgetInformation.widgetCodeName+">\
+				<div class='three wide column'>&nbsp;</div>\
+				<div class='thirteen wide column content-area'></div>\
 			</div>");
 
 		// inject the template html
@@ -221,7 +232,6 @@ var UserManager = {
 
 			// find out the id's of the widgets the user chose to add
 			var states = [];
-			var track = 0;
 
 			$(".ui.checkbox input").each(function(){
 				var $this = $(this);
@@ -233,16 +243,18 @@ var UserManager = {
 			var count = 0;
 			var num = states.length;
 
+
 			for (statePointer = 0; statePointer < states.length; statePointer++)
 			{
 				var payload = {
 					"userId" : auth.cookie.userId,
 					"widgetId" : states[statePointer]
 				};
+
 				$.when(UserManager.ajaxHandler("POST", "rest-backend/api/state", payload, function(){}, auth.cookieString)).then(function(){
 					count++;
 					if (count === num) UserManager.getUsersProfile(UserManager.parseUsersProfile);
-				});;
+				});
 			}
 
 		});
@@ -297,11 +309,21 @@ var UserManager = {
 
 };
 
+var DisplayManager = {
+
+
+}
+
 // GO!
 $(document).ready(function() {
 
 	// all requests are authenticated by the api (tokenAuth.php is middleware which runs on each request)
 	UserManager.getUsersProfile(UserManager.parseUsersProfile);
+
+	// add an event listener to allow log out
+	$("#signOut").click(function(){
+		UserManager.signOut()
+	});
 
 });
 

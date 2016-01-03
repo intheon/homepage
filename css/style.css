@@ -121,7 +121,7 @@ body {
   margin-top: 0.1% !important; }
 
 .full-page-panel {
-  height: 99vh !important; }
+  height: 100vh !important; }
 
 .menu {
   position: fixed;
@@ -139,7 +139,8 @@ body {
   border-color: rgba(0, 0, 0, 0.1);
   text-align: center;
   opacity: 0.23;
-  transition: all 1.4s; }
+  transition: all 1.4s;
+  z-index: 6000; }
 
 .user-toolbar:hover {
   opacity: 0.9; }
@@ -246,8 +247,9 @@ body {
   opacity: 0.4;
   padding: 1%; }
 
-.month-labels {
-  display: flex; }
+.month-label {
+  position: relative;
+  box-sizing: border-box; }
 
 .month-spend {
   margin-top: 9.5%;
@@ -349,6 +351,10 @@ body {
 .modal-textarea textarea {
   float: left; }
 
+.calendar-body {
+  overflow-x: scroll;
+  z-index: 4000; }
+
 .calendar-item {
   z-index: 1;
   width: 11%;
@@ -362,9 +368,6 @@ body {
 .calendar-month {
   margin: 0%;
   position: relative; }
-
-.month-section:nth-child(odd) .calendar-item:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.03); }
 
 .month-section:nth-child(even) .calendar-item:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.03); }
@@ -878,6 +881,9 @@ textarea:focus, input:focus {
     opacity: 0.23;
     transition: all 1.4s; } }
 @media (max-width: 700px) {
+  .content-area {
+    margin-top: -5% !important; }
+
   .scrollable {
     margin-top: 11%; }
 

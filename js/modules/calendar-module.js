@@ -3,9 +3,6 @@ var rootUrl = "http://localhost/homepage";
 
 var Calendar = {
 
-	// a global time object
-	var time;
-
 	initialise: function(type)
 	{
 		// define some useful metadata

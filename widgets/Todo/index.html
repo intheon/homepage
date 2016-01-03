@@ -4,7 +4,7 @@
 			<input placeholder='Add new' type='text' id='todoInput' class="in-form">
 		</div>
 		<div class='scrollable'>
-			<div id='outstandingTodos' class='todo-list ui divided very relaxed list'>
+			<div id='outstandingTodos' class='todo-list ui divided very relaxed list listen'>
 			</div>
 		</div>
 	</div>
@@ -150,27 +150,13 @@
 		{
 			// so a scroll panel can exist within a scroll panel and not conflict
 			Todo.makeResponsive();
+
+			// activate links
+			$('.header').linkify({
+    			target: "_blank"
+			});
 		}
 
-	},
-
-	makeResponsive: function()
-	{
-		var height = window.innerHeight;
-
-		$(".scrollable").css("height", height);
-
-		$("#outstandingTodos")
-			.mouseenter(function(){
-				UserManager.applyScrollify("destroy");
-			})
-			.mouseleave(function(){
-				UserManager.applyScrollify();
-			});
-
-		$('.header').linkify({
-    		target: "_blank"
-		});
 	},
 
 	allowDelete: function(whichTodo)
@@ -298,6 +284,22 @@
 			}
 
 		}
+
+	},
+
+	makeResponsive: function()
+	{
+		var height = window.innerHeight;
+
+		$(".scrollable").css("height", height);
+
+		$(".listen")
+			.mouseenter(function(){
+				UserManager.applyScrollify("destroy");
+			})
+			.mouseleave(function(){
+				UserManager.applyScrollify();
+			});
 
 	}
 

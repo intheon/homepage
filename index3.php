@@ -39,7 +39,7 @@
 				<div class="user-menu-item column-6 float">
 				 	Profile
 				</div>
-				<div class="user-menu-item column-6 float">
+				<div class="user-menu-item column-6 float" id="signOut">
 					Sign out
 				</div>
 			</div>
