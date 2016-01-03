@@ -116,11 +116,15 @@ var UserManager = {
 
 	loadWidget: function(widgetInformation)
 	{
+
+		var widgetSafeName = DisplayManager.capitaliseFirstLetter(widgetInformation.widgetCodeName);
+
 		var wd = {
 				primaryKey: widgetInformation.widgetId,
 				widgetName: widgetInformation.widgetName,
 				stateId: widgetInformation.stateId,
 				widgetCodeName: widgetInformation.widgetCodeName,
+				widgetSafeName: widgetSafeName,
 				jsonData: widgetInformation.widgetData
 			};
 
@@ -140,7 +144,8 @@ var UserManager = {
 			var stored = UserManager.addToLocalStorage(widgetInformation.widgetCodeName, wd);
 
 			// dynamically call the initialisation method located in the template's own code to render the widget data
-			window[widgetInformation.widgetName].init(stored);
+
+			window[widgetSafeName].init(stored);
 		});
 
 		// load navigation
@@ -253,7 +258,11 @@ var UserManager = {
 
 				$.when(UserManager.ajaxHandler("POST", "rest-backend/api/state", payload, function(){}, auth.cookieString)).then(function(){
 					count++;
-					if (count === num) UserManager.getUsersProfile(UserManager.parseUsersProfile);
+					if (count === num) 
+					{
+						UserManager.getUsersProfile(UserManager.parseUsersProfile);
+						DisplayManager.removeModalFromDom();
+					}
 				});
 			}
 
@@ -311,6 +320,19 @@ var UserManager = {
 
 var DisplayManager = {
 
+	removeModalFromDom: function()
+	{
+		$("#modal").fadeOut("slow", function()
+		{
+			$("#modal").remove();
+			$(".ui.dimmer.modals").remove()
+		});
+	},
+
+	capitaliseFirstLetter: function(string)
+	{
+    	return string.charAt(0).toUpperCase() + string.slice(1);
+	}
 
 }
 
