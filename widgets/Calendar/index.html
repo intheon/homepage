@@ -1,67 +1,68 @@
 <div class="calendar-body ui stackable grid"></div>
 
 <script type="text/javascript">
-	
-var Calendar = {
+	var Calendar = {
 
-	// super useful global metadata will be used throughout
-	today: 					moment(),
-	todaysDayAsInt: 		parseInt(moment().format("D")),
-	thisMonthAsInt: 		parseInt(moment().format("M")),
-	thisYearAsInt: 			parseInt(moment().format("YYYY")),
-	thisMonthAsObj: 		moment(this.thisMonthAsInt, "M"),
-	thisMonthAsPhrase: 		moment().format("MMMM"),
-	thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
-	quantToDisplay: 		[],
-		
-
-	init: function(existingData)
-	{
-
-		// self execute
-		Calendar.quantToDisplay = (function(){
-									var array = [
-										Calendar.buildAMoment(-2),
-										Calendar.buildAMoment(-1),
-										Calendar.buildAMoment(+0),
-										Calendar.buildAMoment(+1),
-										Calendar.buildAMoment(+2),
-										Calendar.buildAMoment(+3),
-										Calendar.buildAMoment(+4),
-										Calendar.buildAMoment(+5)
-									];
-									return array;
-		})();
+		// super useful global metadata will be used throughout
+		today: moment(),
+		todaysDayAsInt: parseInt(moment().format("D")),
+		thisMonthAsInt: parseInt(moment().format("M")),
+		thisYearAsInt: parseInt(moment().format("YYYY")),
+		thisMonthAsObj: moment(this.thisMonthAsInt, "M"),
+		thisMonthAsPhrase: moment().format("MMMM"),
+		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
+		quantToDisplay: [],
 
 
-		Calendar.generateCalendar(Calendar.quantToDisplay, existingData);
+		init: function(existingData)
+		{
 
-	},
-
-	buildAMoment: function(offset)
-	{
-		return moment().month(parseInt(moment().format("M") - 1) + offset);
-	},
-
-	generateCalendar: function(months, existingData)
-	{
-		Calendar.renderCells(months, existingData);
-
-	},
-
-	renderCells: function(months, existingData)
-	{
-		$.each(months, function(month){
-
-			var inMonth = months[month].daysInMonth();
-			var nameMonthFull = months[month].format("MMMM");
-			var nameMonth = months[month].format("MMMM").toLowerCase();
-
-			$(".calendar-body").append("<div class='ui two wide column month-label'>"+nameMonthFull+"</div><div class='month-section ui fourteen wide column ' id='month-"+nameMonth+"'></div>")
-
-			for (var i = 1; i <= inMonth; i++)
+			// self execute
+			Calendar.quantToDisplay = (function()
 			{
-				$("#month-" + nameMonth).append("<div class='calendar-item calendar-item-"+ i +"'>\
+				var array = [
+					Calendar.buildAMoment(-2),
+					Calendar.buildAMoment(-1),
+					Calendar.buildAMoment(+0),
+					Calendar.buildAMoment(+1),
+					Calendar.buildAMoment(+2),
+					Calendar.buildAMoment(+3),
+					Calendar.buildAMoment(+4),
+					Calendar.buildAMoment(+5)
+				];
+				return array;
+			})();
+
+
+			Calendar.generateCalendar(Calendar.quantToDisplay, existingData);
+
+		},
+
+		buildAMoment: function(offset)
+		{
+			return moment().month(parseInt(moment().format("M") - 1) + offset);
+		},
+
+		generateCalendar: function(months, existingData)
+		{
+			Calendar.renderCells(months, existingData);
+
+		},
+
+		renderCells: function(months, existingData)
+		{
+			$.each(months, function(month)
+			{
+
+				var inMonth = months[month].daysInMonth();
+				var nameMonthFull = months[month].format("MMMM");
+				var nameMonth = months[month].format("MMMM").toLowerCase();
+
+				$(".calendar-body").append("<div class='ui two wide column month-label'>" + nameMonthFull + "</div><div class='month-section ui fourteen wide column ' id='month-" + nameMonth + "'></div>")
+
+				for (var i = 1; i <= inMonth; i++)
+				{
+					$("#month-" + nameMonth).append("<div class='calendar-item calendar-item-" + i + "'>\
 					<div class='ui dropdown'>\
 						<i class='dropdown icon'></i>\
 						<div class='menu'>\
@@ -81,86 +82,86 @@ var Calendar = {
 					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
 					<div class='day-details'></div>\
 				</div>");
-			}
-		});
-
-
-		Calendar.attachListeners();
-		Calendar.makeResponsive();
-		Calendar.parseUserData(existingData);
-
-	},
-
-	attachListeners: function()
-	{
-		// register dropdown handler
-		$('.ui.dropdown').dropdown();
-
-	},
-
-	makeResponsive: function()
-	{
-		var height = window.innerHeight;
-
-		$(".calendar-body").css("height", height);
-
-		$(".calendar-body")
-			.mouseenter(function(){
-				UserManager.applyScrollify("destroy");
-			})
-			.mouseleave(function(){
-				UserManager.applyScrollify();
+				}
 			});
 
 
-            $('.calendar-body').animate({
-                scrollTop: $("#month-" + Calendar.thisMonthAsPhraseLower).offset().top - 945
-            }, 4000);
+			Calendar.attachListeners();
+			Calendar.makeResponsive();
+			Calendar.parseUserData(existingData);
+
+		},
+
+		attachListeners: function()
+		{
+			// register dropdown handler
+			$('.ui.dropdown').dropdown();
+
+		},
+
+		makeResponsive: function()
+		{
+			var height = window.innerHeight;
+
+			$(".calendar-body").css("height", height);
+
+			$(".calendar-body")
+				.mouseenter(function()
+				{
+					UserManager.applyScrollify("destroy");
+				})
+				.mouseleave(function()
+				{
+					UserManager.applyScrollify();
+				});
 
 
-			//console.log(Calendar.thisMonthAsPhraseLower);
+			$('.calendar-body').animate(
+			{
+				scrollTop: $("#month-" + Calendar.thisMonthAsPhraseLower).offset().top - 945
+			}, 4000);
 
-		//console.log(height);
-	},
+		},
 
-	parseUserData: function(existingData)
-	{
-		var fullProfile = JSON.parse(existingData);
-		var widgetData = JSON.parse(fullProfile.jsonData);
+		parseUserData: function(existingData)
+		{
+			var fullProfile = JSON.parse(existingData);
+			var widgetData = JSON.parse(fullProfile.jsonData);
 
-		if (widgetData.items.length === 0) Calendar.askForPayday();
-	},
+			if (widgetData.items.length === 0) Calendar.askForPayday();
+		},
 
 
-	askForPayday: function()
-	{
-		// create an initial overlay which forces the user to input some data on their payday
-		$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
-			<div class='payday-form ui container'>\
-				<header>Please enter your payday to continue</header>\
-				<div class='ui buttons'>\
-					<button class='ui button payday-frequency' id='weekly-pay'>Weekly</button>\
-					<div class='or'></div>\
-					<button class='ui button payday-frequency' id='monthly-pay'>Monthly</button>\
+		askForPayday: function()
+		{
+			// create an initial overlay which forces the user to input some data on their payday
+			$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
+				<div class='payday-form ui container'>\
+					<header>Please enter your payday to continue</header>\
+					<div class='ui buttons'>\
+						<button class='ui button payday-frequency' id='weekly-pay'>Weekly</button>\
+						<div class='or'></div>\
+						<button class='ui button payday-frequency' id='monthly-pay'>Monthly</button>\
+					</div>\
+					<div class='payday-options'></div>\
 				</div>\
-				<div class='payday-options'></div>\
-			</div>\
-		</div>");
+			</div>");
 
-		// add listeners to branch off and show the sub-forms for weekly, and monthly
+			// add listeners to branch off and show the sub-forms for weekly, and monthly
 
-		$(".payday-frequency").click(function(e){
-			var freq = e.currentTarget.id;
-			if (freq == "weekly-pay") Calendar.weeklyPay();
-			else if (freq == "monthly-pay") Calendar.monthlyPay();
-		});
-	},
+			$(".payday-frequency").click(function(e)
+			{
+				var freq = e.currentTarget.id;
+				if (freq == "weekly-pay") Calendar.weeklyPay();
+				else if (freq == "monthly-pay") Calendar.monthlyPay();
+			});
+		},
 
-	askForWage: function(which)
-	{
-		Calendar.clearForm(".payday-form");
+		askForWage: function(which)
+		{
+			Calendar.clearForm(".payday-form");
 
-		$(".payday-form").html("<div class='ui fluid form'>\
+			$(".payday-form").html("<div class='ui fluid form'>\
 				<div class='field'>\
 					<input type='text' placeholder='How much did you get paid on this day?' id='payday-wage-amount'>\
 				</div>\
@@ -169,104 +170,105 @@ var Calendar = {
 			</div>");
 
 
-		$("#submit-wages").click(function(){
-			var pay = $("#payday-wage-amount").val();
-
-			if (!pay || isNaN(pay) || pay < 0 || pay > 10000)
+			$("#submit-wages").click(function()
 			{
-				$("#wage-error-message").html("This is a bad value. Only integers please!");
-			}
-			else
-			{
-				$("#wage-error-message").html("");
-				$("#payday-wage-amount").val("");
+				var pay = $("#payday-wage-amount").val();
 
-				var freq = which.split("-")[0];
-				var multi = which.split("-")[1];
-
-				var payload = {
-					payFreq : freq,
-					payDay : multi,
-					payAmount : pay
+				if (!pay || isNaN(pay) || pay < 0 || pay > 10000)
+				{
+					$("#wage-error-message").html("This is a bad value. Only integers please!");
 				}
+				else
+				{
+					$("#wage-error-message").html("");
+					$("#payday-wage-amount").val("");
 
-				Calendar.updateUsersState(payload);
+					var freq = which.split("-")[0];
+					var multi = which.split("-")[1];
+
+					var payload = {
+						payFreq: freq,
+						payDay: multi,
+						payAmount: pay
+					}
+
+					Calendar.updateUsersState(payload);
+				}
+			});
+		},
+
+		weeklyPay: function()
+		{
+			Calendar.clearForm(".payday-options");
+			$(".payday-options").append("<div class='ui buttons'>\
+  				<button class='ui button wage-freq' id='week-1'>Monday</button>\
+  				<button class='ui button wage-freq' id='week-2'>Tuesday</button>\
+  				<button class='ui button wage-freq' id='week-3'>Wednesday</button>\
+  				<button class='ui button wage-freq' id='week-4'>Thursday</button>\
+  				<button class='ui button wage-freq' id='week-5'>Friday</button>\
+  				<button class='ui button wage-freq' id='week-6'>Saturday</button>\
+  				<button class='ui button wage-freq' id='week-7'>Sunday</button>\
+			</div>");
+
+			$(".wage-freq").click(function(e)
+			{
+				var which = e.currentTarget.id;
+				Calendar.askForWage(which);
+			});
+		},
+
+		monthlyPay: function()
+		{
+			Calendar.clearForm(".payday-options");
+			var formHTML = $("<div class='ui buttons ui container'></div>");
+
+			for (i = 0; i <= 31; i++) $(formHTML).append("<div class='ui button wage-freq' id='month-" + i + "'>" + i + "</div>");
+
+			$(".payday-options").append(formHTML);
+
+			$(".wage-freq").click(function(e)
+			{
+				var which = e.currentTarget.id;
+				Calendar.askForWage(which);
+			});
+		},
+
+		clearForm: function(what)
+		{
+			if (!$(what).html()) return false;
+			else $(what).html("");
+		},
+
+		updateUsersState: function(payload)
+		{
+			var json = {
+				"items": [
+				{
+					"profile": payload
+				},
+				{
+					"calendar": null
+				}]
 			}
-		});
-	},
 
-	weeklyPay: function()
-	{
-		Calendar.clearForm(".payday-options");
-		$(".payday-options").append("<div class='ui buttons'>\
-  			<button class='ui button wage-freq' id='week-1'>Monday</button>\
-  			<button class='ui button wage-freq' id='week-2'>Tuesday</button>\
-  			<button class='ui button wage-freq' id='week-3'>Wednesday</button>\
-  			<button class='ui button wage-freq' id='week-4'>Thursday</button>\
-  			<button class='ui button wage-freq' id='week-5'>Friday</button>\
-  			<button class='ui button wage-freq' id='week-6'>Saturday</button>\
-  			<button class='ui button wage-freq' id='week-7'>Sunday</button>\
-		</div>");
+			var stateId = UserManager.returnStatePrimary("calendar");
 
-		$(".wage-freq").click(function(e){
-			var which = e.currentTarget.id;
-			Calendar.askForWage(which);
-		});
-	},
+			var asString = JSON.stringify(json);
 
-	monthlyPay: function()
-	{
-		Calendar.clearForm(".payday-options");
-		var formHTML = $("<div class='ui buttons ui container'></div>");
+			// authentication
+			var auth = UserManager.usersAuth();
 
-		for (i = 0; i <= 31; i++) $(formHTML).append("<div class='ui button wage-freq' id='month-"+i+"'>"+i+"</div>");
+			UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, Calendar.dismissModal, auth.cookieString);
+		},
 
-		$(".payday-options").append(formHTML);
-
-		$(".wage-freq").click(function(e){
-			var which = e.currentTarget.id;
-			Calendar.askForWage(which);
-		});
-	},
-
-	clearForm: function(what)
-	{
-		if (!$(what).html()) return false;
-		else $(what).html("");
-	},
-
-	updateUsersState: function(payload)
-	{
-		var json = {
-			"items" : [
+		dismissModal: function()
+		{
+			$(".payday-overlay").fadeOut(function()
 			{
-				"profile": payload
-			},
-			{
-				"calendar": null
-			}]
+				$(this).remove();
+			});
 		}
 
-		var stateId = UserManager.returnStatePrimary("calendar");
 
-		var asString = JSON.stringify(json);
-
-		// authentication
-		var auth = UserManager.usersAuth();
-
-		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, Calendar.dismissModal, auth.cookieString);
-	},
-
-	dismissModal: function()
-	{
-		$(".payday-overlay").fadeOut(function(){
-			$(this).remove();
-		});
 	}
-
-
-
-
-}
-
 </script>
