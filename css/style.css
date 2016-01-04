@@ -421,6 +421,22 @@ a:hover {
   box-sizing: border-box;
   resize: none; }
 
+.payday-overlay {
+  position: absolute !important;
+  background: #f0f1f3;
+  z-index: 2345;
+  width: 100%;
+  height: 100%;
+  padding: 3% !important; }
+
+.payday-options {
+  padding-top: 3%;
+  flex-wrap: wrap; }
+
+.payday-overlay header {
+  font-size: 1.2em;
+  padding-bottom: 3%; }
+
 .day-details {
   display: none; }
 
@@ -797,7 +813,7 @@ textarea:focus, input:focus {
 
 .scrollable {
   margin-left: -0.68%;
-  margin-top: 5%;
+  margin-top: 7%;
   width: 99.11%; }
 
 .show-more-todos {

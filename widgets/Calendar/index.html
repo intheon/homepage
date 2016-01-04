@@ -119,17 +119,143 @@ var Calendar = {
 		var fullProfile = JSON.parse(existingData);
 		var widgetData = JSON.parse(fullProfile.jsonData);
 
-		if (widgetData.items.length === 0)
-		{
-			$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
-					<header>When do you get paid?</header>\
-				</div>")
-			// this runs true - collect the date 
+		if (widgetData.items.length === 0) Calendar.askForPayday();
+	},
+
+
+	askForPayday: function()
+	{
+		// create an initial overlay which forces the user to input some data on their payday
+		$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
+			<div class='payday-form ui container'>\
+				<header>Please enter your payday to continue</header>\
+				<div class='ui buttons'>\
+					<button class='ui button payday-frequency' id='weekly-pay'>Weekly</button>\
+					<div class='or'></div>\
+					<button class='ui button payday-frequency' id='monthly-pay'>Monthly</button>\
+				</div>\
+				<div class='payday-options'></div>\
+			</div>\
+		</div>");
+
+		// add listeners to branch off and show the sub-forms for weekly, and monthly
+
+		$(".payday-frequency").click(function(e){
+			var freq = e.currentTarget.id;
+			if (freq == "weekly-pay") Calendar.weeklyPay();
+			else if (freq == "monthly-pay") Calendar.monthlyPay();
+		});
+	},
+
+	askForWage: function(which)
+	{
+		Calendar.clearForm(".payday-form");
+
+		$(".payday-form").html("<div class='ui fluid form'>\
+				<div class='field'>\
+					<input type='text' placeholder='How much did you get paid on this day?' id='payday-wage-amount'>\
+				</div>\
+				<div class='ui button' id='submit-wages'>Submit</div>\
+				<div class='error' id='wage-error-message'></div>\
+			</div>");
+
+
+		$("#submit-wages").click(function(){
+			var pay = $("#payday-wage-amount").val();
+
+			if (!pay || isNaN(pay) || pay < 0 || pay > 10000)
+			{
+				$("#wage-error-message").html("This is a bad value. Only integers please!");
+			}
+			else
+			{
+				$("#wage-error-message").html("");
+				$("#payday-wage-amount").val("");
+
+				var freq = which.split("-")[0];
+				var multi = which.split("-")[1];
+
+				var payload = {
+					payFreq : freq,
+					payDay : multi,
+					payAmount : pay
+				}
+
+				Calendar.updateUsersState(payload);
+			}
+		});
+	},
+
+	weeklyPay: function()
+	{
+		Calendar.clearForm(".payday-options");
+		$(".payday-options").append("<div class='ui buttons'>\
+  			<button class='ui button wage-freq' id='week-1'>Monday</button>\
+  			<button class='ui button wage-freq' id='week-2'>Tuesday</button>\
+  			<button class='ui button wage-freq' id='week-3'>Wednesday</button>\
+  			<button class='ui button wage-freq' id='week-4'>Thursday</button>\
+  			<button class='ui button wage-freq' id='week-5'>Friday</button>\
+  			<button class='ui button wage-freq' id='week-6'>Saturday</button>\
+  			<button class='ui button wage-freq' id='week-7'>Sunday</button>\
+		</div>");
+
+		$(".wage-freq").click(function(e){
+			var which = e.currentTarget.id;
+			Calendar.askForWage(which);
+		});
+	},
+
+	monthlyPay: function()
+	{
+		Calendar.clearForm(".payday-options");
+		var formHTML = $("<div class='ui buttons ui container'></div>");
+
+		for (i = 0; i <= 31; i++) $(formHTML).append("<div class='ui button wage-freq' id='month-"+i+"'>"+i+"</div>");
+
+		$(".payday-options").append(formHTML);
+
+		$(".wage-freq").click(function(e){
+			var which = e.currentTarget.id;
+			Calendar.askForWage(which);
+		});
+	},
+
+	clearForm: function(what)
+	{
+		if (!$(what).html()) return false;
+		else $(what).html("");
+	},
+
+	updateUsersState: function(payload)
+	{
+		var json = {
+			"items" : [
+			{
+				"profile": payload
+			},
+			{
+				"calendar": null
+			}]
 		}
 
+		var stateId = UserManager.returnStatePrimary("calendar");
 
+		var asString = JSON.stringify(json);
 
+		// authentication
+		var auth = UserManager.usersAuth();
+
+		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, Calendar.dismissModal, auth.cookieString);
+	},
+
+	dismissModal: function()
+	{
+		$(".payday-overlay").fadeOut(function(){
+			$(this).remove();
+		});
 	}
+
+
 
 
 }
