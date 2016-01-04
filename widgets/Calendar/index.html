@@ -111,6 +111,15 @@ var Calendar = {
 			.mouseleave(function(){
 				UserManager.applyScrollify();
 			});
+
+
+            $('.calendar-body').animate({
+                scrollTop: $("#month-" + Calendar.thisMonthAsPhraseLower).offset().top - 945
+            }, 4000);
+
+
+			//console.log(Calendar.thisMonthAsPhraseLower);
+
 		//console.log(height);
 	},
 

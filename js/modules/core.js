@@ -265,7 +265,6 @@ var UserManager = {
 					}
 				});
 			}
-
 		});
 	},
 
