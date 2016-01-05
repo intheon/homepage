@@ -261,8 +261,7 @@ body {
   width: 94%;
   position: absolute;
   z-index: 4000;
-  text-align: center;
-  background: white; }
+  text-align: center; }
 
 #welcome, #tasks {
   display: flex; }
@@ -425,11 +424,10 @@ a:hover {
 
 .payday-overlay {
   position: absolute !important;
-  background: #f0f1f3;
   z-index: 2345;
-  width: 100%;
+  width: 99%;
   height: 100%;
-  padding: 3% !important; }
+  padding-top: 1% !important; }
 
 .payday-options {
   padding-top: 3%;
@@ -438,6 +436,13 @@ a:hover {
 .payday-overlay header {
   font-size: 1.2em;
   padding-bottom: 3%; }
+
+.help-hint {
+  margin-top: 37% !important; }
+
+.payday-form {
+  margin-left: 0% !important;
+  width: 100% !important; }
 
 .day-details {
   display: none; }
@@ -856,12 +861,18 @@ textarea:focus, input:focus {
   transition: 0.5s all;
   right: 0;
   position: absolute;
-  margin-top: 1%;
-  margin-right: -100px;
+  margin-top: 1.06%;
+  margin-right: -200px;
   padding-right: 0%;
-  padding: .789em;
-  background: #00AA72;
-  color: white; }
+  padding: .74em;
+  background: #2185D0;
+  color: white;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px; }
+
+.in-form-submit:hover {
+  opacity: 0.83;
+  cursor: pointer; }
 
 .nudge {
   transition: 0.6s all;

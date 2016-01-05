@@ -1,6 +1,6 @@
-<div class='ui medium form'>
+<div class='ui fluid form'>
 	<div class='fields'>
-		<div class='field' class='ui two stackable'>
+		<div class='field' class='ui two stackable' id='my-todos'>
 			<input placeholder='Add new' type='text' id='todoInput' class="in-form">
 		</div>
 		<div class='scrollable'>
@@ -62,6 +62,7 @@
 	{
 		if (!Todo.isSubmitShown)
 		{
+			Todo.removeHint();
 			var submitButton = "<div class='in-form-submit'>Submit</div>";
 
 			$(submitButton).hide().appendTo($(who).parent()).fadeIn().addClass("nudge");
@@ -109,6 +110,7 @@
 	generateTodo: function()
 	{
 		var tString = $("#todoInput").val();
+
 		var timeStamp = Todo.generateTimestamp();
 		var timeStampTrimmed = timeStamp.substr(0, timeStamp.length - 29);
 
@@ -116,7 +118,6 @@
 		Todo.addToFrontEnd(tString, timeStampTrimmed);
 
 		// add it in the background so it persists upon browser refresh
-
 		var content = {
 			content : tString,
 			timestamp : timeStamp
@@ -169,6 +170,11 @@
 			// decrease the stat counter
 			UserManager.decrementStatistic("Tasks");
 
+			// decrease the internal counter
+			Todo.numTodos--;
+
+			if (Todo.numTodos === 0) Todo.addHint("You have no tasks. You sure? :P");
+
 			// now get all the remainders
 			var remains = $("#outstandingTodos .item");
 
@@ -189,38 +195,39 @@
 		// primary key of state we need to update in db
 		var stateId = UserManager.returnStatePrimary("todo");
 
+		// the current data as a parsable object
+		var currentData = JSON.parse(UserManager.returnStateData("todo"));
+
+		var veryFirstTodo = null;
+
+		var payload = null;
+
+		if (currentData.items.length === 0) veryFirstTodo = true;
+		else veryFirstTodo = false;
+
 		if (operation == "add")
 		{
-			// the current data
+			// the current data as a string
 			var stateData = UserManager.returnStateData("todo");
 
 			// a new block with the new data appended
-			var latestJson = Todo.appendNewTodo(content, stateData);
+			var latestJson = Todo.updateTodoJSON(content, stateData, veryFirstTodo);
 
 			// payload is the standard phrase
-			var payload = latestJson;
+			payload = latestJson;
 		}
 
 		else if (operation == "delete")
 		{
 			content.items.reverse();
-
-			console.log(content);
-
-			var payload = JSON.stringify(content);
-
+			payload = JSON.stringify(content);
 		}
 
 		// authentication
 		var auth = UserManager.usersAuth();
 
-		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, payload, Todo.updateState, auth.cookieString);
+		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, payload, function(){}, auth.cookieString);
 
-	},
-
-	updateState: function(message)
-	{
-		console.log(message);
 	},
 
 	convertToJSON: function(jqueryElements)
@@ -251,10 +258,14 @@
 		return json;
 	},
 
-	appendNewTodo: function(newContent, existingContent)
+	updateTodoJSON: function(newContent, existingContent, veryFirstTodo)
 	{
 		var latest = existingContent.substr(0, existingContent.length - 2);
-			latest = latest + ',{"itemName":"' + newContent.content + '", "date":"'+ newContent.timestamp +'"}]}';
+
+		// if its the very first todo, dont use a comma... it breaks the json
+		if (!veryFirstTodo) latest += ",";
+
+		latest = latest + '{"itemName":"' + newContent.content + '", "date":"'+ newContent.timestamp +'"}]}';
 
 		return latest;
 	},
@@ -267,8 +278,11 @@
 		// loop through each todo in todoData and cram that through the front end function
 		var tItems = JSON.parse(tData.jsonData);
 
-		// our integer quantity of xisting todos
+		// our integer quantity of existing todos
 		var maxTodos = tItems.items.length;
+
+		// if there's nothing there, display a message to prompt the user
+		if (maxTodos === 0) Todo.addHint("You have no tasks. You sure? :P");
 
 		for (singleItem in tItems)
 		{
@@ -301,6 +315,16 @@
 				UserManager.applyScrollify();
 			});
 
+	},
+
+	addHint: function(message)
+	{
+		$("#my-todos").append("<div class='ui pointing blue basic label help-hint'>"+ message +"</div>");
+	},
+
+	removeHint: function()
+	{
+		$(".help-hint").remove();
 	}
 
 };

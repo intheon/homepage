@@ -1,4 +1,5 @@
 <div class="calendar-body ui stackable grid"></div>
+<div class="calendar-messages"></div>
 
 <script type="text/javascript">
 	var Calendar = {
@@ -141,17 +142,20 @@
 
 			// first, let's add in the paydays
 
-			console.log(calendarProfile);
+			//console.log(calendarProfile);
 
 			// now, the individual calendar items
-			if (!calendarItems) console.log("empty");
-			else console.log("not empty");
+			//if (!calendarItems) console.log("empty");
+			//else console.log("not empty");
 		},
 
 		askForPayday: function()
 		{
+			// hide the calendar
+			$(".calendar-body").hide();
+
 			// create an initial overlay which forces the user to input some data on their payday
-			$(".calendar-body").prepend("<div class='overlay payday-overlay'>\
+			$(".calendar-messages").append("<div class='overlay payday-overlay'>\
 				<div class='payday-form ui container'>\
 					<header>Please enter your payday to continue</header>\
 					<div class='ui buttons'>\
@@ -216,7 +220,8 @@
 		weeklyPay: function()
 		{
 			Calendar.clearForm(".payday-options");
-			$(".payday-options").append("<div class='ui buttons'>\
+			$(".payday-options").append("<header>On which day of the week do you get paid?</header>\
+				<div class='ui buttons'>\
   				<button class='ui button wage-freq' id='week-1'>Monday</button>\
   				<button class='ui button wage-freq' id='week-2'>Tuesday</button>\
   				<button class='ui button wage-freq' id='week-3'>Wednesday</button>\
@@ -236,10 +241,11 @@
 		monthlyPay: function()
 		{
 			Calendar.clearForm(".payday-options");
-			var formHTML = $("<div class='ui buttons ui container'></div>");
+			var formHTML = $("<div class='ui buttons ui container payday-form'></div>");
 
 			for (i = 0; i <= 31; i++) $(formHTML).append("<div class='ui button wage-freq' id='month-" + i + "'>" + i + "</div>");
 
+			$(".payday-options").prepend("<header>On which day of the month do you get paid?</header>");
 			$(".payday-options").append(formHTML);
 
 			$(".wage-freq").click(function(e)
@@ -282,6 +288,10 @@
 			$(".payday-overlay").fadeOut(function()
 			{
 				$(this).remove();
+
+				$(".calendar-messages").hide();
+				$(".calendar-body").show();
+				
 			});
 		}
 

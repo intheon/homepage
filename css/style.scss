@@ -18,6 +18,7 @@ $colour1:                               #AA4B39;
 $colour2:                               #FF9800;
 $colour3:                               #FFFFFF;
 $green:                                 #00AA72;
+$blue:                                  #2185D0;
 $textColour:                            #000000;
 $trans:                                 rgba(255,255,255,0.3);
 $border-radius-amount:                  7px;    
@@ -405,7 +406,6 @@ body
     position: absolute;
     z-index: 4000;
     text-align: center;
-    background: rgba(255,255,255,1);
 }
 
 #welcome, #tasks
@@ -660,16 +660,12 @@ a:hover
 .payday-overlay
 {
     position:           absolute !important;
-    background:         rgba(240,241,243,1);
     z-index:            2345;
-    width:              100%;
+    width:              99%;
     height:             100%;
-    padding:            3% !important;
+    padding-top:        1% !important;
 }
 
-.payday-form
-{
-}
 
 .payday-options
 {
@@ -683,6 +679,19 @@ a:hover
     font-size:          1.2em;
     padding-bottom:     3%;
 }
+
+.help-hint
+{
+    margin-top:                 37% !important;
+}
+
+
+.payday-form
+{
+    margin-left:                0% !important;
+    width:                      100% !important;
+}
+
 .day-details
 {
     display:            none;
@@ -1227,12 +1236,19 @@ textarea:focus, input:focus
     transition:             0.5s all;
     right:                  0;
     position:               absolute;
-    margin-top:             1%;
-    margin-right:           -100px;
+    margin-top:             1.06%;
+    margin-right:           -200px;
     padding-right:          0%;
-    padding:                .789em;
-    background:             $green;
+    padding:                .74em;
+    background:             $blue;
     color:                  white;
+    border-top-left-radius:  2px;
+    border-bottom-left-radius:  2px;
+}
+.in-form-submit:hover
+{
+    opacity:                0.83;
+    cursor:                 pointer;
 }
 
 .nudge
