@@ -196,6 +196,12 @@ body {
   background: rgba(255, 255, 255, 0.14) !important;
   font-size: 1.2em; }
 
+.active-nav:before {
+  content: "-"; }
+
+.active-nav:after {
+  content: "-"; }
+
 .focus-panel {
   opacity: 0.9; }
 

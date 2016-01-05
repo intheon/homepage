@@ -179,9 +179,14 @@ var UserManager = {
 				easing: 		"easeOutExpo",
 				scrollSpeed: 	1000,
 				scrollbars: 	false,
-				before: 		function(event){
+				after: 		function(event){
 					// event is just the number of the panel
-					//var integer = event;
+					var name = $.scrollify.current();
+						name = name[0].id;
+						name = name.split("-")[0];
+						name = DisplayManager.capitaliseFirstLetter(name);
+
+					DisplayManager.focusNavLink(name);
 				}
 			});
 			$.scrollify.enable();
@@ -331,6 +336,12 @@ var DisplayManager = {
 	capitaliseFirstLetter: function(string)
 	{
     	return string.charAt(0).toUpperCase() + string.slice(1);
+	},
+
+	focusNavLink: function(identifier)
+	{
+		$(".navigation-item").removeClass("active-nav");
+		$("#" + identifier + "-navigation").addClass("active-nav");
 	}
 
 }

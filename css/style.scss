@@ -294,7 +294,6 @@ body
 
 .navigation-item
 {
-
     padding-top:                        2%;
     padding-bottom:                        2%;
     transition:                         all 0.7s;
@@ -309,9 +308,21 @@ body
 
 .active-nav
 {
+
     background:                         rgba(255,255,255,0.14) !important;
     font-size:                          1.2em;
 }
+
+.active-nav:before
+{
+    content:                            "-";
+}
+
+.active-nav:after
+{
+    content:                            "-";
+}
+
 
 .focus-panel
 {
