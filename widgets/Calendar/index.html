@@ -129,8 +129,24 @@
 			var widgetData = JSON.parse(fullProfile.jsonData);
 
 			if (widgetData.items.length === 0) Calendar.askForPayday();
+			else Calendar.addExistingCalItems(existingData);
 		},
 
+		addExistingCalItems: function(existingData)
+		{
+			var entireData = JSON.parse(existingData);
+			var metadata = JSON.parse(entireData.jsonData);
+			var calendarProfile = metadata.items[0].profile;
+			var calendarItems = metadata.items[1].calendar;
+
+			// first, let's add in the paydays
+
+			console.log(calendarProfile);
+
+			// now, the individual calendar items
+			if (!calendarItems) console.log("empty");
+			else console.log("not empty");
+		},
 
 		askForPayday: function()
 		{
