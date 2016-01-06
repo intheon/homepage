@@ -79,7 +79,7 @@
 						</div>\
 					</div>\
 					<div class='date-number'>" + i + "</div>\
-					<div class='day-label'>" + i + "</div>\
+					<div class='day-label'></div>\
 					<div class='day-summary'><div class='event-summary'></div><div class='spend-summary'></div></div>\
 					<div class='day-details'></div>\
 				</div>");
@@ -117,10 +117,13 @@
 				});
 
 
+			// disabled for now, little buggy
+			/*
 			$('.calendar-body').animate(
 			{
 				scrollTop: $("#month-" + Calendar.thisMonthAsPhraseLower).offset().top - 945
 			}, 4000);
+			*/
 
 		},
 
@@ -141,8 +144,7 @@
 			var calendarItems = metadata.items[1].calendar;
 
 			// first, let's add in the paydays
-
-			//console.log(calendarProfile);
+			Calendar.addInPaydays(calendarProfile);
 
 			// now, the individual calendar items
 			//if (!calendarItems) console.log("empty");
@@ -195,11 +197,8 @@
 				var pay = $("#payday-wage-amount").val();
 
 				if (!pay || isNaN(pay) || pay < 0 || pay > 10000)
-				{
 					$("#wage-error-message").html("This is a bad value. Only integers please!");
-				}
 				else
-				{
 					$("#wage-error-message").html("");
 					$("#payday-wage-amount").val("");
 
@@ -213,7 +212,6 @@
 					}
 
 					Calendar.updateUsersState(payload);
-				}
 			});
 		},
 
@@ -253,6 +251,21 @@
 				var which = e.currentTarget.id;
 				Calendar.askForWage(which);
 			});
+		},
+
+		addInPaydays: function(paydayMeta)
+		{
+			if (paydayMeta.payFreq == "month")
+			{
+				var day = paydayMeta.payDay;
+				var id = "calendar-item-" + day;
+
+				$("." + id).append("<div class='ui mini blue basic inverted label '>Payday!</div>");
+			}		
+			else if (paydayMeta.payFreq == "week")
+			{
+				console.log("load weeks");
+			}
 		},
 
 		clearForm: function(what)
