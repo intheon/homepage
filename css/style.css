@@ -253,7 +253,7 @@ body {
   opacity: 0.4;
   padding: 1%; }
 
-.month-label {
+.month-metadata {
   position: relative;
   box-sizing: border-box; }
 
@@ -382,7 +382,12 @@ body {
 
 .date-number {
   color: #000000;
-  padding: 1%; }
+  padding: 0.3%;
+  font-size: 0.8em;
+  opacity: 0.8; }
+
+.z-top {
+  z-index: 8000; }
 
 .ui .dropdown {
   float: right; }

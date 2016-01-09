@@ -59,12 +59,12 @@
 				var nameMonthFull = months[month].format("MMMM");
 				var nameMonth = months[month].format("MMMM").toLowerCase();
 
-				$(".calendar-body").append("<div class='ui two wide column month-label'>" + nameMonthFull + "</div><div class='month-section ui fourteen wide column ' id='month-" + nameMonth + "'></div>")
+				$(".calendar-body").append("<div class='ui two wide column month-metadata' id='"+nameMonth+"-metadata'><h3 class='month-name ui top attached header'>" + nameMonthFull + "</h3><div class='ui attached segment stackable'><div class='month-starting-wage ui tiny horizontal statistic'></div></div></div><div class='month-section ui fourteen wide column ' id='month-" + nameMonth + "'></div>")
 
 				for (var i = 1; i <= inMonth; i++)
 				{
 					$("#month-" + nameMonth).append("<div class='calendar-item calendar-item-" + i + "'>\
-					<div class='ui dropdown'>\
+					<div class='ui dropdown z-top'>\
 						<i class='dropdown icon'></i>\
 						<div class='menu'>\
 							<div class='item show-modal' id='purchase-modal'>\
@@ -145,6 +145,9 @@
 
 			// first, let's add in the paydays
 			Calendar.addInPaydays(calendarProfile);
+
+			// add in our starting wage
+			Calendar.addInStartingWage(calendarProfile.payAmount);
 
 			// now, the individual calendar items
 			//if (!calendarItems) console.log("empty");
@@ -260,12 +263,17 @@
 				var day = paydayMeta.payDay;
 				var id = "calendar-item-" + day;
 
-				$("." + id).append("<div class='ui mini blue basic inverted label '>Payday!</div>");
+				$("." + id).append("<div class='ui mini blue basic inverted label'>Payday!</div>");
 			}		
 			else if (paydayMeta.payFreq == "week")
 			{
 				console.log("load weeks");
 			}
+		},
+
+		addInStartingWage: function(startingWageData)
+		{
+			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Wage</div></div>");
 		},
 
 		clearForm: function(what)
