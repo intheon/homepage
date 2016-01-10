@@ -599,6 +599,10 @@ button:hover
     margin:                 0%;
     position:               relative;
 }
+.calendar-item-today
+{
+    background:             lighten($blue, 50%);
+}
 .month-section:nth-child(even) .calendar-item:nth-child(odd) 
 {
     background-color:       rgba(0,0,0,0.03)

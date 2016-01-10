@@ -59,7 +59,7 @@
 				var nameMonthFull = months[month].format("MMMM");
 				var nameMonth = months[month].format("MMMM").toLowerCase();
 
-				$(".calendar-body").append("<div class='ui two wide column month-metadata' id='"+nameMonth+"-metadata'><h3 class='month-name ui top attached header'>" + nameMonthFull + "</h3><div class='ui attached segment stackable'><div class='month-starting-wage ui tiny horizontal statistic'></div></div></div><div class='month-section ui fourteen wide column ' id='month-" + nameMonth + "'></div>")
+				$(".calendar-body").append("<div class='ui three wide column month-metadata' id='"+nameMonth+"-metadata'><h3 class='month-name ui top attached header'>" + nameMonthFull + "</h3><div class='ui attached segment stackable'><div class='month-starting-wage ui tiny statistic'></div></div></div><div class='month-section ui thirteen wide column ' id='month-" + nameMonth + "'></div>")
 
 				for (var i = 1; i <= inMonth; i++)
 				{
@@ -149,9 +149,17 @@
 			// add in our starting wage
 			Calendar.addInStartingWage(calendarProfile.payAmount);
 
+			// label todays date
+			Calendar.labelTodaysDate();
+
 			// now, the individual calendar items
 			//if (!calendarItems) console.log("empty");
 			//else console.log("not empty");
+		},
+
+		labelTodaysDate: function()
+		{
+			$("#month-" + Calendar.thisMonthAsPhraseLower + " .calendar-item-" + Calendar.todaysDayAsInt).addClass("calendar-item-today");
 		},
 
 		askForPayday: function()
@@ -263,7 +271,7 @@
 				var day = paydayMeta.payDay;
 				var id = "calendar-item-" + day;
 
-				$("." + id).append("<div class='ui mini blue basic inverted label'>Payday!</div>");
+				$("." + id).append("<div class='ui mini blue basic inverted label  '>Payday!</div>");
 			}		
 			else if (paydayMeta.payFreq == "week")
 			{
@@ -273,7 +281,8 @@
 
 		addInStartingWage: function(startingWageData)
 		{
-			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Wage</div></div>");
+			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Remaining</div></div>");
+			UserManager.createStatistic("Money", startingWageData);
 		},
 
 		clearForm: function(what)

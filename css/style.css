@@ -377,6 +377,9 @@ body {
   margin: 0%;
   position: relative; }
 
+.calendar-item-today {
+  background: #f3f9fd; }
+
 .month-section:nth-child(even) .calendar-item:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.03); }
 

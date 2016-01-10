@@ -92,7 +92,7 @@ var UserManager = {
 		// create the bastard initially
 		if ($("#" + label + "Stat").length === 0)
 		{
-			$(".statistics-info").append("<div class='stat-item column-6' id='"+label+"Stat'>\
+			$(".statistics-info").append("<div class='stat-item ui tiny statistic' id='"+label+"Stat'>\
 				<div class='value'>"+value+"</div>\
 				<div class='label'>"+label+"</div>\
 			</div>")
@@ -149,7 +149,7 @@ var UserManager = {
 		});
 
 		// load navigation
-		$("#navigation-here").append("<div class='navigation-item' id='" + widgetInformation.widgetName + "-navigation'>"+ widgetInformation.widgetName+ "</div>");
+		$("#navigation-here").append("<div class='navigation-item column' id='" + widgetInformation.widgetName + "-navigation'>"+ widgetInformation.widgetName+ "</div>");
 
 		$(".navigation-item:first-child").addClass("active-nav");
 
