@@ -331,16 +331,37 @@
 					title = "Add Spend";
 					content = "<div id='spending-field' class='modal-form-wrapper'>\
 						<div class='ui segment'>\
-						<div class='ui right labeled input'>\
-							<div class='ui label'>£</div>\
-							<input type='text' placeholder='Amount' id='spending-item-desc'>\
-							<div class='ui basic label'>.00</div>\
-						</div>\
-						<div class='ui right labeled icon input'>\
-							<i class='tags icon'></i>\
-							<input type='text' placeholder='Enter description' id='spending-item-name'>\
-							<a class='ui tag label'>Description</a>\
-						</div>\
+							<div class='ui right labeled fluid input'>\
+								<div class='ui label'>£</div>\
+								<input type='text' placeholder='Amount' id='spending-item-desc'>\
+								<div class='ui basic label'>.00</div>\
+							</div>\
+							<br />\
+							<div class='ui fluid selection dropdown'>\
+								<input type='hidden' name='user'>\
+								<i class='dropdown icon'></i>\
+								<div class='default text'>Category</div>\
+								<div class='menu'>\
+									<div class='item' data-value='food'>\
+										<i class='food icon'></i>\
+										Food\
+									</div>\
+									<div class='item' data-value='rent'>\
+										<i class='home icon'></i>\
+										Rent\
+									</div>\
+									<div class='item' data-value='bill'>\
+										<i class='payment icon'></i>\
+										Bill\
+									</div>\
+								</div>\
+							</div>\
+							<br />\
+							<div class='ui right labeled icon fluid input'>\
+								<i class='tags icon'></i>\
+								<input type='text' placeholder='Enter description' id='spending-item-name'>\
+								<a class='ui tag label'>Description</a>\
+							</div>\
 						</div>\
 					</div>";
 					break;
@@ -366,6 +387,7 @@
 		$(".ui.modal .actions .button").click(function(event)
 		{
 
+			/*
 			var type = event.currentTarget.id;
 
 			if (type == "add-item-modal")
@@ -385,16 +407,22 @@
 			Calendar.setUsersEvents(payload);
 			// remove modal from dom to stop duplicate values from appearing.
 			Calendar.removeModalFromDom();
+			*/
 		});
+
+		/*
 
 		$("#modal .icon").click(function()
 		{
+			console.log("first one");
 			Calendar.removeModalFromDom();
 		});
 		$("#modal .button").click(function()
 		{
+			console.log("second one");
 			Calendar.removeModalFromDom();
 		});
+*/
 
 		$('.ui.modal').modal('show');
 

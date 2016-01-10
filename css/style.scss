@@ -329,6 +329,9 @@ body
     opacity:                            0.9;
 }
 
+
+
+
 .dropdown-menu
 {
     display:none;
@@ -1293,6 +1296,12 @@ textarea:focus, input:focus
     transition:             0.6s all;
     margin-right:           0%;
     padding-right:          15%;
+}
+
+.no-focus:focus {
+    outline: none !important;
+    border:0;
+    border-box:0;
 }
 
 @media screen and (max-width:1004px){

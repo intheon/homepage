@@ -905,6 +905,11 @@ textarea:focus, input:focus {
   margin-right: 0%;
   padding-right: 15%; }
 
+.no-focus:focus {
+  outline: none !important;
+  border: 0;
+  border-box: 0; }
+
 @media screen and (max-width: 1004px) {
   .scrollable {
     margin-top: 9%; }
