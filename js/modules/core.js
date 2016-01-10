@@ -342,6 +342,22 @@ var DisplayManager = {
 	{
 		$(".navigation-item").removeClass("active-nav");
 		$("#" + identifier + "-navigation").addClass("active-nav");
+	},
+
+	createBlankModal: function()
+	{
+		$("body").prepend("<div class='ui modal' id='modal'>\
+			<i class='close icon'></i>\
+			<div class='header modal-header'></div>\
+			<div class='modal-content'>\
+				<div class='ui segment'>\
+					<div class='fields'></div>\
+				</div>\
+			</div>\
+			<div class='actions'>\
+				<div class='ui white button' id='cancel-modal'>Cancel</div>\
+				<div class='ui blue button' id='add-item-modal'>Add</div>\
+			</div>");
 	}
 
 }

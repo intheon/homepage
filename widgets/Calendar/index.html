@@ -67,14 +67,14 @@
 					<div class='ui dropdown z-top'>\
 						<i class='dropdown icon'></i>\
 						<div class='menu'>\
+							<div class='item show-modal' id='stats-modal'>\
+								<i class='tasks icon'></i>Current\
+							</div>\
 							<div class='item show-modal' id='purchase-modal'>\
 								<i class='money icon'></i>New Purchase\
 							</div>\
 							<div class='item show-modal' id='diary-modal'>\
 								<i class='calendar icon'></i>New Diary entry\
-							</div>\
-							<div class='item show-modal' id='stats-modal'>\
-								<i class='tasks icon'></i>Statistics\
 							</div>\
 						</div>\
 					</div>\
@@ -98,6 +98,11 @@
 			// register dropdown handler
 			$('.ui.dropdown').dropdown();
 
+			// allow modal to occur
+
+			$(".dropdown .item").click(function(event){
+				Calendar.presentPopupModal(event);
+			});
 		},
 
 		makeResponsive: function()
@@ -312,6 +317,98 @@
 
 			UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, Calendar.dismissModal, auth.cookieString);
 		},
+
+		presentPopupModal: function(event)
+		{
+			var type = event.currentTarget.id;
+			var content, title = "";
+
+			DisplayManager.createBlankModal();
+
+			switch (type)
+			{
+				case "purchase-modal":
+					title = "Add Spend";
+					content = "<div id='spending-field' class='modal-form-wrapper'>\
+						<div class='ui segment'>\
+						<div class='ui right labeled input'>\
+							<div class='ui label'>£</div>\
+							<input type='text' placeholder='Amount' id='spending-item-desc'>\
+							<div class='ui basic label'>.00</div>\
+						</div>\
+						<div class='ui right labeled icon input'>\
+							<i class='tags icon'></i>\
+							<input type='text' placeholder='Enter description' id='spending-item-name'>\
+							<a class='ui tag label'>Description</a>\
+						</div>\
+						</div>\
+					</div>";
+					break;
+
+				case "diary-modal":
+					title = "Add Diary";
+					content = "<div id='diary-field' class='modal-form-wrapper'><div class='field modal-field'><label>Event name</label><input type='text' placeholder='Name' id='diary-item-name' class='modal-input-class'></div><div class='field modal-field'><label>Event information</label><input type='text' placeholder='Description' id='diary-item-desc' class='modal-input-class'></div></div>";
+					break;
+
+				case "stats-modal":
+					title = "Overview for day";
+					content = "<div id='stats-overview>Some useful stats here</div>";
+					break;
+
+				default:
+					console.log("lol b0rked");
+					break;
+		};
+
+		$(".ui.modal .modal-header").html(title);
+		$(".ui.modal .modal-content .fields").html(content);
+
+		$(".ui.modal .actions .button").click(function(event)
+		{
+
+			var type = event.currentTarget.id;
+
+			if (type == "add-item-modal")
+			{
+
+				var id = $(".modal-form-wrapper")[0].id;
+				var split = id.split("-");
+
+				// TODO VALIDATION
+				var name = $("#" + split[0] + "-item-name").val();
+				var detail = $("#" + split[0] + "-item-desc").val();
+
+				payload.name = name;
+				payload.detail = detail;
+			}
+
+			Calendar.setUsersEvents(payload);
+			// remove modal from dom to stop duplicate values from appearing.
+			Calendar.removeModalFromDom();
+		});
+
+		$("#modal .icon").click(function()
+		{
+			Calendar.removeModalFromDom();
+		});
+		$("#modal .button").click(function()
+		{
+			Calendar.removeModalFromDom();
+		});
+
+		$('.ui.modal').modal('show');
+
+	},
+
+	removeModalFromDom: function()
+	{
+		$("#modal").fadeOut("slow", function()
+		{
+			$("#modal").remove();
+			$(".ui.dimmer.modals").remove()
+		});
+	},
+
 
 		dismissModal: function()
 		{
