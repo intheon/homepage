@@ -18,7 +18,6 @@
 input[type="text"], button {
   padding: 4%;
   border-radius: 7px;
-  outline: none;
   background: rgba(255, 255, 255, 0.3);
   border: none;
   border-bottom: 2px solid #f8ecea;
@@ -331,6 +330,9 @@ body {
 
 #user-name-hidden {
   display: none; }
+
+input[type="text"] {
+  outline: none; }
 
 .item .icon:hover {
   color: red;

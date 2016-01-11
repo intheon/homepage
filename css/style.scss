@@ -45,7 +45,7 @@ $transparent-bg:                        rgba(0,0,0,0.1);
 {
     padding:                            $padding * 2;
     border-radius:                      $border-radius-amount;
-    outline:                            none;
+
     background:                         $trans;
     border:                             none;
     border-bottom:                      2px solid lighten($colour1, 50%);
@@ -519,6 +519,7 @@ body
 input[type="text"]
 {
     @extend                             %input-default;
+    outline:none;
 }
 
 input[type="text"]:focus

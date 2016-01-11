@@ -337,30 +337,28 @@
 								<div class='ui basic label'>.00</div>\
 							</div>\
 							<br />\
-							<div class='ui fluid selection dropdown'>\
-								<input type='hidden' name='user'>\
-								<i class='dropdown icon'></i>\
-								<div class='default text'>Category</div>\
-								<div class='menu'>\
-									<div class='item' data-value='food'>\
-										<i class='food icon'></i>\
-										Food\
+							<div class='ui form'>\
+								<div class='two fields'>\
+									<div class='field'>\
+										<label>Description</label>\
+										<div class='ui left icon input'>\
+											<input type='text' placeholder='Description' id='spending-item-name'>\
+											<i class='tags icon'></i>\
+										</div>\
 									</div>\
-									<div class='item' data-value='rent'>\
-										<i class='home icon'></i>\
-										Rent\
-									</div>\
-									<div class='item' data-value='bill'>\
-										<i class='payment icon'></i>\
-										Bill\
+									<div class='field'>\
+										<label>Tags</label>\
+										<div class='ui multiple selection dropdown'>\
+											<input name='all-tags' type='hidden' value=''>\
+											<i class='dropdown icon'></i>\
+											<div class='default text'>Choose Tag</div>\
+											<div class='menu'>\
+												<div class='item' data-value='food'>Food</div>\
+												<div class='item' data-value='beer'>Beer</div>\
+											</div>\
+										</div>\
 									</div>\
 								</div>\
-							</div>\
-							<br />\
-							<div class='ui right labeled icon fluid input'>\
-								<i class='tags icon'></i>\
-								<input type='text' placeholder='Enter description' id='spending-item-name'>\
-								<a class='ui tag label'>Description</a>\
 							</div>\
 						</div>\
 					</div>";
@@ -383,10 +381,9 @@
 
 		$(".ui.modal .modal-header").html(title);
 		$(".ui.modal .modal-content .fields").html(content);
-
 		$(".ui.modal .actions .button").click(function(event)
 		{
-
+			console.log("you are here");
 			/*
 			var type = event.currentTarget.id;
 
@@ -405,18 +402,19 @@
 			}
 
 			Calendar.setUsersEvents(payload);
-			// remove modal from dom to stop duplicate values from appearing.
-			Calendar.removeModalFromDom();
 			*/
+			// remove from dom to stop duplicate modals from appearing.
+			Calendar.removeModalFromDom();
+			
+		});
+
+		$("#cancel-modal").click(function()
+		{
+			Calendar.removeModalFromDom();
 		});
 
 		/*
 
-		$("#modal .icon").click(function()
-		{
-			console.log("first one");
-			Calendar.removeModalFromDom();
-		});
 		$("#modal .button").click(function()
 		{
 			console.log("second one");
@@ -424,7 +422,21 @@
 		});
 */
 
+
 		$('.ui.modal').modal('show');
+
+		setTimeout(function(){
+			console.log("listener created");
+			$("ui.multiple.selection.dropdown").dropdown();
+		},1000);
+		
+
+		$(".benjamin.ui.dropdown").click(function(){
+			console.log("yep");
+		});
+
+
+
 
 	},
 
@@ -438,18 +450,17 @@
 	},
 
 
-		dismissModal: function()
+	dismissModal: function()
+	{
+		$(".payday-overlay").fadeOut(function()
 		{
-			$(".payday-overlay").fadeOut(function()
-			{
-				$(this).remove();
+			$(this).remove();
 
-				$(".calendar-messages").hide();
-				$(".calendar-body").show();
+			$(".calendar-messages").hide();
+			$(".calendar-body").show();
 				
-			});
-		}
-
-
+		});
 	}
+
+}
 </script>
