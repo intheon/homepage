@@ -59,7 +59,7 @@
 				var nameMonthFull = months[month].format("MMMM");
 				var nameMonth = months[month].format("MMMM").toLowerCase();
 
-				$(".calendar-body").append("<div class='ui three wide column month-metadata' id='"+nameMonth+"-metadata'><h3 class='month-name ui top attached header'>" + nameMonthFull + "</h3><div class='ui attached segment stackable'><div class='month-starting-wage ui tiny statistic'></div></div></div><div class='month-section ui thirteen wide column ' id='month-" + nameMonth + "'></div>")
+				$(".calendar-body").append("<div class='ui three wide column month-metadata' id='"+nameMonth+"-metadata'><h3 class='month-name ui top header'>" + nameMonthFull + "</h3><div class='ui  stackable'><div class='month-starting-wage ui tiny statistic'></div></div></div><div class='month-section ui thirteen wide column ' id='month-" + nameMonth + "'></div>")
 
 				for (var i = 1; i <= inMonth; i++)
 				{
