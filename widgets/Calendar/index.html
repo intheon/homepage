@@ -158,8 +158,8 @@
 			Calendar.labelTodaysDate();
 
 			// now, the individual calendar items
-			//if (!calendarItems) console.log("empty");
-			//else console.log("not empty");
+			if (!calendarItems) console.log("empty");
+			else Calendar.addInEvents(calendarItems);
 		},
 
 		labelTodaysDate: function()
@@ -290,6 +290,23 @@
 			UserManager.createStatistic("Money", startingWageData);
 		},
 
+		addInEvents: function(loggedEvents)
+		{
+			$.each(loggedEvents, function(i){
+				var month = "month-" + loggedEvents[i].month;
+				var day = loggedEvents[i].day;
+				var eventType = loggedEvents[i].type;
+				var detail = loggedEvents[i].detail;
+				var labelHTML = "";
+
+				if (eventType == "spending") labelHTML = "<div class='ui tiny label'><i class='pound icon'></i> "+detail+"</div>";
+
+				$("#" + month + " .calendar-item-" + day).append(labelHTML);
+
+			});
+
+		},
+
 		clearForm: function(what)
 		{
 			if (!$(what).html()) return false;
@@ -320,6 +337,12 @@
 
 		presentPopupModal: function(event)
 		{
+			var invokerDay = event.currentTarget.parentNode.parentNode.parentNode.className;
+				invokerDay = invokerDay.split(" ")[1];
+				invokerDay = invokerDay.split("-")[2];
+			var invokerMonth = event.currentTarget.parentNode.parentNode.offsetParent.id;
+				invokerMonth = invokerMonth.split("-")[1];
+
 			var type = event.currentTarget.id;
 			var content, title = "";
 
@@ -338,24 +361,12 @@
 							</div>\
 							<br />\
 							<div class='ui form'>\
-								<div class='two fields'>\
+								<div class='one field'>\
 									<div class='field'>\
 										<label>Description</label>\
 										<div class='ui left icon input'>\
 											<input type='text' placeholder='Description' id='spending-item-name'>\
 											<i class='tags icon'></i>\
-										</div>\
-									</div>\
-									<div class='field'>\
-										<label>Tags</label>\
-										<div class='ui multiple selection dropdown'>\
-											<input name='all-tags' type='hidden' value=''>\
-											<i class='dropdown icon'></i>\
-											<div class='default text'>Choose Tag</div>\
-											<div class='menu'>\
-												<div class='item' data-value='food'>Food</div>\
-												<div class='item' data-value='beer'>Beer</div>\
-											</div>\
 										</div>\
 									</div>\
 								</div>\
@@ -383,29 +394,11 @@
 		$(".ui.modal .modal-content .fields").html(content);
 		$(".ui.modal .actions .button").click(function(event)
 		{
-			console.log("you are here");
-			/*
-			var type = event.currentTarget.id;
+			// process the form values
+			Calendar.retrieveFormValues(event, invokerMonth, invokerDay);
 
-			if (type == "add-item-modal")
-			{
-
-				var id = $(".modal-form-wrapper")[0].id;
-				var split = id.split("-");
-
-				// TODO VALIDATION
-				var name = $("#" + split[0] + "-item-name").val();
-				var detail = $("#" + split[0] + "-item-desc").val();
-
-				payload.name = name;
-				payload.detail = detail;
-			}
-
-			Calendar.setUsersEvents(payload);
-			*/
 			// remove from dom to stop duplicate modals from appearing.
 			Calendar.removeModalFromDom();
-			
 		});
 
 		$("#cancel-modal").click(function()
@@ -413,6 +406,8 @@
 			Calendar.removeModalFromDom();
 		});
 
+
+		// TODO - get this so you can trigger the modal once again
 		/*
 
 		$("#modal .button").click(function()
@@ -420,12 +415,98 @@
 			console.log("second one");
 			Calendar.removeModalFromDom();
 		});
+
 */
 
 
 		$('.ui.modal').modal('show');
 
 
+	},
+
+
+	retrieveFormValues: function(eventData, month, day)
+	{
+		var type = eventData.currentTarget.id;
+
+		if (type == "add-item-modal")
+		{
+			var id = $(".modal-form-wrapper")[0].id;
+			var split = id.split("-");
+
+			// TODO VALIDATION
+			var name = $("#" + split[0] + "-item-name").val();
+			var detail = $("#" + split[0] + "-item-desc").val();
+
+			var payload = {
+				month: month,
+				day: day,
+				type: split[0],
+				name: name,
+				detail: detail
+			}
+
+			Calendar.setUsersEvents(payload);
+
+		}
+	},
+
+
+	setUsersEvents: function(payload)
+	{
+
+		// updates the front and back end simaltaneously 
+		var newCalendarMeta = Calendar.updateCalendarJSON(payload);
+
+		// todo, frontend
+
+
+		Calendar.updateCalendarBackEnd(newCalendarMeta);
+
+
+	},
+
+	updateCalendarJSON: function(payload)
+	{
+
+		//calendar metadata is a huge json string that needs appending
+
+		//get the current data from localstorage
+		//this will look something like {"items":[{"profile":{"payFreq":"month","payDay":"28","payAmount":"1509"}},{"calendar":null}]}
+		var oldData = UserManager.returnStateData("calendar");
+
+		var asObj = JSON.parse(oldData);
+
+		var currentCalendarMeta = asObj.items[1].calendar;
+
+		var tempArr = [payload];
+
+		if (!currentCalendarMeta) asObj.items[1].calendar = tempArr;
+		else
+		{
+			// needs testing, prob doesnt work
+			asObj.items[1].calendar.push(tempArr);
+		}
+
+		return JSON.stringify(asObj);
+
+	},
+
+	updateCalendarFrontEnd: function(payload)
+	{
+
+	},
+
+	updateCalendarBackEnd: function(payload)
+	{
+		// primary key of state we need to update in db
+		var stateId = UserManager.returnStatePrimary("calendar");
+
+		// authentication
+		var auth = UserManager.usersAuth();
+
+		// go forth and work
+		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, payload, function(){}, auth.cookieString);
 	},
 
 	removeModalFromDom: function()
