@@ -230,7 +230,7 @@
 						payAmount: pay
 					}
 
-					Calendar.updateUsersState(payload);
+					Calendar.updateUsersState(payload, null);
 			});
 		},
 
@@ -338,7 +338,7 @@
 			else $(what).html("");
 		},
 
-		updateUsersState: function(payload)
+		updateUsersState: function(payload, calendar)
 		{
 			var json = {
 				"items": [
@@ -346,7 +346,7 @@
 					"profile": payload
 				},
 				{
-					"calendar": null
+					"calendar": calendar
 				}]
 			}
 
@@ -484,17 +484,13 @@
 		var newCalendarMeta = Calendar.updateCalendarJSON(payload);
 
 		// todo, frontend
-		console.log(newCalendarMeta);
-
 
 		Calendar.updateCalendarBackEnd(newCalendarMeta);
-
 
 	},
 
 	updateCalendarJSON: function(payload)
 	{
-
 		//calendar metadata is a huge json string that needs appending
 
 		//get the current data from localstorage
