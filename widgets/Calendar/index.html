@@ -13,11 +13,11 @@
 		thisMonthAsPhrase: moment().format("MMMM"),
 		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
 		quantToDisplay: [],
+		currentWage: 0,
 
 
 		init: function(existingData)
 		{
-
 			// self execute
 			Calendar.quantToDisplay = (function()
 			{
@@ -143,6 +143,9 @@
 
 		addExistingCalItems: function(existingData)
 		{
+
+
+
 			var entireData = JSON.parse(existingData);
 			var metadata = JSON.parse(entireData.jsonData);
 			var calendarProfile = metadata.items[0].profile;
@@ -286,12 +289,30 @@
 
 		addInStartingWage: function(startingWageData)
 		{
+			//update our internal counter
+			Calendar.currentWage = +startingWageData;
+			//update the front-end view
 			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Remaining</div></div>");
 			UserManager.createStatistic("Money", startingWageData);
 		},
 
 		addInEvents: function(loggedEvents)
 		{
+			console.log(loggedEvents);
+
+			// adds the labels to the relevant cell of the calendar
+			Calendar.addHighLevelSummary(loggedEvents);
+
+			// adds in summary of all current events on a pop up modal (tells user about what the event name is)
+			Calendar.addInEventDetails(loggedEvents);
+
+		},
+
+		addHighLevelSummary: function(loggedEvents)
+		{
+			// adds a summary of labels to the front end
+			// merges into one label per type
+
 			$.each(loggedEvents, function(i){
 				var month = "month-" + loggedEvents[i].month;
 				var day = loggedEvents[i].day;
@@ -304,7 +325,11 @@
 				$("#" + month + " .calendar-item-" + day).append(labelHTML);
 
 			});
+		},
 
+		addInEventDetails: function()
+		{
+			// adds in the relevant details to the pop up which appears.
 		},
 
 		clearForm: function(what)
@@ -459,7 +484,7 @@
 		var newCalendarMeta = Calendar.updateCalendarJSON(payload);
 
 		// todo, frontend
-		
+		console.log(newCalendarMeta);
 
 
 		Calendar.updateCalendarBackEnd(newCalendarMeta);
@@ -480,13 +505,11 @@
 
 		var currentCalendarMeta = asObj.items[1].calendar;
 
-		var tempArr = [payload];
-
-		if (!currentCalendarMeta) asObj.items[1].calendar = tempArr;
+		if (!currentCalendarMeta) asObj.items[1].calendar = [payload];
 		else
 		{
 			// needs testing, prob doesnt work
-			asObj.items[1].calendar.push(tempArr);
+			asObj.items[1].calendar.push(payload);
 		}
 
 		return JSON.stringify(asObj);
