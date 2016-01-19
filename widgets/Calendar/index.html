@@ -443,6 +443,148 @@
 
 			*/
 
+			/*
+
+			var tempArr = [];
+			console.log(array);
+			$.each(array, function(pointer, value){
+
+				tempArr[pointer].push
+
+
+				console.log(value.month);
+				console.log(value.day);
+
+			});
+
+*/
+
+			/*
+			var redux = array.reduce(function(prev, next, count){
+
+				// always need something to compare against
+				if (!prev.length)
+				{
+					prev.push(next);
+
+				}
+				else
+				{
+					// cycle through the remainder of everything, and see if the day and month are equal to the very first
+					if (prev[prev.length - 1].month == next.month && prev[prev.length - 1].day == next.day)
+					{
+						// if they are
+						console.log("matching item:");
+						console.log(next);
+					}
+
+				}
+				return prev;
+			},[]);
+
+			console.log(redux);
+			*/
+
+			var months = _.groupBy(array, function(obj){
+
+				return obj.month;
+			});
+
+			var test = [];
+
+			for (month in months)
+			{
+				var test2 = _.groupBy(months[month], function(item){
+
+					var wow = _.groupBy(item.day, function(type){
+						return type.type
+					});
+
+					console.log(wow);
+					return item.day;
+				});
+
+				test.push({
+					month: month,
+					events: test2
+				})
+
+			}
+
+			console.log(test);
+
+			/*
+			var redux = array.reduce(function(prev, next, count){
+
+				// always need something to compare against
+				if (!prev.length)
+				{
+					var tempObj = {
+						day: next.day,
+						month: next.month,
+						diaryItems: null,
+						spendingItems: null
+					};
+
+					if (next.type == "spending")
+					{
+						tempObj.spendingItems = [
+							{
+								name: next.name,
+								detail: next.detail
+							}];
+					}
+					else if (next.type == "diary")
+					{
+						tempObj.diaryItems = [
+							{
+								name: next.name,
+								detail: next.detail
+							}];
+					}
+
+					prev.push(tempObj);
+
+				}
+				else
+				{
+					// cycle through the remainder of everything, and see if the day and month are equal to the very first
+
+					console.log(array[count]);
+					/*
+
+						if (prev[prev.length - 1].month == next.month && prev[prev.length - 1].day == next.day)
+						{
+							if (next.type == "spending")
+							{
+								prev[prev.length - 1].spendingItems.push({
+									name: next.name,
+									detail: next.detail
+								});	
+							}
+							else if (next.type == "diary")
+							{
+								prev[prev.length - 1].diaryItems.push({
+									name: next.name,
+									detail: next.detail
+								});	
+							}
+						}
+						else
+						{
+
+							console.log("this should hit 8");
+						}
+
+					
+				}
+				return prev;
+			},[]);
+
+			console.log(redux);
+				*/
+
+
 		},
 
 		clearForm: function(what)
