@@ -13,6 +13,7 @@
 		thisMonthAsPhrase: moment().format("MMMM"),
 		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
 		quantToDisplay: [],
+		remainingWage: null,
 
 
 		init: function(existingData)
@@ -159,7 +160,8 @@
 
 			// now, the individual calendar items
 			if (!calendarItems) console.log("empty");
-			else Calendar.addInEvents(calendarItems);
+			else Calendar.addInEventsToFrontEnd(calendarItems);
+
 		},
 
 		labelTodaysDate: function()
@@ -286,24 +288,160 @@
 
 		addInStartingWage: function(startingWageData)
 		{
+			Calendar.remainingWage = startingWageData;
 			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Remaining</div></div>");
 			UserManager.createStatistic("Money", startingWageData);
 		},
 
-		addInEvents: function(loggedEvents)
+		addInEventsToFrontEnd: function(loggedEvents)
 		{
-			$.each(loggedEvents, function(i){
-				var month = "month-" + loggedEvents[i].month;
-				var day = loggedEvents[i].day;
-				var eventType = loggedEvents[i].type;
-				var detail = loggedEvents[i].detail;
-				var labelHTML = "";
+			// this function can be called under two pretences: once when the page loads, and multiple times as the user interacts
 
-				if (eventType == "spending") labelHTML = "<div class='ui tiny label'><i class='pound icon'></i> "+detail+"</div>";
+			// the events need to be added to the front end in two places
 
-				$("#" + month + " .calendar-item-" + day).append(labelHTML);
+			// as a label to each calendar cell - works as a summary of items
+			Calendar.addLabelToCalendarCell(loggedEvents);
 
-			});
+			// and a more detailed overview that appears in a modal, per day at the users request
+			//Calendar.addDetailsToDaySummary(loggedEvents);
+
+		},
+
+		addLabelToCalendarCell: function(data)
+		{
+
+			// this function will get a plain object (in the case of ad-hoc updating)
+
+			if (data.length === undefined)
+			{
+				console.log(data);
+			}
+			else
+			{
+				// or will receive a chunk in an array to iterate over
+				// each element in teh array is an unique day
+				var uniqueDaysArray = Calendar.mergeMultipleDaysIntoSingle(data);
+				/*
+				$.each(data, function(i){
+					var month = "month-" + data[i].month;
+					var day = data[i].day;
+					var eventType = data[i].type;
+					var detail = data[i].detail;
+					var labelHTML = "";
+
+					if (eventType == "spending") labelHTML = "<div class='ui tiny label'><i class='pound icon'></i> "+detail+"</div>";
+
+					$("#" + month + " .calendar-item-" + day).append(labelHTML);
+
+				});
+*/
+			}
+		},
+
+		addDetailsToDaySummary: function(daySummaryItems)
+		{
+
+		},
+
+		mergeMultipleDaysIntoSingle: function(array)
+		{
+			/*
+
+				i have something that looks like this
+
+				someArray = [
+					{
+						day: "25",
+						month: "november",
+						name: "spending item 1",
+						detail: "10",
+						type: "spending"
+					},
+					{
+						day: "26",
+						month: "november",
+						name: "spending item 2",
+						detail: "13",
+						type: "spending"
+					},
+					{
+						day: "26",
+						month: "november",
+						name: "spending item 3",
+						detail: "25",
+						type: "spending"
+					},
+					{
+						day: "26",
+						month: "november",
+						name: "diary item 1",
+						detail: "set fire to laundry",
+						type: "diary"
+					},
+					{
+						day: "26",
+						month: "october",
+						name: "diary item 2",
+						detail: "go to bank",
+						type: "diary"
+					}
+				];
+
+				it needs tidying to look like this
+
+				someArray = [
+					{
+						day: "25",
+						month: "november",
+						spendingItems: [
+							{
+								name: "spending item 1",
+								detail: "10"
+							}
+						],
+						diaryItems: null
+					},
+					{
+						day: "26",
+						month: "november",
+						spendingItems: [
+							{
+								name: "spending item 2",
+								detail: "13"
+							},
+							{
+								name: "spending item 3",
+								detail: "25"
+							}
+						],
+						diaryItems: [
+							{
+								name: "diary item 1",
+								detail: "set fire to laundry"
+							}
+						]
+					},
+					{
+						day: "26",
+						month: "october",
+						spendingItems: null,
+						diaryItems: [
+							{
+								name: "diary item 2",
+								detail: "go to bank"
+							}
+						]
+					}
+				]
+
+			/*
+
+			var redux = array.reduce(function(prev, next){
+		
+			}, {});
+			console.log(test);
+
+			*/
 
 		},
 
@@ -478,7 +616,7 @@
 		Calendar.updateUsersState(newCalendarMeta, null, Calendar.removeModalFromDom);
 
 		// second, the front end (to mimic instant action)
-		console.log("front end required");
+		Calendar.addInEventsToFrontEnd(payload);
 
 	},
 
@@ -505,11 +643,6 @@
 		}
 
 		return JSON.stringify(asObj);
-
-	},
-
-	updateCalendarFrontEnd: function(payload)
-	{
 
 	},
 
