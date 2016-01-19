@@ -13,11 +13,11 @@
 		thisMonthAsPhrase: moment().format("MMMM"),
 		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
 		quantToDisplay: [],
-		currentWage: 0,
 
 
 		init: function(existingData)
 		{
+
 			// self execute
 			Calendar.quantToDisplay = (function()
 			{
@@ -143,9 +143,6 @@
 
 		addExistingCalItems: function(existingData)
 		{
-
-
-
 			var entireData = JSON.parse(existingData);
 			var metadata = JSON.parse(entireData.jsonData);
 			var calendarProfile = metadata.items[0].profile;
@@ -230,7 +227,7 @@
 						payAmount: pay
 					}
 
-					Calendar.updateUsersState(payload, null);
+					Calendar.updateUsersState(payload, "new", Calendar.dismissModal);
 			});
 		},
 
@@ -289,30 +286,12 @@
 
 		addInStartingWage: function(startingWageData)
 		{
-			//update our internal counter
-			Calendar.currentWage = +startingWageData;
-			//update the front-end view
 			$(".month-starting-wage").html("<div class='value'>£"+startingWageData+"</div><div class='label'>Remaining</div></div>");
 			UserManager.createStatistic("Money", startingWageData);
 		},
 
 		addInEvents: function(loggedEvents)
 		{
-			console.log(loggedEvents);
-
-			// adds the labels to the relevant cell of the calendar
-			Calendar.addHighLevelSummary(loggedEvents);
-
-			// adds in summary of all current events on a pop up modal (tells user about what the event name is)
-			Calendar.addInEventDetails(loggedEvents);
-
-		},
-
-		addHighLevelSummary: function(loggedEvents)
-		{
-			// adds a summary of labels to the front end
-			// merges into one label per type
-
 			$.each(loggedEvents, function(i){
 				var month = "month-" + loggedEvents[i].month;
 				var day = loggedEvents[i].day;
@@ -325,11 +304,7 @@
 				$("#" + month + " .calendar-item-" + day).append(labelHTML);
 
 			});
-		},
 
-		addInEventDetails: function()
-		{
-			// adds in the relevant details to the pop up which appears.
 		},
 
 		clearForm: function(what)
@@ -338,26 +313,42 @@
 			else $(what).html("");
 		},
 
-		updateUsersState: function(payload, calendar)
+		updateUsersState: function(payload, action, callback)
 		{
-			var json = {
-				"items": [
-				{
-					"profile": payload
-				},
-				{
-					"calendar": calendar
-				}]
+			var asString = "";
+
+			if (action == "new")
+			{
+				// either can initialise a new profile, in the case of a new user with no calendar stuff
+				var json = {
+					"items": [
+					{
+						"profile": payload
+					},
+					{
+						"calendar": null
+					}]
+				}
+
+				asString = JSON.stringify(json);
+
+			}
+			else
+			{
+				// or contains an existing profile, with updated calendar items
+
+				// (its already a string)
+				asString = payload;
 			}
 
+			// primary key of what we want to update
 			var stateId = UserManager.returnStatePrimary("calendar");
-
-			var asString = JSON.stringify(json);
 
 			// authentication
 			var auth = UserManager.usersAuth();
 
-			UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, Calendar.dismissModal, auth.cookieString);
+			// go forth and update
+			UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, asString, callback, auth.cookieString);
 		},
 
 		presentPopupModal: function(event)
@@ -480,17 +471,20 @@
 	setUsersEvents: function(payload)
 	{
 
-		// updates the front and back end simaltaneously 
+		// updates the front and back end simultaneously 
 		var newCalendarMeta = Calendar.updateCalendarJSON(payload);
 
-		// todo, frontend
+		// first, the backend
+		Calendar.updateUsersState(newCalendarMeta, null, Calendar.removeModalFromDom);
 
-		Calendar.updateCalendarBackEnd(newCalendarMeta);
+		// second, the front end (to mimic instant action)
+		console.log("front end required");
 
 	},
 
 	updateCalendarJSON: function(payload)
 	{
+
 		//calendar metadata is a huge json string that needs appending
 
 		//get the current data from localstorage
@@ -501,7 +495,9 @@
 
 		var currentCalendarMeta = asObj.items[1].calendar;
 
-		if (!currentCalendarMeta) asObj.items[1].calendar = [payload];
+		var tempArr = [payload];
+
+		if (!currentCalendarMeta) asObj.items[1].calendar = tempArr;
 		else
 		{
 			// needs testing, prob doesnt work
@@ -515,18 +511,6 @@
 	updateCalendarFrontEnd: function(payload)
 	{
 
-	},
-
-	updateCalendarBackEnd: function(payload)
-	{
-		// primary key of state we need to update in db
-		var stateId = UserManager.returnStatePrimary("calendar");
-
-		// authentication
-		var auth = UserManager.usersAuth();
-
-		// go forth and work
-		UserManager.ajaxHandler("PUT", "rest-backend/api/state/" + stateId, payload, function(){}, auth.cookieString);
 	},
 
 	removeModalFromDom: function()
