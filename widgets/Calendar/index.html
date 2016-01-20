@@ -318,23 +318,45 @@
 			}
 			else
 			{
-				// or will receive a chunk in an array to iterate over
-				// each element in teh array is an unique day
+				//	take the ungrouped days, and merge them together into something more countable
 				var uniqueDaysArray = Calendar.mergeMultipleDaysIntoSingle(data);
-				/*
-				$.each(data, function(i){
-					var month = "month-" + data[i].month;
-					var day = data[i].day;
-					var eventType = data[i].type;
-					var detail = data[i].detail;
-					var labelHTML = "";
 
-					if (eventType == "spending") labelHTML = "<div class='ui tiny label'><i class='pound icon'></i> "+detail+"</div>";
+				$.each(uniqueDaysArray, function(pointer, value){
 
-					$("#" + month + " .calendar-item-" + day).append(labelHTML);
+					var month = value.month;
+
+					for (days in value.events)
+					{
+						var day = days;
+
+						var cellId = ".month-" + month + " .calendar-item-" + day;
+
+						var diaryCount = 0;
+						var spendCount = 0;
+						var spendAmount = 0;
+
+						for (events in value.events[day])
+						{
+							if (value.events[day][events].type == "spending")
+							{
+								spendAmount+= +value.events[day][events].detail;
+								spendCount++;
+							}
+
+							if (value.events[day][events].type == "diary") diaryCount++;
+						}
+
+						console.log("for ", month, " the ", day, " there was ", diaryCount, " diaries and", spendCount, " spends at a cost of ", spendAmount)
+
+					}
+
+
+					//if (eventType == "spending") labelHTML = "<div class='ui tiny label'><i class='pound icon'></i> "+detail+"</div>";
+
+					//$("#" + month + " .calendar-item-" + day).append(labelHTML);
 
 				});
-*/
+
 			}
 		},
 
@@ -347,244 +369,30 @@
 		{
 			/*
 
-				i have something that looks like this
+				groups together duplicate days events to fall under one array, so its easier to count the quantity of days events
 
-				someArray = [
-					{
-						day: "25",
-						month: "november",
-						name: "spending item 1",
-						detail: "10",
-						type: "spending"
-					},
-					{
-						day: "26",
-						month: "november",
-						name: "spending item 2",
-						detail: "13",
-						type: "spending"
-					},
-					{
-						day: "26",
-						month: "november",
-						name: "spending item 3",
-						detail: "25",
-						type: "spending"
-					},
-					{
-						day: "26",
-						month: "november",
-						name: "diary item 1",
-						detail: "set fire to laundry",
-						type: "diary"
-					},
-					{
-						day: "26",
-						month: "october",
-						name: "diary item 2",
-						detail: "go to bank",
-						type: "diary"
-					}
-				];
-
-				it needs tidying to look like this
-
-				someArray = [
-					{
-						day: "25",
-						month: "november",
-						spendingItems: [
-							{
-								name: "spending item 1",
-								detail: "10"
-							}
-						],
-						diaryItems: null
-					},
-					{
-						day: "26",
-						month: "november",
-						spendingItems: [
-							{
-								name: "spending item 2",
-								detail: "13"
-							},
-							{
-								name: "spending item 3",
-								detail: "25"
-							}
-						],
-						diaryItems: [
-							{
-								name: "diary item 1",
-								detail: "set fire to laundry"
-							}
-						]
-					},
-					{
-						day: "26",
-						month: "october",
-						spendingItems: null,
-						diaryItems: [
-							{
-								name: "diary item 2",
-								detail: "go to bank"
-							}
-						]
-					}
-				]
-
-			/*
-
-			var redux = array.reduce(function(prev, next){
-		
-			}, {});
-			console.log(test);
-
-			*/
-
-			/*
-
-			var tempArr = [];
-			console.log(array);
-			$.each(array, function(pointer, value){
-
-				tempArr[pointer].push
-
-
-				console.log(value.month);
-				console.log(value.day);
-
-			});
-
-*/
-
-			/*
-			var redux = array.reduce(function(prev, next, count){
-
-				// always need something to compare against
-				if (!prev.length)
-				{
-					prev.push(next);
-
-				}
-				else
-				{
-					// cycle through the remainder of everything, and see if the day and month are equal to the very first
-					if (prev[prev.length - 1].month == next.month && prev[prev.length - 1].day == next.day)
-					{
-						// if they are
-						console.log("matching item:");
-						console.log(next);
-					}
-
-				}
-				return prev;
-			},[]);
-
-			console.log(redux);
+				thanks, Underscore!
 			*/
 
 			var months = _.groupBy(array, function(obj){
-
 				return obj.month;
 			});
 
-			var test = [];
+			var allEvents = [];
 
 			for (month in months)
 			{
-				var test2 = _.groupBy(months[month], function(item){
-
-					var wow = _.groupBy(item.day, function(type){
-						return type.type
-					});
-
-					console.log(wow);
+				var groupedDays = _.groupBy(months[month], function(item){
 					return item.day;
 				});
 
-				test.push({
+				allEvents.push({
 					month: month,
-					events: test2
-				})
-
+					events: groupedDays
+				});
 			}
 
-			console.log(test);
-
-			/*
-			var redux = array.reduce(function(prev, next, count){
-
-				// always need something to compare against
-				if (!prev.length)
-				{
-					var tempObj = {
-						day: next.day,
-						month: next.month,
-						diaryItems: null,
-						spendingItems: null
-					};
-
-					if (next.type == "spending")
-					{
-						tempObj.spendingItems = [
-							{
-								name: next.name,
-								detail: next.detail
-							}];
-					}
-					else if (next.type == "diary")
-					{
-						tempObj.diaryItems = [
-							{
-								name: next.name,
-								detail: next.detail
-							}];
-					}
-
-					prev.push(tempObj);
-
-				}
-				else
-				{
-					// cycle through the remainder of everything, and see if the day and month are equal to the very first
-
-					console.log(array[count]);
-					/*
-
-						if (prev[prev.length - 1].month == next.month && prev[prev.length - 1].day == next.day)
-						{
-							if (next.type == "spending")
-							{
-								prev[prev.length - 1].spendingItems.push({
-									name: next.name,
-									detail: next.detail
-								});	
-							}
-							else if (next.type == "diary")
-							{
-								prev[prev.length - 1].diaryItems.push({
-									name: next.name,
-									detail: next.detail
-								});	
-							}
-						}
-						else
-						{
-
-							console.log("this should hit 8");
-						}
-
-					
-				}
-				return prev;
-			},[]);
-
-			console.log(redux);
-				*/
-
-
+			return allEvents;
 		},
 
 		clearForm: function(what)
