@@ -310,6 +310,7 @@
 		addLabelToCalendarCell: function(data)
 		{
 
+			Calendar.writeThis();
 			// this function will get a plain object (in the case of ad-hoc updating)
 
 			if (data.length === undefined)
@@ -360,6 +361,7 @@
 
 			}
 		},
+
 
 		mergeMultipleDaysIntoSingle: function(array)
 		{

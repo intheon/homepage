@@ -18,7 +18,7 @@ Object.observe(emailMetadata, function(changes){
 function authoriseGoogle()
 {
 	var configuration = {
-		"client_id"			: "535339840289-c48nuh2v603viqsga9fmhbl91koak691.apps.googleusercontent.com",
+		"client_id"			: "nope",
 		"scope"				: "https://www.googleapis.com/auth/gmail.readonly"
 	};
 
