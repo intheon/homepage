@@ -145,7 +145,7 @@ var LoginModule = {
 			// set a cookie that is due to expire after a day
 			$.cookie("authToken", parsedResponse.messageBody, { expires: 1 });
 
-			window.location = "index3.php";
+			window.location = "index.php";
 
 		}
 	}
