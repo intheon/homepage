@@ -14,6 +14,7 @@
 		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
 		quantToDisplay: [],
 		remainingWage: null,
+		currentCellMeta: null,
 
 
 		init: function(existingData)
@@ -307,15 +308,19 @@
 
 		},
 
+		updateCalendarMeta: function(meta)
+		{
+			// getters and setters needer here
+		},
+
 		addLabelToCalendarCell: function(data)
 		{
 
-			Calendar.writeThis();
 			// this function will get a plain object (in the case of ad-hoc updating)
 
 			if (data.length === undefined)
 			{
-				console.log(data);
+				Calendar.adHocAddToFrontEnd(data);
 			}
 			else
 			{
