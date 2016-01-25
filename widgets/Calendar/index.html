@@ -14,8 +14,7 @@
 		thisMonthAsPhraseLower: moment().format("MMMM").toLowerCase(),
 		quantToDisplay: [],
 		remainingWage: null,
-		currentCellMeta: null,
-
+		monthMeta: null,
 
 		init: function(existingData)
 		{
@@ -37,9 +36,31 @@
 			})();
 
 
+			//Calendar.defineCalMetadata();
 			Calendar.generateCalendar(Calendar.quantToDisplay, existingData);
 
 		},
+
+		defineCalMetadata: function()
+		{
+			// what this does is create a property, called 'monthMeta', that's accessible under the Calendar.* namespace
+			// because we're using the defineProperty syntax (https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+			// we can use getters and setters to fire events when this object is eventually updated
+			// (it will be updated by the success method of an ajax call to the db)
+			Object.defineProperty( Calendar, Calendar.monthMeta, {
+				get: function(){
+					return "wowowowow";
+				},
+				set: function(newValue)
+				{
+					console.log("set is being called");
+					console.log(newValue);
+					this.monthMeta = newValue;
+				}
+			});
+		},
+
+
 
 		buildAMoment: function(offset)
 		{
@@ -308,26 +329,91 @@
 
 		},
 
-		updateCalendarMeta: function(meta)
-		{
-			// getters and setters needer here
-		},
-
 		addLabelToCalendarCell: function(data)
 		{
-
 			// this function will get a plain object (in the case of ad-hoc updating)
 
-			if (data.length === undefined)
-			{
-				Calendar.adHocAddToFrontEnd(data);
-			}
+
+			// this case is fired if teh user hasn't refreshed the page
+			if (data.length === undefined) Calendar.appendDaysToMasterObject(data);
 			else
 			{
 				//	take the ungrouped days, and merge them together into something more countable
 				var uniqueDaysArray = Calendar.mergeMultipleDaysIntoSingle(data);
 
-				$.each(uniqueDaysArray, function(pointer, value){
+				// store this as as a global so it can always be refered to as gospel
+				Calendar.monthModelController(uniqueDaysArray);
+
+				// create some labels
+				Calendar.createLabels();
+
+			}
+		},
+
+		monthModelController: function(metadata)
+		{
+			// takes the data, and stores this as a one-reference point for future actions (such as adding new events after the page has loaded)
+			this.monthMeta = metadata;
+
+			Calendar.createMonthSpendingProp(this.monthMeta);
+
+			console.log(this.monthMeta);
+			// add a property for each which defines how much was spent this month
+		},
+
+		appendDaysToMasterObject: function(data)
+		{
+			// this is fired on subsequent updates
+			$.each(Calendar.monthMeta, function(num, month){
+				if (month.month == data.month)
+				{
+
+					if (!month.events[data.day])
+					{
+						Object.defineProperty(month.events[data.day], data.day, function(){
+							data.day = [{
+								0: data
+							}]
+						});
+						console.log("success");
+						console.log(month);
+					}
+					else
+					{
+						console.log("you are here");
+					}
+					console.log(month);
+					console.log(data.day);
+					console.log();
+				}
+
+			});
+		},
+
+		createMonthSpendingProp: function(allMonthData)
+		{
+			// this is only fired when the page is loaded
+			$.each(this.monthMeta, function(i, month){
+				// first, iterate over the months
+				var label = month.month;
+				var monthTotal = 0;
+
+				$.each(month.events, function(day, eventInfo){
+					// now each day
+					$.each(eventInfo, function(number, info){
+						// now each possible property in the days
+						// tally up the amount spent this month
+						if (info.type == "spending") monthTotal += +info.detail;
+					})
+				});
+				// once these sub-loops break, define the final total as a property
+				Calendar.monthMeta[i].monthSpend = monthTotal;
+			});
+		},
+
+		createLabels: function()
+		{
+			$.each(Calendar.monthMeta, function(pointer, value){
 
 					var month = value.month;
 
@@ -363,10 +449,19 @@
 					//$("#" + month + " .calendar-item-" + day).append(labelHTML);
 
 				});
-
-			}
 		},
 
+		updateMonthModel: function(newMeta)
+		{
+			/* updates the statistics on the front end
+
+				total wage remaning for month
+				cells - number of money spent
+				cells - number of events
+				money spent this month
+
+			*/
+		},
 
 		mergeMultipleDaysIntoSingle: function(array)
 		{
