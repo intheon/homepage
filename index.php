@@ -49,8 +49,10 @@
 
 		</div><!-- end summary -->
 
-		
 		<div class="navigation row" id="navigation-here"><!-- Navigation links injected here-->
+		</div><!-- end nav -->
+
+		<div class="page-count row" id="page-count-here"><!-- Page count links injected here-->
 		</div><!-- end nav -->
 
 	</div> <!-- end user toolbar -->

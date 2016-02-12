@@ -5,6 +5,9 @@ var rootDomain = "http://localhost/";
 // determine if offline mode should be used - not implemented yet
 var internetStatus = (navigator.onLine ? true : false);
 
+var Meta = {
+	panels: 0
+}
 // My own little plugin to interact with the rest api
 var UserManager = {
 
@@ -84,6 +87,8 @@ var UserManager = {
 		{
 			var asObj = JSON.parse(profile);
 			for (var item in asObj) UserManager.loadWidget(asObj[item]);
+
+
 		}
 	},
 
@@ -114,8 +119,15 @@ var UserManager = {
 
 	},
 
+	createPanelStatistic: function()
+	{
+		Meta.panels + 1;
+		$("#page-count-here").html("<div class='count-item'>" + Meta.panels + "</div>")
+	},
+
 	loadWidget: function(widgetInformation)
 	{
+		// THIS FUNCTION IS CALLED MANY TIMES!!!!
 
 		var widgetSafeName = DisplayManager.capitaliseFirstLetter(widgetInformation.widgetCodeName);
 
@@ -150,8 +162,9 @@ var UserManager = {
 
 		// load navigation
 		$("#navigation-here").append("<div class='navigation-item column' id='" + widgetInformation.widgetName + "-navigation'>"+ widgetInformation.widgetName+ "</div>");
-
 		$(".navigation-item:first-child").addClass("active-nav");
+
+		this.createPanelStatistic();
 
 		$("#" + widgetInformation.widgetName + "-navigation").click(function(){
 
@@ -366,6 +379,7 @@ var DisplayManager = {
 $(document).ready(function() {
 
 	// all requests are authenticated by the api (tokenAuth.php is middleware which runs on each request)
+
 	UserManager.getUsersProfile(UserManager.parseUsersProfile);
 
 	// add an event listener to allow log out
